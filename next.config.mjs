@@ -6,7 +6,7 @@ const nextConfig = {
   },
   trailingSlash: true,
 
-  basePath: "/Alice-zhao-portfolio", // 👈 CHANGE THIS
+  basePath: "/Alice-zhao-portfolio",
   assetPrefix: "/Alice-zhao-portfolio/",
 };
 

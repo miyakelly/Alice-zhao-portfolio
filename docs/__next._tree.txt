@@ -1,3 +1,3 @@
 :HL["/Alice-zhao-portfolio/_next/static/chunks/0_r-patfclek4.css","style"]
 :HL["/Alice-zhao-portfolio/_next/static/media/e8f2fbee2754df70-s.p.0fzkl03jw-sdz.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
-0:{"tree":{"name":"","param":null,"prefetchHints":16,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}},"staleTime":300,"buildId":"L3EbW3hBKognCSanGH4-j"}
+0:{"tree":{"name":"","param":null,"prefetchHints":16,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}},"staleTime":300,"buildId":"tU2jGWHKHx_Wu5ZnVDOJ4"}
