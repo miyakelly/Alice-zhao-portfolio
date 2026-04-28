@@ -7,7 +7,7 @@
 /* ── HERO ── */
 .project-hero {
   background: var(--card);
-  color: var(--bg);
+  color: var(--bgclean);
   padding: 64px 48px 48px;
   transition: background 0.2s, color 0.2s;
 }

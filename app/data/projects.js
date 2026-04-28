@@ -92,11 +92,8 @@ export const projects = {
     role: "Lead UX Designer",
     timeline: "Aug 2024 - Nov 2024",
     team: [
-      "2 UX Designers",
       "4 PMs",
-      "3 UX Writers",
-      "1 Marketing Manager",
-      "~40 Engineers and SDMs",
+      "40+ Engineers, and more..",
     ],
     tags: ["0 → 1", "Cloud infrastructure", "AI"],
     metrics: [
