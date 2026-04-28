@@ -1,4 +1,5 @@
 import "./globals.css";
+import "./project.css";
 
 export const metadata = {
   title: "Alice Zhao — UX Designer + Builder",

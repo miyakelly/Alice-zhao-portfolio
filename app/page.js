@@ -1,6 +1,9 @@
 "use client";
 
-import { useEffect, useState, Fragment } from "react";
+import { Fragment } from "react";
+import Link from "next/link";
+import { projectOrder, projects } from "./data/projects";
+import Navigation from "./components/Navigation";
 
 const MARQUEE_ITEMS = [
   "UX Design", "AI Products", "Agent Design", "Prototyping",
@@ -23,64 +26,12 @@ const HIW_NOW = [
 ];
 
 export default function Home() {
-  const [dark, setDark] = useState(false);
-  const [drawerOpen, setDrawerOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    document.body.toggleAttribute("data-dark", dark);
-  }, [dark]);
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 10);
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  const closeDrawer = () => setDrawerOpen(false);
-
   return (
     <>
-      <nav className={`main-nav${scrolled ? " scrolled" : ""}`}>
-        <button
-          className={`nav-menu-btn${drawerOpen ? " open" : ""}`}
-          onClick={() => setDrawerOpen((o) => !o)}
-          aria-label="Open menu"
-        >
-          <span></span><span></span><span></span>
-        </button>
-        <a href="#" className="nav-logo">Alice Zhao</a>
-        <nav className="breadcrumb">
-          <span className="breadcrumb-current">Home</span>
-        </nav>
-        <button
-          className="nav-mode-btn"
-          onClick={() => setDark((d) => !d)}
-          aria-label="Toggle dark mode"
-        >
-          <span className="mode-icon mode-icon-moon">☽</span>
-          <span className="mode-icon mode-icon-sun">☀</span>
-        </button>
-      </nav>
-
-      <div
-        className={`drawer-overlay${drawerOpen ? " open" : ""}`}
-        onClick={closeDrawer}
-      ></div>
-      <div className={`nav-drawer${drawerOpen ? " open" : ""}`}>
-        <nav className="drawer-links">
-          <a href="#" onClick={closeDrawer}>Home</a>
-          <a href="#work" onClick={closeDrawer}>Projects</a>
-          <a href="#about" onClick={closeDrawer}>About</a>
-          <a href="#how-i-work" onClick={closeDrawer}>How I Design</a>
-          <a href="#contact" onClick={closeDrawer}>Contact</a>
-        </nav>
-        <div className="drawer-bottom">
-          <a href="https://www.linkedin.com/in/liangzhaoux/" target="_blank" rel="noreferrer">LinkedIn ↗</a>
-          <a href="mailto:liangzhao0801@gmail.com">Email ↗</a>
-          <a href="resume.pdf" download>Resume ↓</a>
-        </div>
-      </div>
+      <Navigation
+        isHome
+        breadcrumb={<span className="breadcrumb-current">Home</span>}
+      />
 
       <div className="bento" id="work">
         <div className="cell-hero">
@@ -103,60 +54,32 @@ export default function Home() {
           </div>
         </div>
 
-        <a href="#" className="cell-card cell-agent">
-          <div className="card-top">
-            <span className="card-year">2026</span>
-            <div className="card-tags">
-              <span className="tag tag-ai">AI</span>
-              <span className="tag">Featured</span>
-            </div>
-          </div>
-          <div className="card-body">
-            <h2 className="card-title">Agent Opportunities<br />Across AWS Ecosystem</h2>
-            <p className="card-desc">Using AI tools to discover and design agent experiences that dramatically streamline how customers interact with AWS services.</p>
-            <div className="card-img">[ project screens ]</div>
-          </div>
-          <div className="card-footer">
-            <span className="card-role">Lead UX Designer</span>
-            <span className="card-arrow">↗</span>
-          </div>
-        </a>
-
-        <a href="#" className="cell-card cell-s3">
-          <div className="card-top">
-            <span className="card-year">2025</span>
-            <div className="card-tags">
-              <span className="tag">Featured</span>
-            </div>
-          </div>
-          <div className="card-body">
-            <h2 className="card-title">S3 Tables:<br />0 → 1 in 8 Weeks</h2>
-            <p className="card-desc">Led UX from scratch on a completely new S3 resource type — defining the full product experience on an aggressive timeline.</p>
-            <div className="card-img">[ project screens ]</div>
-          </div>
-          <div className="card-footer">
-            <span className="card-role">Lead UX Designer</span>
-            <span className="card-arrow">↗</span>
-          </div>
-        </a>
-
-        <a href="#" className="cell-card cell-lab1">
-          <div className="card-top">
-            <span className="card-year">2026</span>
-            <div className="card-tags">
-              <span className="tag tag-ai">AI-Built</span>
-            </div>
-          </div>
-          <div className="card-body">
-            <h2 className="card-title">This Portfolio</h2>
-            <p className="card-desc">Designed and built with AI tools in a single session.</p>
-            <div className="card-img">[ screenshot ]</div>
-          </div>
-          <div className="card-footer">
-            <span className="card-role">Design + Engineering</span>
-            <span className="card-arrow">↗</span>
-          </div>
-        </a>
+        {projectOrder.map((slug) => {
+          const p = projects[slug];
+          return (
+            <Link key={slug} href={`/projects/${slug}/`} className={`cell-card ${p.gridClass}`}>
+              <div className="card-top">
+                <span className="card-year">{p.year}</span>
+                <div className="card-tags">
+                  {p.tags.map((t) => (
+                    <span key={t} className={`tag${t === "AI" ? " tag-ai" : ""}`}>{t}</span>
+                  ))}
+                </div>
+              </div>
+              <div className="card-body">
+                <h2 className="card-title">{p.cardTitle.split("\n").map((line, i, arr) => (
+                  <Fragment key={i}>{line}{i < arr.length - 1 && <br />}</Fragment>
+                ))}</h2>
+                <p className="card-desc">{p.cardDescription}</p>
+                <div className="card-img">[ project screens ]</div>
+              </div>
+              <div className="card-footer">
+                <span className="card-role">{p.role}</span>
+                <span className="card-arrow">↗</span>
+              </div>
+            </Link>
+          );
+        })}
 
         <a href="#" className="cell-card cell-lab2" style={{ cursor: "default" }}>
           <div className="card-top">
