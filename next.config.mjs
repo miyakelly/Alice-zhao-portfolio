@@ -5,9 +5,6 @@ const nextConfig = {
     unoptimized: true,
   },
   trailingSlash: true,
-
-  basePath: "/Alice-zhao-portfolio",
-  assetPrefix: "/Alice-zhao-portfolio/",
 };
 
 export default nextConfig;
