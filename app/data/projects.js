@@ -83,10 +83,10 @@ export const projects = {
 
   "s3-tables": {
     slug: "s3-tables",
-    title: "Designing S3 Tables that eliminates complex infrastructure for AI/ML workload",
-    cardTitle: "S3 Tables:\n0 → 1 in 8 Weeks",
+    title: "Designing AWS S3 Tables that eliminates complex infrastructure for AI/ML workload",
+    cardTitle: "AWS S3 Tables:\n0 → 1 in 8 Weeks",
     description: "Amazon S3 Tables: a purpose-built storage type for analytics workloads that automatically optimizes tabular data in Apache Iceberg format, eliminating the need for customers to build and maintain their own table management infrastructure.",
-    cardDescription: "Led UX from scratch on a completely new S3 resource type, defining the full product experience on an aggressive timeline.",
+    cardDescription: "Led UX from scratch on a completely new AWS storage product, defining the full user experience on an aggressive timeline.",
     gridClass: "cell-s3",
     year: "2024",
     role: "Lead UX Designer",

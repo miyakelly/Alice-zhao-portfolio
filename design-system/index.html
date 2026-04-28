@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Accent Color Explorer</title>
+<style>
+  :root {
+    --preview-bg: #1a1a1a;
+    --preview-text: #e0e0e0;
+    --preview-muted: #888;
+    --preview-border: #333;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background: var(--preview-bg);
+    color: var(--preview-text);
+    padding: 48px 40px 80px;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1 {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    margin-bottom: 8px;
+  }
+  .subtitle {
+    font-size: 14px;
+    color: var(--preview-muted);
+    margin-bottom: 12px;
+  }
+  .base-info {
+    font-size: 12px;
+    color: var(--preview-muted);
+    margin-bottom: 48px;
+    padding: 12px 16px;
+    border: 1px solid var(--preview-border);
+    border-radius: 6px;
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .base-info span {
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 11px;
+  }
+  .base-swatch {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 4px;
+    vertical-align: middle;
+    border: 1px solid rgba(128,128,128,0.3);
+  }
+
+  /* ── Accent group ── */
+  .accent-group {
+    margin-bottom: 64px;
+    padding-bottom: 64px;
+    border-bottom: 1px solid var(--preview-border);
+  }
+  .accent-group:last-child {
+    border-bottom: none;
+  }
+  .accent-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 6px;
+  }
+  .accent-name {
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  .accent-hex {
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 13px;
+    color: var(--preview-muted);
+  }
+  .accent-dot {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .accent-vibe {
+    font-size: 13px;
+    color: var(--preview-muted);
+    margin-bottom: 24px;
+  }
+
+  .page-type-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--preview-muted);
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--preview-border);
+  }
+  .modes {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 28px;
+  }
+  .mode-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--preview-muted);
+    margin-bottom: 10px;
+  }
+
+  /* ── Mockup ── */
+  .mockup {
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--preview-border);
+  }
+
+  /* Nav */
+  .mock-nav {
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 14px;
+    border-bottom: 1px solid var(--m-border);
+  }
+  .mock-nav-logo {
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--m-ink);
+  }
+  .mock-nav-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .mock-nav-link {
+    font-size: 7px;
+    color: var(--m-muted);
+  }
+
+  /* ══ HOMEPAGE MOCKUP ══ */
+  .mock-bento {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3px;
+    padding: 3px;
+    background: var(--m-bg);
+  }
+  .mock-home-hero {
+    grid-column: 1 / -1;
+    background: var(--m-card);
+    padding: 14px 14px 10px;
+    display: grid;
+    grid-template-columns: 32px 1fr;
+    gap: 10px;
+  }
+  .mock-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--m-muted);
+    opacity: 0.3;
+  }
+  .mock-home-bio { display: flex; flex-direction: column; gap: 3px; }
+  .mock-home-name { font-size: 10px; font-weight: 700; color: var(--m-ink); }
+  .mock-home-tagline { font-size: 7px; line-height: 1.4; color: var(--m-ink); opacity: 0.6; }
+  .mock-home-strip {
+    grid-column: 1 / -1;
+    display: flex;
+    gap: 2px;
+    margin-top: 4px;
+  }
+  .mock-strip-link {
+    flex: 1;
+    padding: 4px 6px;
+    background: var(--m-card2);
+    font-size: 6px;
+    font-weight: 600;
+    color: var(--m-ink);
+    opacity: 0.7;
+    text-align: center;
+  }
+  .mock-card {
+    background: var(--m-card);
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    min-height: 90px;
+  }
+  .mock-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+  }
+  .mock-card-year { font-size: 6px; font-weight: 700; color: var(--m-muted); }
+  .mock-card-tag {
+    font-size: 5px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 2px 4px;
+    border: 1px solid var(--m-border);
+    color: var(--m-muted);
+  }
+  .mock-card-tag-ai {
+    border-color: var(--m-accent);
+    color: var(--m-accent);
+  }
+  .mock-card-title {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    color: var(--m-ink);
+    margin-bottom: 3px;
+  }
+  .mock-card-desc {
+    font-size: 6px;
+    line-height: 1.5;
+    color: var(--m-ink);
+    opacity: 0.5;
+    margin-bottom: auto;
+  }
+  .mock-card-img {
+    height: 24px;
+    background: var(--m-card2);
+    margin: 6px 0 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 6px;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    color: var(--m-muted);
+    opacity: 0.4;
+  }
+  .mock-card-footer { display: flex; justify-content: space-between; align-items: center; }
+  .mock-card-role { font-size: 6px; color: var(--m-muted); }
+  .mock-card-arrow { font-size: 8px; color: var(--m-accent); }
+
+  /* Marquee */
+  .mock-marquee {
+    padding: 5px 12px;
+    overflow: hidden;
+    white-space: nowrap;
+    border-top: 1px solid var(--m-border);
+    border-bottom: 1px solid var(--m-border);
+  }
+  .mock-marquee span { font-size: 6px; font-weight: 500; color: var(--m-muted); }
+  .mock-marquee .dot { margin: 0 5px; opacity: 0.3; }
+
+  /* HIW */
+  .mock-hiw { padding: 12px 14px; background: var(--m-bg); }
+  .mock-hiw-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
+  .mock-hiw-title { font-size: 10px; font-weight: 700; color: var(--m-ink); }
+  .mock-hiw-year { font-size: 6px; color: var(--m-muted); }
+  .mock-hiw-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .mock-hiw-col-label {
+    font-size: 6px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase;
+    color: var(--m-muted); margin-bottom: 4px; padding-bottom: 3px; border-bottom: 1px solid var(--m-border);
+  }
+  .mock-hiw-step { display: flex; gap: 4px; margin-bottom: 4px; }
+  .mock-hiw-num { font-size: 6px; font-weight: 700; color: var(--m-accent); flex-shrink: 0; width: 8px; }
+  .mock-hiw-step-title { font-size: 6px; font-weight: 600; color: var(--m-ink); line-height: 1.3; }
+
+  /* About */
+  .mock-about {
+    padding: 10px 14px;
+    background: var(--m-bg);
+    border-top: 1px solid var(--m-border);
+  }
+  .mock-about-display { font-size: 14px; font-weight: 700; letter-spacing: 0.15em; color: var(--m-ink); opacity: 0.06; margin-bottom: 4px; }
+  .mock-about-text { font-size: 7px; line-height: 1.5; color: var(--m-ink); opacity: 0.65; margin-bottom: 6px; }
+  .mock-detail-row { display: flex; gap: 10px; padding: 2px 0; border-bottom: 1px solid var(--m-border); }
+  .mock-detail-lbl { font-size: 6px; color: var(--m-muted); width: 36px; flex-shrink: 0; }
+  .mock-detail-val { font-size: 6px; font-weight: 500; color: var(--m-ink); }
+
+  /* Contact */
+  .mock-contact {
+    padding: 10px 14px;
+    border-top: 1px solid var(--m-border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .mock-contact-title { font-size: 12px; font-weight: 700; color: var(--m-ink); line-height: 1.1; }
+  .mock-contact-links { display: flex; flex-direction: column; gap: 2px; align-items: flex-end; }
+  .mock-contact-link { font-size: 6px; color: var(--m-ink); opacity: 0.6; }
+  .mock-footer {
+    padding: 6px 14px;
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid var(--m-border);
+  }
+  .mock-footer span { font-size: 5px; color: var(--m-muted); }
+
+  /* ══ PROJECT DETAIL MOCKUP ══ */
+  .mock-hero {
+    padding: 22px 16px 18px;
+  }
+  .mock-hero-title {
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+    margin-bottom: 5px;
+  }
+  .mock-hero-desc {
+    font-size: 8px;
+    line-height: 1.5;
+    opacity: 0.55;
+    margin-bottom: 12px;
+    max-width: 240px;
+  }
+  .mock-metrics { display: flex; gap: 2px; }
+  .mock-metric {
+    flex: 1;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .mock-metric-val { font-size: 14px; font-weight: 700; letter-spacing: -0.02em; }
+  .mock-metric-label { font-size: 6px; opacity: 0.45; }
+
+  /* Section nav */
+  .mock-section-nav { display: flex; gap: 0; border-bottom: 1px solid var(--m-border); }
+  .mock-snav-item {
+    font-size: 7px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 7px 12px; color: var(--m-muted);
+  }
+  .mock-snav-item.active {
+    color: var(--m-accent);
+    box-shadow: inset 0 -2px 0 var(--m-accent);
+  }
+
+  /* Content */
+  .mock-content { padding: 16px; }
+  .mock-content-label {
+    font-size: 7px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--m-accent); margin-bottom: 5px;
+  }
+  .mock-content-heading {
+    font-size: 11px; font-weight: 700; letter-spacing: -0.02em; color: var(--m-ink); margin-bottom: 6px;
+  }
+  .mock-content-text {
+    font-size: 8px; line-height: 1.6; color: var(--m-ink); opacity: 0.7; margin-bottom: 12px;
+  }
+  .mock-ai-callout {
+    display: flex; align-items: center; gap: 8px;
+    padding: 7px 10px; border-left: 2px solid var(--m-accent); margin-bottom: 12px;
+  }
+  .mock-ai-icon {
+    font-size: 7px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase;
+    color: var(--m-accent); flex-shrink: 0;
+  }
+  .mock-ai-text {
+    font-size: 7px; font-family: 'SF Mono', 'Fira Code', monospace; color: var(--m-ink); opacity: 0.65;
+  }
+  .mock-decisions { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+  .mock-decision { padding: 8px; }
+  .mock-decision-label { font-size: 6px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 3px; }
+  .mock-decision-text { font-size: 7px; line-height: 1.5; color: var(--m-ink); opacity: 0.7; }
+
+  /* ══ SWATCHES ══ */
+  .swatches {
+    display: flex;
+    gap: 6px;
+    margin-top: 10px;
+    padding: 0 2px;
+  }
+  .swatch { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+  .swatch-circle {
+    width: 24px; height: 24px; border-radius: 50%; border: 1px solid rgba(128,128,128,0.25);
+  }
+  .swatch-label {
+    font-size: 6px; font-family: 'SF Mono', 'Fira Code', monospace; color: var(--preview-muted);
+  }
+  .swatch-hex {
+    font-size: 6px; font-family: 'SF Mono', 'Fira Code', monospace; color: var(--preview-muted); opacity: 0.6;
+  }
+</style>
+</head>
+<body>
+
+<h1>Accent Color Explorer</h1>
+<p class="subtitle">Warm accent colors on a neutral stone base. Same base palette, different accent energy.</p>
+<div class="base-info">
+  <span><span class="base-swatch" style="background:#F5F4F0;"></span> Light bg #F5F4F0</span>
+  <span><span class="base-swatch" style="background:#EBEAE4;"></span> Light card #EBEAE4</span>
+  <span><span class="base-swatch" style="background:#121210;"></span> Dark bg #121210</span>
+  <span><span class="base-swatch" style="background:#1A1917;"></span> Dark card #1A1917</span>
+  <span><span class="base-swatch" style="background:#1A1918;"></span> ink #1A1918 / #E8E7E1</span>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- 1. AMBER — the one you already like                    -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="accent-group">
+  <div class="accent-header">
+    <div class="accent-dot" style="background:#F6B455;"></div>
+    <span class="accent-name">1. Amber</span>
+    <span class="accent-hex">#D49B2F / #F6B455</span>
+  </div>
+  <p class="accent-vibe">Your starting point. Warm gold, craft-beer-label energy. Reads technical without being cold. Slightly deepened for light mode contrast.</p>
+
+  <div class="page-type-label">Homepage</div>
+  <div class="modes">
+    <div>
+      <div class="mode-label">Light</div>
+      <div class="mockup" style="--m-bg:#F5F4F0;--m-bg2:#EBEAE4;--m-ink:#1A1918;--m-muted:#84837A;--m-accent:#D49B2F;--m-border:#DDDBD3;--m-card:#EBEAE4;--m-card2:#E0DFD8;">
+        <div class="mock-nav" style="background:var(--m-bg);border-color:var(--m-border);"><span class="mock-nav-logo">Alice Zhao</span><div class="mock-nav-right"><span class="mock-nav-link">Work</span><span class="mock-nav-link">About</span></div></div>
+        <div class="mock-bento">
+          <div class="mock-home-hero"><div class="mock-avatar"></div><div class="mock-home-bio"><div class="mock-home-name">Alice Zhao.</div><div class="mock-home-tagline">Senior UX Designer + Builder. AI products for AWS.</div></div><div class="mock-home-strip"><div class="mock-strip-link">Resume</div><div class="mock-strip-link">LinkedIn</div><div class="mock-strip-link">Email</div></div></div>
+          <div class="mock-card"><div class="mock-card-top"><span class="mock-card-year">2025</span><span class="mock-card-tag">0 &rarr; 1</span></div><div class="mock-card-title">Simplifying<br>Data Access</div><div class="mock-card-desc">Unified console for AWS storage.</div><div class="mock-card-img">[ screens ]</div><div class="mock-card-footer"><span class="mock-card-role">Lead UX</span><span class="mock-card-arrow">&nearr;</span></div></div>
+          <div class="mock-card"><div class="mock-card-top"><span class="mock-card-year">2024</span><span class="mock-card-tag mock-card-tag-ai">AI</span></div><div class="mock-card-title">S3 Tables:<br>0 &rarr; 1</div><div class="mock-card-desc">New resource type for analytics.</div><div class="mock-card-img">[ screens ]</div><div class="mock-card-footer"><span class="mock-card-role">Lead UX</span><span class="mock-card-arrow">&nearr;</span></div></div>
+        </div>
+        <div class="mock-marquee" style="background:var(--m-bg);"><span>UX Design</span><span class="dot">&middot;</span><span>AI Products</span><span class="dot">&middot;</span><span>Agent Design</span><span class="dot">&middot;</span><span>Prototyping</span></div>
+        <div class="mock-hiw"><div class="mock-hiw-header"><span class="mock-hiw-title">How I Design Now</span><span class="mock-hiw-year">Since 2025</span></div><div class="mock-hiw-cols"><div><div class="mock-hiw-col-label">Before</div><div class="mock-hiw-step"><span class="mock-hiw-num">01</span><span class="mock-hiw-step-title">Research (weeks)</span></div><div class="mock-hiw-step"><span class="mock-hiw-num">02</span><span class="mock-hiw-step-title">Wireframes &rarr; Reviews</span></div></div><div><div class="mock-hiw-col-label">Now</div><div class="mock-hiw-step"><span class="mock-hiw-num">01</span><span class="mock-hiw-step-title">AI synthesis (hours)</span></div><div class="mock-hiw-step"><span class="mock-hiw-num">02</span><span class="mock-hiw-step-title">10&times; more directions</span></div></div></div></div>
+        <div class="mock-about"><div class="mock-about-display">ABOUT</div><div class="mock-about-text">Senior UX Designer at AWS, AI and cloud infrastructure.</div><div class="mock-detail-row"><span class="mock-detail-lbl">Currently</span><span class="mock-detail-val">Lead UX, AWS</span></div><div class="mock-detail-row"><span class="mock-detail-lbl">Open to</span><span class="mock-detail-val">Senior / Staff</span></div></div>
+        <div class="mock-contact" style="background:var(--m-bg);"><div class="mock-contact-title">Let's<br>talk.</div><div class="mock-contact-links"><span class="mock-contact-link">LinkedIn &nearr;</span><span class="mock-contact-link">Email &nearr;</span></div></div>
+        <div class="mock-footer" style="background:var(--m-bg);"><span>&copy; 2026</span><span>Senior UX Designer</span></div>
+      </div>
+    </div>
+    <div>
+      <div class="mode-label">Dark</div>
+      <div class="mockup" style="--m-bg:#121210;--m-bg2:#1A1917;--m-ink:#E8E7E1;--m-muted:#6B6A63;--m-accent:#F6B455;--m-border:#2A2926;--m-card:#1A1917;--m-card2:#222220;">
+        <div class="mock-nav" style="background:var(--m-bg);border-color:var(--m-border);"><span class="mock-nav-logo">Alice Zhao</span><div class="mock-nav-right"><span class="mock-nav-link">Work</span><span class="mock-nav-link">About</span></div></div>
+        <div class="mock-bento">
+          <div class="mock-home-hero"><div class="mock-avatar"></div><div class="mock-home-bio"><div class="mock-home-name">Alice Zhao.</div><div class="mock-home-tagline">Senior UX Designer + Builder. AI products for AWS.</div></div><div class="mock-home-strip"><div class="mock-strip-link">Resume</div><div class="mock-strip-link">LinkedIn</div><div class="mock-strip-link">Email</div></div></div>
+          <div class="mock-card"><div class="mock-card-top"><span class="mock-card-year">2025</span><span class="mock-card-tag">0 &rarr; 1</span></div><div class="mock-card-title">Simplifying<br>Data Access</div><div class="mock-card-desc">Unified console for AWS storage.</div><div class="mock-card-img">[ screens ]</div><div class="mock-card-footer"><span class="mock-card-role">Lead UX</span><span class="mock-card-arrow">&nearr;</span></div></div>
+          <div class="mock-card"><div class="mock-card-top"><span class="mock-card-year">2024</span><span class="mock-card-tag mock-card-tag-ai">AI</span></div><div class="mock-card-title">S3 Tables:<br>0 &rarr; 1</div><div class="mock-card-desc">New resource type for analytics.</div><div class="mock-card-img">[ screens ]</div><div class="mock-card-footer"><span class="mock-card-role">Lead UX</span><span class="mock-card-arrow">&nearr;</span></div></div>
+        </div>
+        <div class="mock-marquee" style="background:var(--m-bg);"><span>UX Design</span><span class="dot">&middot;</span><span>AI Products</span><span class="dot">&middot;</span><span>Agent Design</span><span class="dot">&middot;</span><span>Prototyping</span></div>
+        <div class="mock-hiw"><div class="mock-hiw-header"><span class="mock-hiw-title">How I Design Now</span><span class="mock-hiw-year">Since 2025</span></div><div class="mock-hiw-cols"><div><div class="mock-hiw-col-label">Before</div><div class="mock-hiw-step"><span class="mock-hiw-num">01</span><span class="mock-hiw-step-title">Research (weeks)</span></div><div class="mock-hiw-step"><span class="mock-hiw-num">02</span><span class="mock-hiw-step-title">Wireframes &rarr; Reviews</span></div></div><div><div class="mock-hiw-col-label">Now</div><div class="mock-hiw-step"><span class="mock-hiw-num">01</span><span class="mock-hiw-step-title">AI synthesis (hours)</span></div><div class="mock-hiw-step"><span class="mock-hiw-num">02</span><span class="mock-hiw-step-title">10&times; more directions</span></div></div></div></div>
+        <div class="mock-about"><div class="mock-about-display">ABOUT</div><div class="mock-about-text">Senior UX Designer at AWS, AI and cloud infrastructure.</div><div class="mock-detail-row"><span class="mock-detail-lbl">Currently</span><span class="mock-detail-val">Lead UX, AWS</span></div><div class="mock-detail-row"><span class="mock-detail-lbl">Open to</span><span class="mock-detail-val">Senior / Staff</span></div></div>
+        <div class="mock-contact" style="background:var(--m-bg);"><div class="mock-contact-title">Let's<br>talk.</div><div class="mock-contact-links"><span class="mock-contact-link">LinkedIn &nearr;</span><span class="mock-contact-link">Email &nearr;</span></div></div>
+        <div class="mock-footer" style="background:var(--m-bg);"><span>&copy; 2026</span><span>Senior UX Designer</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-type-label">Project Detail</div>
+  <div class="modes">
+    <div>
+      <div class="mode-label">Light</div>
+      <div class="mockup" style="--m-bg:#F5F4F0;--m-bg2:#EBEAE4;--m-ink:#1A1918;--m-muted:#84837A;--m-accent:#D49B2F;--m-border:#DDDBD3;--m-card:#EBEAE4;--m-card2:#E0DFD8;">
+        <div class="mock-nav" style="background:var(--m-bg);border-color:var(--m-border);"><span class="mock-nav-logo">Alice Zhao</span></div>
+        <div class="mock-hero" style="background:var(--m-card);color:var(--m-ink);"><div class="mock-hero-title">Simplifying Data Access</div><div class="mock-hero-desc">A unified console that cut data access from hours to minutes.</div><div class="mock-metrics" style="background:var(--m-border);"><div class="mock-metric" style="background:var(--m-card2);"><span class="mock-metric-val">34</span><span class="mock-metric-label">Customers</span></div><div class="mock-metric" style="background:var(--m-card2);"><span class="mock-metric-val">90%</span><span class="mock-metric-label">Satisfaction</span></div><div class="mock-metric" style="background:var(--m-card2);"><span class="mock-metric-val">194%</span><span class="mock-metric-label">MoM growth</span></div></div></div>
+        <div class="mock-section-nav" style="background:var(--m-bg);"><span class="mock-snav-item active">01 Problem</span><span class="mock-snav-item">02 Iteration</span><span class="mock-snav-item">03 Outcome</span></div>
+        <div class="mock-content" style="background:var(--m-bg);"><div class="mock-content-label">Who</div><div class="mock-content-heading">Storage admins managing infrastructure</div><div class="mock-content-text">Two key personas: Storage Admins and Developers struggling with multi-service data access.</div><div class="mock-ai-callout" style="background:var(--m-bg2);"><span class="mock-ai-icon">Claude</span><span class="mock-ai-text">Synthesized 30+ survey responses in hours</span></div><div class="mock-decisions" style="background:var(--m-border);"><div class="mock-decision" style="background:var(--m-bg2);"><div class="mock-decision-label" style="color:var(--m-muted);opacity:0.6;">Before</div><div class="mock-decision-text">Sequential API calls, failures lost input</div></div><div class="mock-decision" style="background:var(--m-bg2);"><div class="mock-decision-label" style="color:var(--m-accent);">After</div><div class="mock-decision-text">Upfront steps, input preserved on failure</div></div></div></div>
+      </div>
+      <div class="swatches">
+        <div class="swatch"><div class="swatch-circle" style="background:#D49B2F;"></div><span class="swatch-label">accent</span><span class="swatch-hex">#D49B2F</span></div>
+      </div>
+    </div>
+    <div>
+      <div class="mode-label">Dark</div>
+      <div class="mockup" style="--m-bg:#121210;--m-bg2:#1A1917;--m-ink:#E8E7E1;--m-muted:#6B6A63;--m-accent:#F6B455;--m-border:#2A2926;--m-card:#1A1917;--m-card2:#222220;">
+        <div class="mock-nav" style="background:var(--m-bg);border-color:var(--m-border);"><span class="mock-nav-logo">Alice Zhao</span></div>
+        <div class="mock-hero" style="background:var(--m-card);color:var(--m-ink);"><div class="mock-hero-title">Simplifying Data Access</div><div class="mock-hero-desc">A unified console that cut data access from hours to minutes.</div><div class="mock-metrics" style="background:var(--m-border);"><div class="mock-metric" style="background:var(--m-card2);"><span class="mock-metric-val">34</span><span class="mock-metric-label">Customers</span></div><div class="mock-metric" style="background:var(--m-card2);"><span class="mock-metric-val">90%</span><span class="mock-metric-label">Satisfaction</span></div><div class="mock-metric" style="background:var(--m-card2);"><span class="mock-metric-val">194%</span><span class="mock-metric-label">MoM growth</span></div></div></div>
+        <div class="mock-section-nav" style="background:var(--m-bg);"><span class="mock-snav-item active">01 Problem</span><span class="mock-snav-item">02 Iteration</span><span class="mock-snav-item">03 Outcome</span></div>
+        <div class="mock-content" style="background:var(--m-bg);"><div class="mock-content-label">Who</div><div class="mock-content-heading">Storage admins managing infrastructure</div><div class="mock-content-text">Two key personas: Storage Admins and Developers struggling with multi-service data access.</div><div class="mock-ai-callout" style="background:var(--m-bg2);"><span class="mock-ai-icon">Claude</span><span class="mock-ai-text">Synthesized 30+ survey responses in hours</span></div><div class="mock-decisions" style="background:var(--m-border);"><div class="mock-decision" style="background:var(--m-bg2);"><div class="mock-decision-label" style="color:var(--m-muted);opacity:0.6;">Before</div><div class="mock-decision-text">Sequential API calls, failures lost input</div></div><div class="mock-decision" style="background:var(--m-bg2);"><div class="mock-decision-label" style="color:var(--m-accent);">After</div><div class="mock-decision-text">Upfront steps, input preserved on failure</div></div></div></div>
+      </div>
+      <div class="swatches">
+        <div class="swatch"><div class="swatch-circle" style="background:#F6B455;"></div><span class="swatch-label">accent</span><span class="swatch-hex">#F6B455</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- 2. TANGERINE — warm orange, more heat                  -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="accent-group">
+  <div class="accent-header">
+    <div class="accent-dot" style="background:#F08C42;"></div>
+    <span class="accent-name">2. Tangerine</span>
+    <span class="accent-hex">#D4732A / #F08C42</span>
+  </div>
+  <p class="accent-vibe">Rich orange. Warmer and bolder than amber, still restrained. Think Cloudflare dashboard, Figma community energy.</p>
+
+  <div class="page-type-label">Homepage</div>
+  <div class="modes">
+    <div>
+      <div class="mode-label">Light</div>
+      <div class="mockup" style="--m-bg:#F5F4F0;--m-bg2:#EBEAE4;--m-ink:#1A1918;--m-muted:#84837A;--m-accent:#D4732A;--m-border:#DDDBD3;--m-card:#EBEAE4;--m-card2:#E0DFD8;">
+        <div class="mock-nav" style="background:var(--m-bg);border-color:var(--m-border);"><span class="mock-nav-logo">Alice Zhao</span><div class="mock-nav-right"><span class="mock-nav-link">Work</span><span class="mock-nav-link">About</span></div></div>
+        <div class="mock-bento">
+          <div class="mock-home-hero"><div class="mock-avatar"></div><div class="mock-home-bio"><div class="mock-home-name">Alice Zhao.</div><div class="mock-home-tagline">Senior UX Designer + Builder. AI products for AWS.</div></div><div class="mock-home-strip"><div class="mock-strip-link">Resume</div><div class="mock-strip-link">LinkedIn</div><div class="mock-strip-link">Email</div></div></div>
+          <div class="mock-card"><div class="mock-card-top"><span class="mock-card-year">2025</span><span class="mock-card-tag">0 &rarr; 1</span></div><div class="mock-card-title">Simplifying<br>Data Access</div><div class="mock-card-desc">Unified console for AWS storage.</div><div class="mock-card-img">[ screens ]</div><div class="mock-card-footer"><span class="mock-card-role">Lead UX</span><span class="mock-card-arrow">&nearr;</span></div></div>
+          <div class="mock-card"><div class="mock-card-top"><span class="mock-card-year">2024</span><span class="mock-card-tag mock-card-tag-ai">AI</span></div><div class="mock-card-title">S3 Tables:<br>0 &rarr; 1</div><div class="mock-card-desc">New resource type for analytics.</div><div class="mock-card-img">[ screens ]</div><div class="mock-card-footer"><span class="mock-card-role">Lead UX</span><span class="mock-card-arrow">&nearr;</span></div></div>
+        </div>
+        <div class="mock-marquee" style="background:var(--m-bg);"><span>UX Design</span><span class="dot">&middot;</span><span>AI Products</span><span class="dot">&middot;</span><span>Agent Design</span><span class="dot">&middot;</span><span>Prototyping</span></div>
+        <div class="mock-hiw"><div class="mock-hiw-header"><span class="mock-hiw-title">How I Design Now</span><span class="mock-hiw-year">Since 2025</span></div><div class="mock-hiw-cols"><div><div class="mock-hiw-col-label">Before</div><div class="mock-hiw-step"><span class="mock-hiw-num">01</span><span class="mock-hiw-step-title">Research (weeks)</span></div><div class="mock-hiw-step"><span class="mock-hiw-num">02</span><span class="mock-hiw-step-title">Wireframes &rarr; Reviews</span></div></div><div><div class="mock-hiw-col-label">Now</div><div class="mock-hiw-step"><span class="mock-hiw-num">01</span><span class="mock-hiw-step-title">AI synthesis (hours)</span></div><div class="mock-hiw-step"><span class="mock-hiw-num">02</span><span class="mock-hiw-step-title">10&times; more directions</span></div></div></div></div>
+        <div class="mock-about"><div class="mock-about-display">ABOUT</div><div class="mock-about-text">Senior UX Designer at AWS, AI and cloud infrastructure.</div><div class="mock-detail-row"><span class="mock-detail-lbl">Currently</span><span class="mock-detail-val">Lead UX, AWS</span></div><div class="mock-detail-row"><span class="mock-detail-lbl">Open to</span><span class="mock-detail-val">Senior / Staff</span></div></div>
+        <div class="mock-contact" style="background:var(--m-bg);"><div class="mock-contact-title">Let's<br>talk.</div><div class="mock-contact-links"><span class="mock-contact-link">LinkedIn &nearr;</span><span class="mock-contact-link">Email &nearr;</span></div></div>
+        <div class="mock-footer" style="background:var(--m-bg);"><span>&copy; 2026</span><span>Senior UX Designer</span></div>
+      </div>
+    </div>
+    <div>
+      <div class="mode-label">Dark</div>
+      <div class="mockup" style="--m-bg:#121210;--m-bg2:#1A1917;--m-ink:#E8E7E1;--m-muted:#6B6A63;--m-accent:#F08C42;--m-border:#2A2926;--m-card:#1A1917;--m-card2:#222220;">
+        <div class="mock-nav" style="background:var(--m-bg);border-color:var(--m-border);"><span class="mock-nav-logo">Alice Zhao</span><div class="mock-nav-right"><span class="mock-nav-link">Work</span><span class="mock-nav-link">About</span></div></div>
+        <div class="mock-bento">
+          <div class="mock-home-hero"><div class="mock-avatar"></div><div class="mock-home-bio"><div class="mock-home-name">Alice Zhao.</div><div class="mock-home-tagline">Senior UX Designer + Builder. AI products for AWS.</div></div><div class="mock-home-strip"><div class="mock-strip-link">Resume</div><div class="mock-strip-link">LinkedIn</div><div class="mock-strip-link">Email</div></div></div>
+          <div class="mock-card"><div class="mock-card-top"><span class="mock-card-year">2025</span><span class="mock-card-tag">0 &rarr; 1</span></div><div class="mock-card-title">Simplifying<br>Data Access</div><div class="mock-card-desc">Unified console for AWS storage.</div><div class="mock-card-img">[ screens ]</div><div class="mock-card-footer"><span class="mock-card-role">Lead UX</span><span class="mock-card-arrow">&nearr;</span></div></div>
+          <div class="mock-card"><div class="mock-card-top"><span class="mock-card-year">2024</span><span class="mock-card-tag mock-card-tag-ai">AI</span></div><div class="mock-card-title">S3 Tables:<br>0 &rarr; 1</div><div class="mock-card-desc">New resource type for analytics.</div><div class="mock-card-img">[ screens ]</div><div class="mock-card-footer"><span class="mock-card-role">Lead UX</span><span class="mock-card-arrow">&nearr;</span></div></div>
+        </div>
+        <div class="mock-marquee" style="background:var(--m-bg);"><span>UX Design</span><span class="dot">&middot;</span><span>AI Products</span><span class="dot">&middot;</span><span>Agent Design</span><span class="dot">&middot;</span><span>Prototyping</span></div>
+        <div class="mock-hiw"><div class="mock-hiw-header"><span class="mock-hiw-title">How I Design Now</span><span class="mock-hiw-year">Since 2025</span></div><div class="mock-hiw-cols"><div><div class="mock-hiw-col-label">Before</div><div class="mock-hiw-step"><span class="mock-hiw-num">01</span><span class="mock-hiw-step-title">Research (weeks)</span></div><div class="mock-hiw-step"><span class="mock-hiw-num">02</span><span class="mock-hiw-step-title">Wireframes &rarr; Reviews</span></div></div><div><div class="mock-hiw-col-label">Now</div><div class="mock-hiw-step"><span class="mock-hiw-num">01</span><span class="mock-hiw-step-title">AI synthesis (hours)</span></div><div class="mock-hiw-step"><span class="mock-hiw-num">02</span><span class="mock-hiw-step-title">10&times; more directions</span></div></div></div></div>
+        <div class="mock-about"><div class="mock-about-display">ABOUT</div><div class="mock-about-text">Senior UX Designer at AWS, AI and cloud infrastructure.</div><div class="mock-detail-row"><span class="mock-detail-lbl">Currently</span><span class="mock-detail-val">Lead UX, AWS</span></div><div class="mock-detail-row"><span class="mock-detail-lbl">Open to</span><span class="mock-detail-val">Senior / Staff</span></div></div>
+        <div class="mock-contact" style="background:var(--m-bg);"><div class="mock-contact-title">Let's<br>talk.</div><div class="mock-contact-links"><span class="mock-contact-link">LinkedIn &nearr;</span><span class="mock-contact-link">Email &nearr;</span></div></div>
+        <div class="mock-footer" style="background:var(--m-bg);"><span>&copy; 2026</span><span>Senior UX Designer</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-type-label">Project Detail</div>
+  <div class="modes">
+    <div>
+      <div class="mode-label">Light</div>
+      <div class="mockup" style="--m-bg:#F5F4F0;--m-bg2:#EBEAE4;--m-ink:#1A1918;--m-muted:#84837A;--m-accent:#D4732A;--m-border:#DDDBD3;--m-card:#EBEAE4;--m-card2:#E0DFD8;">
+        <div class="mock-nav" style="background:var(--m-bg);border-color:var(--m-border);"><span class="mock-nav-logo">Alice Zhao</span></div>
+        <div class="mock-hero" style="background:var(--m-card);color:var(--m-ink);"><div class="mock-hero-title">Simplifying Data Access</div><div class="mock-hero-desc">A unified console that cut data access from hours to minutes.</div><div class="mock-metrics" style="background:var(--m-border);"><div class="mock-metric" style="background:var(--m-card2);"><span class="mock-metric-val">34</span><span class="mock-metric-label">Customers</span></div><div class="mock-metric" style="background:var(--m-card2);"><span class="mock-metric-val">90%</span><span class="mock-metric-label">Satisfaction</span></div><div class="mock-metric" style="background:var(--m-card2);"><span class="mock-metric-val">194%</span><span class="mock-metric-label">MoM growth</span></div></div></div>
+        <div class="mock-section-nav" style="background:var(--m-bg);"><span class="mock-snav-item active">01 Problem</span><span class="mock-snav-item">02 Iteration</span><span class="mock-snav-item">03 Outcome</span></div>
+        <div class="mock-content" style="background:var(--m-bg);"><div class="mock-content-label">Who</div><div class="mock-content-heading">Storage admins managing infrastructure</div><div class="mock-content-text">Two key personas: Storage Admins and Developers struggling with multi-service data access.</div><div class="mock-ai-callout" style="background:var(--m-bg2);"><span class="mock-ai-icon">Claude</span><span class="mock-ai-text">Synthesized 30+ survey responses in hours</span></div><div class="mock-decisions" style="background:var(--m-border);"><div class="mock-decision" style="background:var(--m-bg2);"><div class="mock-decision-label" style="color:var(--m-muted);opacity:0.6;">Before</div><div class="mock-decision-text">Sequential API calls, failures lost input</div></div><div class="mock-decision" style="background:var(--m-bg2);"><div class="mock-decision-label" style="color:var(--m-accent);">After</div><div class="mock-decision-text">Upfront steps, input preserved on failure</div></div></div></div>
+      </div>
+      <div class="swatches"><div class="swatch"><div class="swatch-circle" style="background:#D4732A;"></div><span class="swatch-label">accent</span><span class="swatch-hex">#D4732A</span></div></div>
+    </div>
+    <div>
+      <div class="mode-label">Dark</div>
+      <div class="mockup" style="--m-bg:#121210;--m-bg2:#1A1917;--m-ink:#E8E7E1;--m-muted:#6B6A63;--m-accent:#F08C42;--m-border:#2A2926;--m-card:#1A1917;--m-card2:#222220;">
+        <div class="mock-nav" style="background:var(--m-bg);border-color:var(--m-border);"><span class="mock-nav-logo">Alice Zhao</span></div>
+        <div class="mock-hero" style="background:var(--m-card);color:var(--m-ink);"><div class="mock-hero-title">Simplifying Data Access</div><div class="mock-hero-desc">A unified console that cut data access from hours to minutes.</div><div class="mock-metrics" style="background:var(--m-border);"><div class="mock-metric" style="background:var(--m-card2);"><span class="mock-metric-val">34</span><span class="mock-metric-label">Customers</span></div><div class="mock-metric" style="background:var(--m-card2);"><span class="mock-metric-val">90%</span><span class="mock-metric-label">Satisfaction</span></div><div class="mock-metric" style="background:var(--m-card2);"><span class="mock-metric-val">194%</span><span class="mock-metric-label">MoM growth</span></div></div></div>
+        <div class="mock-section-nav" style="background:var(--m-bg);"><span class="mock-snav-item active">01 Problem</span><span class="mock-snav-item">02 Iteration</span><span class="mock-snav-item">03 Outcome</span></div>
+        <div class="mock-content" style="background:var(--m-bg);"><div class="mock-content-label">Who</div><div class="mock-content-heading">Storage admins managing infrastructure</div><div class="mock-content-text">Two key personas: Storage Admins and Developers struggling with multi-service data access.</div><div class="mock-ai-callout" style="background:var(--m-bg2);"><span class="mock-ai-icon">Claude</span><span class="mock-ai-text">Synthesized 30+ survey responses in hours</span></div><div class="mock-decisions" style="background:var(--m-border);"><div class="mock-decision" style="background:var(--m-bg2);"><div class="mock-decision-label" style="color:var(--m-muted);opacity:0.6;">Before</div><div class="mock-decision-text">Sequential API calls, failures lost input</div></div><div class="mock-decision" style="background:var(--m-bg2);"><div class="mock-decision-label" style="color:var(--m-accent);">After</div><div class="mock-decision-text">Upfront steps, input preserved on failure</div></div></div></div>
+      </div>
+      <div class="swatches"><div class="swatch"><div class="swatch-circle" style="background:#F08C42;"></div><span class="swatch-label">accent</span><span class="swatch-hex">#F08C42</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- 3. VERMILLION — warm red, confident                    -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="accent-group">
+  <div class="accent-header">
+    <div class="accent-dot" style="background:#E8654E;"></div>
+    <span class="accent-name">3. Vermillion</span>
+    <span class="accent-hex">#CC4E33 / #E8654E</span>
+  </div>
+  <p class="accent-vibe">Warm red that leans orange, not alarm-bell. Japanese ceramics, Notion highlights. Punchy but not aggressive.</p>
+
+  <div class="page-type-label">Homepage</div>
+  <div class="modes">
+    <div>
+      <div class="mode-label">Light</div>
+      <div class="mockup" style="--m-bg:#F5F4F0;--m-bg2:#EBEAE4;--m-ink:#1A1918;--m-muted:#84837A;--m-accent:#CC4E33;--m-border:#DDDBD3;--m-card:#EBEAE4;--m-card2:#E0DFD8;">
+        <div class="mock-nav" style="background:var(--m-bg);border-color:var(--m-border);"><span class="mock-nav-logo">Alice Zhao</span><div class="mock-nav-right"><span class="mock-nav-link">Work</span><span class="mock-nav-link">About</span></div></div>
+        <div class="mock-bento">
+          <div class="mock-home-hero"><div class="mock-avatar"></div><div class="mock-home-bio"><div class="mock-home-name">Alice Zhao.</div><div class="mock-home-tagline">Senior UX Designer + Builder. AI products for AWS.</div></div><div class="mock-home-strip"><div class="mock-strip-link">Resume</div><div class="mock-strip-link">LinkedIn</div><div class="mock-strip-link">Email</div></div></div>
+          <div class="mock-card"><div class="mock-card-top"><span class="mock-card-year">2025</span><span class="mock-card-tag">0 &rarr; 1</span></div><div class="mock-card-title">Simplifying<br>Data Access</div><div class="mock-card-desc">Unified console for AWS storage.</div><div class="mock-card-img">[ screens ]</div><div class="mock-card-footer"><span class="mock-card-role">Lead UX</span><span class="mock-card-arrow">&nearr;</span></div></div>
+          <div class="mock-card"><div class="mock-card-top"><span class="mock-card-year">2024</span><span class="mock-card-tag mock-card-tag-ai">AI</span></div><div class="mock-card-title">S3 Tables:<br>0 &rarr; 1</div><div class="mock-card-desc">New resource type for analytics.</div><div class="mock-card-img">[ screens ]</div><div class="mock-card-footer"><span class="mock-card-role">Lead UX</span><span class="mock-card-arrow">&nearr;</span></div></div>
+        </div>
+        <div class="mock-marquee" style="background:var(--m-bg);"><span>UX Design</span><span class="dot">&middot;</span><span>AI Products</span><span class="dot">&middot;</span><span>Agent Design</span><span class="dot">&middot;</span><span>Prototyping</span></div>
+        <div class="mock-hiw"><div class="mock-hiw-header"><span class="mock-hiw-title">How I Design Now</span><span class="mock-hiw-year">Since 2025</span></div><div class="mock-hiw-cols"><div><div class="mock-hiw-col-label">Before</div><div class="mock-hiw-step"><span class="mock-hiw-num">01</span><span class="mock-hiw-step-title">Research (weeks)</span></div><div class="mock-hiw-step"><span class="mock-hiw-num">02</span><span class="mock-hiw-step-title">Wireframes &rarr; Reviews</span></div></div><div><div class="mock-hiw-col-label">Now</div><div class="mock-hiw-step"><span class="mock-hiw-num">01</span><span class="mock-hiw-step-title">AI synthesis (hours)</span></div><div class="mock-hiw-step"><span class="mock-hiw-num">02</span><span class="mock-hiw-step-title">10&times; more directions</span></div></div></div></div>
+        <div class="mock-about"><div class="mock-about-display">ABOUT</div><div class="mock-about-text">Senior UX Designer at AWS, AI and cloud infrastructure.</div><div class="mock-detail-row"><span class="mock-detail-lbl">Currently</span><span class="mock-detail-val">Lead UX, AWS</span></div><div class="mock-detail-row"><span class="mock-detail-lbl">Open to</span><span class="mock-detail-val">Senior / Staff</span></div></div>
+        <div class="mock-contact" style="background:var(--m-bg);"><div class="mock-contact-title">Let's<br>talk.</div><div class="mock-contact-links"><span class="mock-contact-link">LinkedIn &nearr;</span><span class="mock-contact-link">Email &nearr;</span></div></div>
+        <div class="mock-footer" style="background:var(--m-bg);"><span>&copy; 2026</span><span>Senior UX Designer</span></div>
+      </div>
+    </div>
+    <div>
+      <div class="mode-label">Dark</div>
+      <div class="mockup" style="--m-bg:#121210;--m-bg2:#1A1917;--m-ink:#E8E7E1;--m-muted:#6B6A63;--m-accent:#E8654E;--m-border:#2A2926;--m-card:#1A1917;--m-card2:#222220;">
+        <div class="mock-nav" style="background:var(--m-bg);border-color:var(--m-border);"><span class="mock-nav-logo">Alice Zhao</span><div class="mock-nav-right"><span class="mock-nav-link">Work</span><span class="mock-nav-link">About</span></div></div>
+        <div class="mock-bento">
+          <div class="mock-home-hero"><div class="mock-avatar"></div><div class="mock-home-bio"><div class="mock-home-name">Alice Zhao.</div><div class="mock-home-tagline">Senior UX Designer + Builder. AI products for AWS.</div></div><div class="mock-home-strip"><div class="mock-strip-link">Resume</div><div class="mock-strip-link">LinkedIn</div><div class="mock-strip-link">Email</div></div></div>
+          <div class="mock-card"><div class="mock-card-top"><span class="mock-card-year">2025</span><span class="mock-card-tag">0 &rarr; 1</span></div><div class="mock-card-title">Simplifying<br>Data Access</div><div class="mock-card-desc">Unified console for AWS storage.</div><div class="mock-card-img">[ screens ]</div><div class="mock-card-footer"><span class="mock-card-role">Lead UX</span><span class="mock-card-arrow">&nearr;</span></div></div>
+          <div class="mock-card"><div class="mock-card-top"><span class="mock-card-year">2024</span><span class="mock-card-tag mock-card-tag-ai">AI</span></div><div class="mock-card-title">S3 Tables:<br>0 &rarr; 1</div><div class="mock-card-desc">New resource type for analytics.</div><div class="mock-card-img">[ screens ]</div><div class="mock-card-footer"><span class="mock-card-role">Lead UX</span><span class="mock-card-arrow">&nearr;</span></div></div>
+        </div>
+        <div class="mock-marquee" style="background:var(--m-bg);"><span>UX Design</span><span class="dot">&middot;</span><span>AI Products</span><span class="dot">&middot;</span><span>Agent Design</span><span class="dot">&middot;</span><span>Prototyping</span></div>
+        <div class="mock-hiw"><div class="mock-hiw-header"><span class="mock-hiw-title">How I Design Now</span><span class="mock-hiw-year">Since 2025</span></div><div class="mock-hiw-cols"><div><div class="mock-hiw-col-label">Before</div><div class="mock-hiw-step"><span class="mock-hiw-num">01</span><span class="mock-hiw-step-title">Research (weeks)</span></div><div class="mock-hiw-step"><span class="mock-hiw-num">02</span><span class="mock-hiw-step-title">Wireframes &rarr; Reviews</span></div></div><div><div class="mock-hiw-col-label">Now</div><div class="mock-hiw-step"><span class="mock-hiw-num">01</span><span class="mock-hiw-step-title">AI synthesis (hours)</span></div><div class="mock-hiw-step"><span class="mock-hiw-num">02</span><span class="mock-hiw-step-title">10&times; more directions</span></div></div></div></div>
+        <div class="mock-about"><div class="mock-about-display">ABOUT</div><div class="mock-about-text">Senior UX Designer at AWS, AI and cloud infrastructure.</div><div class="mock-detail-row"><span class="mock-detail-lbl">Currently</span><span class="mock-detail-val">Lead UX, AWS</span></div><div class="mock-detail-row"><span class="mock-detail-lbl">Open to</span><span class="mock-detail-val">Senior / Staff</span></div></div>
+        <div class="mock-contact" style="background:var(--m-bg);"><div class="mock-contact-title">Let's<br>talk.</div><div class="mock-contact-links"><span class="mock-contact-link">LinkedIn &nearr;</span><span class="mock-contact-link">Email &nearr;</span></div></div>
+        <div class="mock-footer" style="background:var(--m-bg);"><span>&copy; 2026</span><span>Senior UX Designer</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-type-label">Project Detail</div>
+  <div class="modes">
+    <div>
+      <div class="mode-label">Light</div>
+      <div class="mockup" style="--m-bg:#F5F4F0;--m-bg2:#EBEAE4;--m-ink:#1A1918;--m-muted:#84837A;--m-accent:#CC4E33;--m-border:#DDDBD3;--m-card:#EBEAE4;--m-card2:#E0DFD8;">
+        <div class="mock-nav" style="background:var(--m-bg);border-color:var(--m-border);"><span class="mock-nav-logo">Alice Zhao</span></div>
+        <div class="mock-hero" style="background:var(--m-card);color:var(--m-ink);"><div class="mock-hero-title">Simplifying Data Access</div><div class="mock-hero-desc">A unified console that cut data access from hours to minutes.</div><div class="mock-metrics" style="background:var(--m-border);"><div class="mock-metric" style="background:var(--m-card2);"><span class="mock-metric-val">34</span><span class="mock-metric-label">Customers</span></div><div class="mock-metric" style="background:var(--m-card2);"><span class="mock-metric-val">90%</span><span class="mock-metric-label">Satisfaction</span></div><div class="mock-metric" style="background:var(--m-card2);"><span class="mock-metric-val">194%</span><span class="mock-metric-label">MoM growth</span></div></div></div>
+        <div class="mock-section-nav" style="background:var(--m-bg);"><span class="mock-snav-item active">01 Problem</span><span class="mock-snav-item">02 Iteration</span><span class="mock-snav-item">03 Outcome</span></div>
+        <div class="mock-content" style="background:var(--m-bg);"><div class="mock-content-label">Who</div><div class="mock-content-heading">Storage admins managing infrastructure</div><div class="mock-content-text">Two key personas: Storage Admins and Developers struggling with multi-service data access.</div><div class="mock-ai-callout" style="background:var(--m-bg2);"><span class="mock-ai-icon">Claude</span><span class="mock-ai-text">Synthesized 30+ survey responses in hours</span></div><div class="mock-decisions" style="background:var(--m-border);"><div class="mock-decision" style="background:var(--m-bg2);"><div class="mock-decision-label" style="color:var(--m-muted);opacity:0.6;">Before</div><div class="mock-decision-text">Sequential API calls, failures lost input</div></div><div class="mock-decision" style="background:var(--m-bg2);"><div class="mock-decision-label" style="color:var(--m-accent);">After</div><div class="mock-decision-text">Upfront steps, input preserved on failure</div></div></div></div>
+      </div>
+      <div class="swatches"><div class="swatch"><div class="swatch-circle" style="background:#CC4E33;"></div><span class="swatch-label">accent</span><span class="swatch-hex">#CC4E33</span></div></div>
+    </div>
+    <div>
+      <div class="mode-label">Dark</div>
+      <div class="mockup" style="--m-bg:#121210;--m-bg2:#1A1917;--m-ink:#E8E7E1;--m-muted:#6B6A63;--m-accent:#E8654E;--m-border:#2A2926;--m-card:#1A1917;--m-card2:#222220;">
+        <div class="mock-nav" style="background:var(--m-bg);border-color:var(--m-border);"><span class="mock-nav-logo">Alice Zhao</span></div>
+        <div class="mock-hero" style="background:var(--m-card);color:var(--m-ink);"><div class="mock-hero-title">Simplifying Data Access</div><div class="mock-hero-desc">A unified console that cut data access from hours to minutes.</div><div class="mock-metrics" style="background:var(--m-border);"><div class="mock-metric" style="background:var(--m-card2);"><span class="mock-metric-val">34</span><span class="mock-metric-label">Customers</span></div><div class="mock-metric" style="background:var(--m-card2);"><span class="mock-metric-val">90%</span><span class="mock-metric-label">Satisfaction</span></div><div class="mock-metric" style="background:var(--m-card2);"><span class="mock-metric-val">194%</span><span class="mock-metric-label">MoM growth</span></div></div></div>
+        <div class="mock-section-nav" style="background:var(--m-bg);"><span class="mock-snav-item active">01 Problem</span><span class="mock-snav-item">02 Iteration</span><span class="mock-snav-item">03 Outcome</span></div>
+        <div class="mock-content" style="background:var(--m-bg);"><div class="mock-content-label">Who</div><div class="mock-content-heading">Storage admins managing infrastructure</div><div class="mock-content-text">Two key personas: Storage Admins and Developers struggling with multi-service data access.</div><div class="mock-ai-callout" style="background:var(--m-bg2);"><span class="mock-ai-icon">Claude</span><span class="mock-ai-text">Synthesized 30+ survey responses in hours</span></div><div class="mock-decisions" style="background:var(--m-border);"><div class="mock-decision" style="background:var(--m-bg2);"><div class="mock-decision-label" style="color:var(--m-muted);opacity:0.6;">Before</div><div class="mock-decision-text">Sequential API calls, failures lost input</div></div><div class="mock-decision" style="background:var(--m-bg2);"><div class="mock-decision-label" style="color:var(--m-accent);">After</div><div class="mock-decision-text">Upfront steps, input preserved on failure</div></div></div></div>
+      </div>
+      <div class="swatches"><div class="swatch"><div class="swatch-circle" style="background:#E8654E;"></div><span class="swatch-label">accent</span><span class="swatch-hex">#E8654E</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- 4. NEON CITRUS — electric yellow-green                 -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="accent-group">
+  <div class="accent-header">
+    <div class="accent-dot" style="background:#C8D830;"></div>
+    <span class="accent-name">4. Neon Citrus</span>
+    <span class="accent-hex">#8B9A22 / #C8D830</span>
+  </div>
+  <p class="accent-vibe">Electric yellow-green. Terminal cursor, notification badge, GitHub Copilot vibes. Very techy, very now. Needs dark mode to really sing.</p>
+
+  <div class="page-type-label">Homepage</div>
+  <div class="modes">
+    <div>
+      <div class="mode-label">Light</div>
+      <div class="mockup" style="--m-bg:#F5F4F0;--m-bg2:#EBEAE4;--m-ink:#1A1918;--m-muted:#84837A;--m-accent:#8B9A22;--m-border:#DDDBD3;--m-card:#EBEAE4;--m-card2:#E0DFD8;">
+        <div class="mock-nav" style="background:var(--m-bg);border-color:var(--m-border);"><span class="mock-nav-logo">Alice Zhao</span><div class="mock-nav-right"><span class="mock-nav-link">Work</span><span class="mock-nav-link">About</span></div></div>
+        <div class="mock-bento">
+          <div class="mock-home-hero"><div class="mock-avatar"></div><div class="mock-home-bio"><div class="mock-home-name">Alice Zhao.</div><div class="mock-home-tagline">Senior UX Designer + Builder. AI products for AWS.</div></div><div class="mock-home-strip"><div class="mock-strip-link">Resume</div><div class="mock-strip-link">LinkedIn</div><div class="mock-strip-link">Email</div></div></div>
+          <div class="mock-card"><div class="mock-card-top"><span class="mock-card-year">2025</span><span class="mock-card-tag">0 &rarr; 1</span></div><div class="mock-card-title">Simplifying<br>Data Access</div><div class="mock-card-desc">Unified console for AWS storage.</div><div class="mock-card-img">[ screens ]</div><div class="mock-card-footer"><span class="mock-card-role">Lead UX</span><span class="mock-card-arrow">&nearr;</span></div></div>
+          <div class="mock-card"><div class="mock-card-top"><span class="mock-card-year">2024</span><span class="mock-card-tag mock-card-tag-ai">AI</span></div><div class="mock-card-title">S3 Tables:<br>0 &rarr; 1</div><div class="mock-card-desc">New resource type for analytics.</div><div class="mock-card-img">[ screens ]</div><div class="mock-card-footer"><span class="mock-card-role">Lead UX</span><span class="mock-card-arrow">&nearr;</span></div></div>
+        </div>
+        <div class="mock-marquee" style="background:var(--m-bg);"><span>UX Design</span><span class="dot">&middot;</span><span>AI Products</span><span class="dot">&middot;</span><span>Agent Design</span><span class="dot">&middot;</span><span>Prototyping</span></div>
+        <div class="mock-hiw"><div class="mock-hiw-header"><span class="mock-hiw-title">How I Design Now</span><span class="mock-hiw-year">Since 2025</span></div><div class="mock-hiw-cols"><div><div class="mock-hiw-col-label">Before</div><div class="mock-hiw-step"><span class="mock-hiw-num">01</span><span class="mock-hiw-step-title">Research (weeks)</span></div><div class="mock-hiw-step"><span class="mock-hiw-num">02</span><span class="mock-hiw-step-title">Wireframes &rarr; Reviews</span></div></div><div><div class="mock-hiw-col-label">Now</div><div class="mock-hiw-step"><span class="mock-hiw-num">01</span><span class="mock-hiw-step-title">AI synthesis (hours)</span></div><div class="mock-hiw-step"><span class="mock-hiw-num">02</span><span class="mock-hiw-step-title">10&times; more directions</span></div></div></div></div>
+        <div class="mock-about"><div class="mock-about-display">ABOUT</div><div class="mock-about-text">Senior UX Designer at AWS, AI and cloud infrastructure.</div><div class="mock-detail-row"><span class="mock-detail-lbl">Currently</span><span class="mock-detail-val">Lead UX, AWS</span></div><div class="mock-detail-row"><span class="mock-detail-lbl">Open to</span><span class="mock-detail-val">Senior / Staff</span></div></div>
+        <div class="mock-contact" style="background:var(--m-bg);"><div class="mock-contact-title">Let's<br>talk.</div><div class="mock-contact-links"><span class="mock-contact-link">LinkedIn &nearr;</span><span class="mock-contact-link">Email &nearr;</span></div></div>
+        <div class="mock-footer" style="background:var(--m-bg);"><span>&copy; 2026</span><span>Senior UX Designer</span></div>
+      </div>
+    </div>
+    <div>
+      <div class="mode-label">Dark</div>
+      <div class="mockup" style="--m-bg:#121210;--m-bg2:#1A1917;--m-ink:#E8E7E1;--m-muted:#6B6A63;--m-accent:#C8D830;--m-border:#2A2926;--m-card:#1A1917;--m-card2:#222220;">
+        <div class="mock-nav" style="background:var(--m-bg);border-color:var(--m-border);"><span class="mock-nav-logo">Alice Zhao</span><div class="mock-nav-right"><span class="mock-nav-link">Work</span><span class="mock-nav-link">About</span></div></div>
+        <div class="mock-bento">
+          <div class="mock-home-hero"><div class="mock-avatar"></div><div class="mock-home-bio"><div class="mock-home-name">Alice Zhao.</div><div class="mock-home-tagline">Senior UX Designer + Builder. AI products for AWS.</div></div><div class="mock-home-strip"><div class="mock-strip-link">Resume</div><div class="mock-strip-link">LinkedIn</div><div class="mock-strip-link">Email</div></div></div>
+          <div class="mock-card"><div class="mock-card-top"><span class="mock-card-year">2025</span><span class="mock-card-tag">0 &rarr; 1</span></div><div class="mock-card-title">Simplifying<br>Data Access</div><div class="mock-card-desc">Unified console for AWS storage.</div><div class="mock-card-img">[ screens ]</div><div class="mock-card-footer"><span class="mock-card-role">Lead UX</span><span class="mock-card-arrow">&nearr;</span></div></div>
+          <div class="mock-card"><div class="mock-card-top"><span class="mock-card-year">2024</span><span class="mock-card-tag mock-card-tag-ai">AI</span></div><div class="mock-card-title">S3 Tables:<br>0 &rarr; 1</div><div class="mock-card-desc">New resource type for analytics.</div><div class="mock-card-img">[ screens ]</div><div class="mock-card-footer"><span class="mock-card-role">Lead UX</span><span class="mock-card-arrow">&nearr;</span></div></div>
+        </div>
+        <div class="mock-marquee" style="background:var(--m-bg);"><span>UX Design</span><span class="dot">&middot;</span><span>AI Products</span><span class="dot">&middot;</span><span>Agent Design</span><span class="dot">&middot;</span><span>Prototyping</span></div>
+        <div class="mock-hiw"><div class="mock-hiw-header"><span class="mock-hiw-title">How I Design Now</span><span class="mock-hiw-year">Since 2025</span></div><div class="mock-hiw-cols"><div><div class="mock-hiw-col-label">Before</div><div class="mock-hiw-step"><span class="mock-hiw-num">01</span><span class="mock-hiw-step-title">Research (weeks)</span></div><div class="mock-hiw-step"><span class="mock-hiw-num">02</span><span class="mock-hiw-step-title">Wireframes &rarr; Reviews</span></div></div><div><div class="mock-hiw-col-label">Now</div><div class="mock-hiw-step"><span class="mock-hiw-num">01</span><span class="mock-hiw-step-title">AI synthesis (hours)</span></div><div class="mock-hiw-step"><span class="mock-hiw-num">02</span><span class="mock-hiw-step-title">10&times; more directions</span></div></div></div></div>
+        <div class="mock-about"><div class="mock-about-display">ABOUT</div><div class="mock-about-text">Senior UX Designer at AWS, AI and cloud infrastructure.</div><div class="mock-detail-row"><span class="mock-detail-lbl">Currently</span><span class="mock-detail-val">Lead UX, AWS</span></div><div class="mock-detail-row"><span class="mock-detail-lbl">Open to</span><span class="mock-detail-val">Senior / Staff</span></div></div>
+        <div class="mock-contact" style="background:var(--m-bg);"><div class="mock-contact-title">Let's<br>talk.</div><div class="mock-contact-links"><span class="mock-contact-link">LinkedIn &nearr;</span><span class="mock-contact-link">Email &nearr;</span></div></div>
+        <div class="mock-footer" style="background:var(--m-bg);"><span>&copy; 2026</span><span>Senior UX Designer</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-type-label">Project Detail</div>
+  <div class="modes">
+    <div>
+      <div class="mode-label">Light</div>
+      <div class="mockup" style="--m-bg:#F5F4F0;--m-bg2:#EBEAE4;--m-ink:#1A1918;--m-muted:#84837A;--m-accent:#8B9A22;--m-border:#DDDBD3;--m-card:#EBEAE4;--m-card2:#E0DFD8;">
+        <div class="mock-nav" style="background:var(--m-bg);border-color:var(--m-border);"><span class="mock-nav-logo">Alice Zhao</span></div>
+        <div class="mock-hero" style="background:var(--m-card);color:var(--m-ink);"><div class="mock-hero-title">Simplifying Data Access</div><div class="mock-hero-desc">A unified console that cut data access from hours to minutes.</div><div class="mock-metrics" style="background:var(--m-border);"><div class="mock-metric" style="background:var(--m-card2);"><span class="mock-metric-val">34</span><span class="mock-metric-label">Customers</span></div><div class="mock-metric" style="background:var(--m-card2);"><span class="mock-metric-val">90%</span><span class="mock-metric-label">Satisfaction</span></div><div class="mock-metric" style="background:var(--m-card2);"><span class="mock-metric-val">194%</span><span class="mock-metric-label">MoM growth</span></div></div></div>
+        <div class="mock-section-nav" style="background:var(--m-bg);"><span class="mock-snav-item active">01 Problem</span><span class="mock-snav-item">02 Iteration</span><span class="mock-snav-item">03 Outcome</span></div>
+        <div class="mock-content" style="background:var(--m-bg);"><div class="mock-content-label">Who</div><div class="mock-content-heading">Storage admins managing infrastructure</div><div class="mock-content-text">Two key personas: Storage Admins and Developers struggling with multi-service data access.</div><div class="mock-ai-callout" style="background:var(--m-bg2);"><span class="mock-ai-icon">Claude</span><span class="mock-ai-text">Synthesized 30+ survey responses in hours</span></div><div class="mock-decisions" style="background:var(--m-border);"><div class="mock-decision" style="background:var(--m-bg2);"><div class="mock-decision-label" style="color:var(--m-muted);opacity:0.6;">Before</div><div class="mock-decision-text">Sequential API calls, failures lost input</div></div><div class="mock-decision" style="background:var(--m-bg2);"><div class="mock-decision-label" style="color:var(--m-accent);">After</div><div class="mock-decision-text">Upfront steps, input preserved on failure</div></div></div></div>
+      </div>
+      <div class="swatches"><div class="swatch"><div class="swatch-circle" style="background:#8B9A22;"></div><span class="swatch-label">accent</span><span class="swatch-hex">#8B9A22</span></div></div>
+    </div>
+    <div>
+      <div class="mode-label">Dark</div>
+      <div class="mockup" style="--m-bg:#121210;--m-bg2:#1A1917;--m-ink:#E8E7E1;--m-muted:#6B6A63;--m-accent:#C8D830;--m-border:#2A2926;--m-card:#1A1917;--m-card2:#222220;">
+        <div class="mock-nav" style="background:var(--m-bg);border-color:var(--m-border);"><span class="mock-nav-logo">Alice Zhao</span></div>
+        <div class="mock-hero" style="background:var(--m-card);color:var(--m-ink);"><div class="mock-hero-title">Simplifying Data Access</div><div class="mock-hero-desc">A unified console that cut data access from hours to minutes.</div><div class="mock-metrics" style="background:var(--m-border);"><div class="mock-metric" style="background:var(--m-card2);"><span class="mock-metric-val">34</span><span class="mock-metric-label">Customers</span></div><div class="mock-metric" style="background:var(--m-card2);"><span class="mock-metric-val">90%</span><span class="mock-metric-label">Satisfaction</span></div><div class="mock-metric" style="background:var(--m-card2);"><span class="mock-metric-val">194%</span><span class="mock-metric-label">MoM growth</span></div></div></div>
+        <div class="mock-section-nav" style="background:var(--m-bg);"><span class="mock-snav-item active">01 Problem</span><span class="mock-snav-item">02 Iteration</span><span class="mock-snav-item">03 Outcome</span></div>
+        <div class="mock-content" style="background:var(--m-bg);"><div class="mock-content-label">Who</div><div class="mock-content-heading">Storage admins managing infrastructure</div><div class="mock-content-text">Two key personas: Storage Admins and Developers struggling with multi-service data access.</div><div class="mock-ai-callout" style="background:var(--m-bg2);"><span class="mock-ai-icon">Claude</span><span class="mock-ai-text">Synthesized 30+ survey responses in hours</span></div><div class="mock-decisions" style="background:var(--m-border);"><div class="mock-decision" style="background:var(--m-bg2);"><div class="mock-decision-label" style="color:var(--m-muted);opacity:0.6;">Before</div><div class="mock-decision-text">Sequential API calls, failures lost input</div></div><div class="mock-decision" style="background:var(--m-bg2);"><div class="mock-decision-label" style="color:var(--m-accent);">After</div><div class="mock-decision-text">Upfront steps, input preserved on failure</div></div></div></div>
+      </div>
+      <div class="swatches"><div class="swatch"><div class="swatch-circle" style="background:#C8D830;"></div><span class="swatch-label">accent</span><span class="swatch-hex">#C8D830</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- 5. CORAL FLAME — warm pink-red, modern                 -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="accent-group">
+  <div class="accent-header">
+    <div class="accent-dot" style="background:#F07058;"></div>
+    <span class="accent-name">5. Coral Flame</span>
+    <span class="accent-hex">#D05540 / #F07058</span>
+  </div>
+  <p class="accent-vibe">Warm coral-red. Softer than pure red, more alive than terracotta. Linear error states, Framer pricing badges. Modern and approachable.</p>
+
+  <div class="page-type-label">Homepage</div>
+  <div class="modes">
+    <div>
+      <div class="mode-label">Light</div>
+      <div class="mockup" style="--m-bg:#F5F4F0;--m-bg2:#EBEAE4;--m-ink:#1A1918;--m-muted:#84837A;--m-accent:#D05540;--m-border:#DDDBD3;--m-card:#EBEAE4;--m-card2:#E0DFD8;">
+        <div class="mock-nav" style="background:var(--m-bg);border-color:var(--m-border);"><span class="mock-nav-logo">Alice Zhao</span><div class="mock-nav-right"><span class="mock-nav-link">Work</span><span class="mock-nav-link">About</span></div></div>
+        <div class="mock-bento">
+          <div class="mock-home-hero"><div class="mock-avatar"></div><div class="mock-home-bio"><div class="mock-home-name">Alice Zhao.</div><div class="mock-home-tagline">Senior UX Designer + Builder. AI products for AWS.</div></div><div class="mock-home-strip"><div class="mock-strip-link">Resume</div><div class="mock-strip-link">LinkedIn</div><div class="mock-strip-link">Email</div></div></div>
+          <div class="mock-card"><div class="mock-card-top"><span class="mock-card-year">2025</span><span class="mock-card-tag">0 &rarr; 1</span></div><div class="mock-card-title">Simplifying<br>Data Access</div><div class="mock-card-desc">Unified console for AWS storage.</div><div class="mock-card-img">[ screens ]</div><div class="mock-card-footer"><span class="mock-card-role">Lead UX</span><span class="mock-card-arrow">&nearr;</span></div></div>
+          <div class="mock-card"><div class="mock-card-top"><span class="mock-card-year">2024</span><span class="mock-card-tag mock-card-tag-ai">AI</span></div><div class="mock-card-title">S3 Tables:<br>0 &rarr; 1</div><div class="mock-card-desc">New resource type for analytics.</div><div class="mock-card-img">[ screens ]</div><div class="mock-card-footer"><span class="mock-card-role">Lead UX</span><span class="mock-card-arrow">&nearr;</span></div></div>
+        </div>
+        <div class="mock-marquee" style="background:var(--m-bg);"><span>UX Design</span><span class="dot">&middot;</span><span>AI Products</span><span class="dot">&middot;</span><span>Agent Design</span><span class="dot">&middot;</span><span>Prototyping</span></div>
+        <div class="mock-hiw"><div class="mock-hiw-header"><span class="mock-hiw-title">How I Design Now</span><span class="mock-hiw-year">Since 2025</span></div><div class="mock-hiw-cols"><div><div class="mock-hiw-col-label">Before</div><div class="mock-hiw-step"><span class="mock-hiw-num">01</span><span class="mock-hiw-step-title">Research (weeks)</span></div><div class="mock-hiw-step"><span class="mock-hiw-num">02</span><span class="mock-hiw-step-title">Wireframes &rarr; Reviews</span></div></div><div><div class="mock-hiw-col-label">Now</div><div class="mock-hiw-step"><span class="mock-hiw-num">01</span><span class="mock-hiw-step-title">AI synthesis (hours)</span></div><div class="mock-hiw-step"><span class="mock-hiw-num">02</span><span class="mock-hiw-step-title">10&times; more directions</span></div></div></div></div>
+        <div class="mock-about"><div class="mock-about-display">ABOUT</div><div class="mock-about-text">Senior UX Designer at AWS, AI and cloud infrastructure.</div><div class="mock-detail-row"><span class="mock-detail-lbl">Currently</span><span class="mock-detail-val">Lead UX, AWS</span></div><div class="mock-detail-row"><span class="mock-detail-lbl">Open to</span><span class="mock-detail-val">Senior / Staff</span></div></div>
+        <div class="mock-contact" style="background:var(--m-bg);"><div class="mock-contact-title">Let's<br>talk.</div><div class="mock-contact-links"><span class="mock-contact-link">LinkedIn &nearr;</span><span class="mock-contact-link">Email &nearr;</span></div></div>
+        <div class="mock-footer" style="background:var(--m-bg);"><span>&copy; 2026</span><span>Senior UX Designer</span></div>
+      </div>
+    </div>
+    <div>
+      <div class="mode-label">Dark</div>
+      <div class="mockup" style="--m-bg:#121210;--m-bg2:#1A1917;--m-ink:#E8E7E1;--m-muted:#6B6A63;--m-accent:#F07058;--m-border:#2A2926;--m-card:#1A1917;--m-card2:#222220;">
+        <div class="mock-nav" style="background:var(--m-bg);border-color:var(--m-border);"><span class="mock-nav-logo">Alice Zhao</span><div class="mock-nav-right"><span class="mock-nav-link">Work</span><span class="mock-nav-link">About</span></div></div>
+        <div class="mock-bento">
+          <div class="mock-home-hero"><div class="mock-avatar"></div><div class="mock-home-bio"><div class="mock-home-name">Alice Zhao.</div><div class="mock-home-tagline">Senior UX Designer + Builder. AI products for AWS.</div></div><div class="mock-home-strip"><div class="mock-strip-link">Resume</div><div class="mock-strip-link">LinkedIn</div><div class="mock-strip-link">Email</div></div></div>
+          <div class="mock-card"><div class="mock-card-top"><span class="mock-card-year">2025</span><span class="mock-card-tag">0 &rarr; 1</span></div><div class="mock-card-title">Simplifying<br>Data Access</div><div class="mock-card-desc">Unified console for AWS storage.</div><div class="mock-card-img">[ screens ]</div><div class="mock-card-footer"><span class="mock-card-role">Lead UX</span><span class="mock-card-arrow">&nearr;</span></div></div>
+          <div class="mock-card"><div class="mock-card-top"><span class="mock-card-year">2024</span><span class="mock-card-tag mock-card-tag-ai">AI</span></div><div class="mock-card-title">S3 Tables:<br>0 &rarr; 1</div><div class="mock-card-desc">New resource type for analytics.</div><div class="mock-card-img">[ screens ]</div><div class="mock-card-footer"><span class="mock-card-role">Lead UX</span><span class="mock-card-arrow">&nearr;</span></div></div>
+        </div>
+        <div class="mock-marquee" style="background:var(--m-bg);"><span>UX Design</span><span class="dot">&middot;</span><span>AI Products</span><span class="dot">&middot;</span><span>Agent Design</span><span class="dot">&middot;</span><span>Prototyping</span></div>
+        <div class="mock-hiw"><div class="mock-hiw-header"><span class="mock-hiw-title">How I Design Now</span><span class="mock-hiw-year">Since 2025</span></div><div class="mock-hiw-cols"><div><div class="mock-hiw-col-label">Before</div><div class="mock-hiw-step"><span class="mock-hiw-num">01</span><span class="mock-hiw-step-title">Research (weeks)</span></div><div class="mock-hiw-step"><span class="mock-hiw-num">02</span><span class="mock-hiw-step-title">Wireframes &rarr; Reviews</span></div></div><div><div class="mock-hiw-col-label">Now</div><div class="mock-hiw-step"><span class="mock-hiw-num">01</span><span class="mock-hiw-step-title">AI synthesis (hours)</span></div><div class="mock-hiw-step"><span class="mock-hiw-num">02</span><span class="mock-hiw-step-title">10&times; more directions</span></div></div></div></div>
+        <div class="mock-about"><div class="mock-about-display">ABOUT</div><div class="mock-about-text">Senior UX Designer at AWS, AI and cloud infrastructure.</div><div class="mock-detail-row"><span class="mock-detail-lbl">Currently</span><span class="mock-detail-val">Lead UX, AWS</span></div><div class="mock-detail-row"><span class="mock-detail-lbl">Open to</span><span class="mock-detail-val">Senior / Staff</span></div></div>
+        <div class="mock-contact" style="background:var(--m-bg);"><div class="mock-contact-title">Let's<br>talk.</div><div class="mock-contact-links"><span class="mock-contact-link">LinkedIn &nearr;</span><span class="mock-contact-link">Email &nearr;</span></div></div>
+        <div class="mock-footer" style="background:var(--m-bg);"><span>&copy; 2026</span><span>Senior UX Designer</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-type-label">Project Detail</div>
+  <div class="modes">
+    <div>
+      <div class="mode-label">Light</div>
+      <div class="mockup" style="--m-bg:#F5F4F0;--m-bg2:#EBEAE4;--m-ink:#1A1918;--m-muted:#84837A;--m-accent:#D05540;--m-border:#DDDBD3;--m-card:#EBEAE4;--m-card2:#E0DFD8;">
+        <div class="mock-nav" style="background:var(--m-bg);border-color:var(--m-border);"><span class="mock-nav-logo">Alice Zhao</span></div>
+        <div class="mock-hero" style="background:var(--m-card);color:var(--m-ink);"><div class="mock-hero-title">Simplifying Data Access</div><div class="mock-hero-desc">A unified console that cut data access from hours to minutes.</div><div class="mock-metrics" style="background:var(--m-border);"><div class="mock-metric" style="background:var(--m-card2);"><span class="mock-metric-val">34</span><span class="mock-metric-label">Customers</span></div><div class="mock-metric" style="background:var(--m-card2);"><span class="mock-metric-val">90%</span><span class="mock-metric-label">Satisfaction</span></div><div class="mock-metric" style="background:var(--m-card2);"><span class="mock-metric-val">194%</span><span class="mock-metric-label">MoM growth</span></div></div></div>
+        <div class="mock-section-nav" style="background:var(--m-bg);"><span class="mock-snav-item active">01 Problem</span><span class="mock-snav-item">02 Iteration</span><span class="mock-snav-item">03 Outcome</span></div>
+        <div class="mock-content" style="background:var(--m-bg);"><div class="mock-content-label">Who</div><div class="mock-content-heading">Storage admins managing infrastructure</div><div class="mock-content-text">Two key personas: Storage Admins and Developers struggling with multi-service data access.</div><div class="mock-ai-callout" style="background:var(--m-bg2);"><span class="mock-ai-icon">Claude</span><span class="mock-ai-text">Synthesized 30+ survey responses in hours</span></div><div class="mock-decisions" style="background:var(--m-border);"><div class="mock-decision" style="background:var(--m-bg2);"><div class="mock-decision-label" style="color:var(--m-muted);opacity:0.6;">Before</div><div class="mock-decision-text">Sequential API calls, failures lost input</div></div><div class="mock-decision" style="background:var(--m-bg2);"><div class="mock-decision-label" style="color:var(--m-accent);">After</div><div class="mock-decision-text">Upfront steps, input preserved on failure</div></div></div></div>
+      </div>
+      <div class="swatches"><div class="swatch"><div class="swatch-circle" style="background:#D05540;"></div><span class="swatch-label">accent</span><span class="swatch-hex">#D05540</span></div></div>
+    </div>
+    <div>
+      <div class="mode-label">Dark</div>
+      <div class="mockup" style="--m-bg:#121210;--m-bg2:#1A1917;--m-ink:#E8E7E1;--m-muted:#6B6A63;--m-accent:#F07058;--m-border:#2A2926;--m-card:#1A1917;--m-card2:#222220;">
+        <div class="mock-nav" style="background:var(--m-bg);border-color:var(--m-border);"><span class="mock-nav-logo">Alice Zhao</span></div>
+        <div class="mock-hero" style="background:var(--m-card);color:var(--m-ink);"><div class="mock-hero-title">Simplifying Data Access</div><div class="mock-hero-desc">A unified console that cut data access from hours to minutes.</div><div class="mock-metrics" style="background:var(--m-border);"><div class="mock-metric" style="background:var(--m-card2);"><span class="mock-metric-val">34</span><span class="mock-metric-label">Customers</span></div><div class="mock-metric" style="background:var(--m-card2);"><span class="mock-metric-val">90%</span><span class="mock-metric-label">Satisfaction</span></div><div class="mock-metric" style="background:var(--m-card2);"><span class="mock-metric-val">194%</span><span class="mock-metric-label">MoM growth</span></div></div></div>
+        <div class="mock-section-nav" style="background:var(--m-bg);"><span class="mock-snav-item active">01 Problem</span><span class="mock-snav-item">02 Iteration</span><span class="mock-snav-item">03 Outcome</span></div>
+        <div class="mock-content" style="background:var(--m-bg);"><div class="mock-content-label">Who</div><div class="mock-content-heading">Storage admins managing infrastructure</div><div class="mock-content-text">Two key personas: Storage Admins and Developers struggling with multi-service data access.</div><div class="mock-ai-callout" style="background:var(--m-bg2);"><span class="mock-ai-icon">Claude</span><span class="mock-ai-text">Synthesized 30+ survey responses in hours</span></div><div class="mock-decisions" style="background:var(--m-border);"><div class="mock-decision" style="background:var(--m-bg2);"><div class="mock-decision-label" style="color:var(--m-muted);opacity:0.6;">Before</div><div class="mock-decision-text">Sequential API calls, failures lost input</div></div><div class="mock-decision" style="background:var(--m-bg2);"><div class="mock-decision-label" style="color:var(--m-accent);">After</div><div class="mock-decision-text">Upfront steps, input preserved on failure</div></div></div></div>
+      </div>
+      <div class="swatches"><div class="swatch"><div class="swatch-circle" style="background:#F07058;"></div><span class="swatch-label">accent</span><span class="swatch-hex">#F07058</span></div></div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
