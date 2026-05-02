@@ -151,6 +151,37 @@
   margin-bottom: 40px;
 }
 
+/* ── KEYNOTE CALLOUT ── */
+.keynote-callout {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 20px;
+  padding: 8px 14px;
+  border: 0.75px solid var(--muted);
+  border-radius: 3px;
+  text-decoration: none;
+  transition: border-color 0.2s, color 0.2s;
+}
+.keynote-callout:hover {
+  border-color: var(--accent);
+}
+.keynote-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--ink);
+  font-family: 'Helvetica Neue', sans-serif;
+}
+.keynote-icon {
+  font-size: 11px;
+  color: var(--muted);
+  transition: color 0.2s;
+}
+.keynote-callout:hover .keynote-icon {
+  color: var(--accent);
+}
+
 /* ── PROBLEM SECTION ── */
 .problem-grid {
   display: grid;
@@ -179,6 +210,79 @@
   line-height: 1.65;
   color: var(--ink);
   transition: color 0.2s;
+}
+
+/* ── PROBLEM SCROLL LAYOUT ── */
+.problem-scroll-layout {
+  display: grid;
+  grid-template-columns: 2fr 3fr;
+  gap: 64px;
+  margin-bottom: 32px;
+}
+.problem-scroll-text {
+  display: flex;
+  flex-direction: column;
+}
+.problem-scroll-part {
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 32px 0;
+}
+.problem-scroll-part:last-child {
+  min-height: 40vh;
+}
+.problem-scroll-diagrams {
+  position: relative;
+}
+.problem-scroll-diagrams-sticky {
+  position: sticky;
+  top: 120px;
+  height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.problem-scroll-diagram {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+.problem-scroll-diagram svg {
+  width: 85%;
+  height: auto;
+  max-height: 100%;
+}
+.problem-scroll-diagram.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+.diagram-placeholder {
+  padding: 32px;
+  border: 1px dashed var(--accent);
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.5;
+  opacity: 0.6;
+}
+.problem-research-below {
+  margin-bottom: 32px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .problem-scroll-diagram {
+    transition: none;
+  }
+  .problem-scroll-part {
+    min-height: auto;
+  }
 }
 
 /* ── RESEARCH STATS ── */
@@ -411,6 +515,88 @@
   opacity: 0.8;
 }
 
+/* ── FUTURE IMPROVEMENTS ── */
+.future-improvements {
+  margin-top: 32px;
+}
+.improvements-list {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin-top: 12px;
+}
+.improvement-item {
+  padding: 24px;
+  background: var(--bg2);
+  transition: background 0.2s;
+}
+.improvement-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.improvement-title {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.improvement-status {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  transition: color 0.2s, border-color 0.2s;
+}
+.improvement-status.status-redacted {
+  border-color: var(--muted);
+  color: var(--muted);
+}
+.improvement-desc {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--ink);
+  opacity: 0.7;
+  transition: color 0.2s;
+}
+
+/* ── REDACTED MARKER ── */
+.redacted-mark {
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+  background: var(--ink);
+  color: transparent;
+  padding: 1px 4px;
+  border-radius: 1px;
+  min-width: 160px;
+  user-select: none;
+  transition: background 0.3s, color 0.3s;
+}
+.redacted-mark::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  background: var(--ink);
+  border-radius: 1px;
+  opacity: 0.92;
+  transition: opacity 0.3s;
+}
+.redacted-mark.revealed {
+  background: transparent;
+  color: var(--muted);
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  min-width: auto;
+}
+.redacted-mark.revealed::before {
+  opacity: 0;
+}
+
 /* ── NEXT PROJECT ── */
 .next-project {
   max-width: 1440px;
@@ -479,6 +665,26 @@
   .problem-grid {
     grid-template-columns: 1fr;
     gap: 32px;
+  }
+  .problem-scroll-layout {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  .problem-scroll-part {
+    min-height: auto;
+    padding: 16px 0;
+  }
+  .problem-scroll-diagrams-sticky {
+    position: relative;
+    top: auto;
+    height: auto;
+  }
+  .problem-scroll-diagram {
+    position: relative;
+    opacity: 1;
+  }
+  .problem-scroll-diagram:not(.active) {
+    display: none;
   }
   .decision-card {
     grid-template-columns: 1fr;

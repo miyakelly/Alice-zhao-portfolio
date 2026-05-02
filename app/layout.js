@@ -1,5 +1,6 @@
 import "./globals.css";
 import "./project.css";
+import PaperTexture from "./components/PaperTexture";
 
 export const metadata = {
   title: "Alice Zhao|UX Builder",
@@ -9,7 +10,10 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <PaperTexture />
+        {children}
+      </body>
     </html>
   );
 }

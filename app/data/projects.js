@@ -27,11 +27,11 @@ export const projects = {
         id: "problem",
         navLabel: "01 Problem",
         heading: "Who, Why, and What",
-        content: {
-          who: "Two key personas: **Storage Admins** managing infrastructure connecting storage services across S3, FSx, EFS, and on-prem systems — facing high costs and operational complexity when integrating third-party applications. **Developers** struggling with cumbersome multi-service data access and repetitive task execution.",
-          why: "Customers had no unified way to manage data access across AWS storage services. Each service had its own console, its own permission model, its own workflow. This meant hours of context-switching, duplicated configuration, and integration failures — especially when connecting on-premises systems.",
-          what: "A single console that unifies data access management across all storage services — letting customers configure, monitor, and troubleshoot from one place instead of four.",
-        },
+        content: [
+          { label: "Who", text: "Two key personas: **Storage Admins** managing infrastructure connecting storage services across S3, FSx, EFS, and on-prem systems — facing high costs and operational complexity when integrating third-party applications. **Developers** struggling with cumbersome multi-service data access and repetitive task execution." },
+          { label: "Why", text: "Customers had no unified way to manage data access across AWS storage services. Each service had its own console, its own permission model, its own workflow. This meant hours of context-switching, duplicated configuration, and integration failures — especially when connecting on-premises systems." },
+          { label: "What", text: "A single console that unifies data access management across all storage services — letting customers configure, monitor, and troubleshoot from one place instead of four." },
+        ],
         aiCallout: {
           icon: "claude",
           text: "Synthesized 30+ survey responses and 6 customer interviews → surfaced 4 key pain points and 2 core personas in hours",
@@ -85,7 +85,7 @@ export const projects = {
     slug: "s3-tables",
     title: "Designing AWS S3 Tables that eliminates complex infrastructure for AI/ML workload",
     cardTitle: "AWS S3 Tables:\n0 → 1 in 8 Weeks",
-    description: "Amazon S3 Tables: a purpose-built storage type for analytics workloads that automatically optimizes tabular data in Apache Iceberg format, eliminating the need for customers to build and maintain their own table management infrastructure.",
+    description: "Companies were spending millions building and maintaining custom infrastructure just to keep their data analytics running. S3 Tables handles that automatically, letting teams redirect engineering resources from maintenance to actual insights.",
     cardDescription: "Led UX from scratch on a completely new AWS storage product, defining the full user experience on an aggressive timeline.",
     gridClass: "cell-s3",
     year: "2024",
@@ -95,54 +95,79 @@ export const projects = {
       "4 PMs",
       "40+ Engineers, and more..",
     ],
-    tags: ["0 → 1", "Cloud infrastructure", "AI"],
+    tags: ["0 → 1", "Cloud infrastructure", "AI", "re:Invent Keynote Launch"],
+    keynote: {
+      label: "Featured in AWS re:Invent 2024 CEO Keynote",
+      url: "https://www.youtube.com/watch?v=eztA5VYH2nM",
+    },
     metrics: [
-      { value: 12, suffix: ".7k", label: "Table buckets created in 6 months" },
-      { value: 48, suffix: ".5k", label: "Tables created (8.1% WoW growth)" },
-      { value: 411, suffix: " TB", label: "Data stored" },
+      { value: 500, suffix: "+ TB", label: "Data stored in 6 months" },
+      { value: 0, suffix: "%", label: "Integration opt-in rate", placeholder: true },
+      { value: 0, suffix: "%", label: "Console CSAT, X% higher than overall AWS console", placeholder: true },
     ],
     sections: [
       {
         id: "problem",
         navLabel: "01 Problem",
-        heading: "Who, Why, and What",
-        content: {
-          who: "Data engineers and platform teams at companies ranging from startups to enterprises running analytics on petabytes of data stored in Amazon S3. These teams were spending significant engineering resources just to keep their data lake infrastructure healthy — building custom compaction pipelines, managing snapshots, cleaning up orphaned files — instead of focusing on insights.",
-          why: "S3 stores exabytes of tabular data across over one million data lakes. Customers using Apache Iceberg for analytics had to build and maintain multiple external systems for basic table operations: compaction clusters to keep queries fast, snapshot management for data recovery, orphan file cleanup to control costs, and fragmented permission models cobbled together from bucket policies and third-party tools. Interviews with 20+ enterprise customers revealed the same pain points: operational complexity that required dedicated engineering teams, 503 throttling errors from hot partitions at scale, and no unified way to manage table-level access control. One customer said it plainly: 'We don't want to care about catalog and table maintenance.'",
-          what: "A new S3 resource type — Table Buckets — purpose-built for analytics. Customers create tables directly in S3 with automatic compaction, snapshot management, and orphan file removal. Integrated with AWS Glue Data Catalog and Lake Formation for fine-grained permissions. One console, one permission model, zero infrastructure to manage.",
-        },
+        heading: "The Problem",
+        content: [
+          {
+            label: "Imagine",
+            text: "You lead data infrastructure at a billion-dollar company. Every year, you spend millions storing tabular data in S3 buckets that only support unstructured storage, while maintaining custom infrastructure just to keep that data ready for analytics and AI/ML workloads. You need a solution built for tabular data that eliminates the custom infrastructure entirely.",
+            diagram: "imagine",
+          },
+          {
+            label: "How I identified the problem",
+            text: "After reviewing transcripts from over 20 enterprise customer interviews, a clear pattern emerged. Teams were stitching together multiple tools for basic operations: keeping data up-to-date, managing access control, and integrating storage with query engines. All of which were costly and time-consuming to maintain. Customers told us they didn't want to think about table maintenance, that it was an operational burden, and that they were looking for a better way to improve query performance. The real cost wasn't just the infrastructure, it was the resources and expertise tied up maintaining it instead of building products.",
+            diagram: "problem",
+          },
+          {
+            label: "What we built",
+            text: "We decided to build a completely new S3 product, S3 Tables, designed specifically for analytics and AI/ML workloads. Instead of requiring customers to build and maintain their own infrastructure, S3 Tables handles data maintenance and query engine integration automatically. The result is a streamlined experience where customers go from storing data to analyzing it without assembling anything in between.",
+            diagram: "solution",
+          },
+        ],
         aiCallout: {
           icon: "claude",
           text: "Used AI tools to synthesize pain points from 20+ customer interviews, competitive analysis, and community forums → identified 6 core pain point clusters that shaped the product direction",
-        },
-        research: {
-          stats: [
-            { value: "20+", label: "Enterprise customer interviews" },
-            { value: "47", label: "Days from kickoff to launch-ready" },
-            { value: "~50", label: "Cross-functional team members" },
-          ],
         },
       },
       {
         id: "design-iteration",
         navLabel: "02 Design Iteration",
         heading: "Challenges and Iteration",
-        content: {
-          challenge: "This was a 0-to-1 product with no existing UX to reference. The first challenge was foundational: with a brand new resource type, dozens of possible user actions, and a 47-day timeline to re:Invent launch, we needed a way to define scope that the entire 50-person team could align on. The second challenge was integration — S3 Tables is the storage layer, but customers need to query data and process it for ML/AI workloads, which means integrating with other AWS services. The question of which services, why those services, and how the integration should work in the console was the most debated topic on the team.",
-          iteration: "I created a Jobs-to-Be-Done framework that categorized every user action into six groups: Create, List, View, Manage, Delete, and Audit. For each action, I mapped the console steps, preconditions, API dependencies, limitations, and acceptance criteria. This became the contract between design, PM, and engineering — every team member could look at the framework and know exactly what was in scope for launch vs. post-launch. I worked with two product directors to align on priorities and we locked in the P0 set for re:Invent. For the integration challenge, I researched which tools customers most commonly use for data processing, then proposed Glue Data Catalog for discoverability and Lake Formation for permission control — directly addressing the fragmented permissions pain point from customer interviews. I designed the integration to be opted-in by default during table bucket creation, with graceful failure handling: if permissions fail, the console shows exactly which permissions are missing and lets customers opt out to unblock themselves, then integrate independently later.",
-          decisions: [
-            {
-              before: "No framework — open-ended product scope with dozens of possible features and a 47-day deadline",
-              after: "JTBD framework with 6 categories, every action prioritized P0/P1, aligned with product directors — became the shared contract for the 50-person team",
-              why: "Without a shared source of truth, engineering, PM, and design were having separate conversations about scope. The framework made priorities visible and debatable in one place.",
-            },
-            {
-              before: "Unclear which AWS services to integrate with and how — multiple options, strong opinions across the team",
-              after: "Glue Data Catalog + Lake Formation, integrated by default in the create flow with opt-out escape hatch for permission failures",
-              why: "Customer interviews showed permissions fragmentation as a top pain point. Lake Formation's fine-grained access control addressed this directly, and the opt-in-by-default pattern reduced friction while the escape hatch prevented IAM permission issues from blocking table bucket creation entirely.",
-            },
-          ],
-        },
+        content: [
+          {
+            label: "The First Challenge: Defining What to Build in 8 Weeks",
+            text: "I faced two major challenges during this project. The first was scoping a brand new product for launch. We knew the shape at a high level, but with dozens of possible user actions and an 8-week timeline, the risk wasn't building the wrong thing, it was trying to build everything.",
+            diagram: "scoping-chaos",
+          },
+          {
+            label: "My Approach",
+            text: "I adapted a JTBD framework I'd previously built to bring structure to a product with no existing UX precedent. The framework categorized every user action into six groups (Create, List, View, Manage, Delete, Audit), each mapped to console steps, preconditions, and API dependencies. More importantly, it gave a 50-person cross-functional team, including two directors, a shared language for making scope trade-offs under time pressure.",
+            diagram: "scoping-organized",
+          },
+          {
+            label: "Outcome",
+            text: "The framework produced a prioritized list of user actions, each with defined APIs, known limitations, and console impact, turning an ambiguous product space into a concrete action plan for launch.",
+            diagram: "scoping-prioritized",
+          },
+          {
+            label: "The Next Challenge: Making Multi-Service Integration Effortless",
+            text: "Once scope was locked, a second challenge emerged. S3 Tables is a storage product, but the value for customers is querying their data. That requires connecting four services: S3 for storage, Lake Formation for permissions, Glue Catalog for analytics service integration, and Athena for querying. The question wasn't whether to integrate, it was how to make four services feel like one.",
+            diagram: "integration-challenge",
+          },
+          {
+            label: "My Approach",
+            text: "I explored three approaches, each with different trade-offs between customer effort and flexibility. The team aligned on a default-on option within the create flow, preserving choice while removing friction. I also pushed back on the standard full-page pattern for namespace creation, proposing a multi-step modal instead and extending the design system to support it.",
+            diagram: "integration-options",
+          },
+          {
+            label: "Outcome",
+            text: "The final design reduced a multi-service integration to a single checkbox, further eliminating the infrastructure complexity that drove this project from the start. Customers create a table bucket and go straight to querying their data.",
+            diagram: "integration-solution",
+          },
+        ],
         aiCallout: {
           icon: "claude",
           text: "Used AI tools to map competitive landscape and gather customer pain points from forums and social media → accelerated the discovery phase that informed the JTBD framework",
@@ -160,6 +185,27 @@ export const projects = {
           { alt: "Table bucket creation flow with GDC integration", placeholder: true },
           { alt: "Table management console with compaction settings", placeholder: true },
         ],
+      },
+      {
+        id: "whats-next",
+        navLabel: "04 What's Next",
+        heading: "What's Next",
+        content: {
+          reflection: "The biggest lesson was that the hardest design problem wasn't any single screen, it was creating the framework that let a 50-person team move fast on a brand new product category. The JTBD framework turned out to be my highest-leverage contribution: it didn't just define what we'd build, it gave everyone a shared language for making trade-offs under extreme time pressure.",
+          futureImprovements: [
+            {
+              title: "Further streamline integration",
+              description: "Based on customer feedback, we simplified the multi-service integration flow even further, reducing configuration steps and improving the default setup experience.",
+              status: "launched",
+            },
+            {
+              title: "redacted",
+              description: "redacted",
+              status: "launching-reinvent-2025",
+              redacted: true,
+            },
+          ],
+        },
       },
     ],
     nextProject: "agent-opportunities",

@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { projects } from "../data/projects";
 import Navigation from "./Navigation";
@@ -7,6 +8,31 @@ import SectionNav from "./SectionNav";
 import AICallout from "./AICallout";
 import DeviceFrame from "./DeviceFrame";
 import MetricsCounter from "./MetricsCounter";
+import {
+  DiagramImagine,
+  DiagramProblem,
+  DiagramSolution,
+} from "./S3TablesProblemDiagrams";
+import {
+  DiagramScopingChaos,
+  DiagramScopingOrganized,
+  DiagramScopingPrioritized,
+  DiagramIntegrationChallenge,
+  DiagramIntegrationOptions,
+  DiagramIntegrationSolution,
+} from "./S3TablesIterationDiagrams";
+
+const DIAGRAM_COMPONENTS = {
+  imagine: DiagramImagine,
+  problem: DiagramProblem,
+  solution: DiagramSolution,
+  "scoping-chaos": DiagramScopingChaos,
+  "scoping-organized": DiagramScopingOrganized,
+  "scoping-prioritized": DiagramScopingPrioritized,
+  "integration-challenge": DiagramIntegrationChallenge,
+  "integration-options": DiagramIntegrationOptions,
+  "integration-solution": DiagramIntegrationSolution,
+};
 
 function ResearchStats({ stats }) {
   if (!stats || stats.length === 0) return null;
@@ -43,30 +69,93 @@ function DecisionCard({ before, after, why }) {
   );
 }
 
+function ProblemSectionScrollable({ content }) {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const partRefs = useRef([]);
+
+  useEffect(() => {
+    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReduced) return;
+
+    const observers = [];
+    partRefs.current.forEach((el, i) => {
+      if (!el) return;
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) setActiveIndex(i);
+        },
+        { rootMargin: "-40% 0px -40% 0px" }
+      );
+      observer.observe(el);
+      observers.push(observer);
+    });
+    return () => observers.forEach((o) => o.disconnect());
+  }, [content]);
+
+  return (
+    <div className="problem-scroll-layout">
+      <div className="problem-scroll-text">
+        {content.map((part, i) => (
+          <div
+            key={i}
+            ref={(el) => (partRefs.current[i] = el)}
+            className="problem-scroll-part"
+          >
+            <span className="problem-part-label">{part.label}</span>
+            <p>{part.text}</p>
+          </div>
+        ))}
+      </div>
+      <div className="problem-scroll-diagrams">
+        <div className="problem-scroll-diagrams-sticky">
+          {content.map((part, i) => {
+            const DiagramComp = part.diagram && DIAGRAM_COMPONENTS[part.diagram];
+            return (
+              <div
+                key={i}
+                className={`problem-scroll-diagram ${activeIndex === i ? "active" : ""}`}
+              >
+                {DiagramComp ? <DiagramComp /> : null}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function ProblemSection({ section }) {
   const { content, aiCallout, research } = section;
+  const hasDiagrams = content.some((part) => part.diagram);
+
   return (
     <section id={section.id} className="project-section">
       <h2 className="section-heading">{section.heading}</h2>
-      <div className="problem-grid">
-        <div className="problem-narrative">
-          <div className="problem-part">
-            <span className="problem-part-label">Who</span>
-            <p>{content.who}</p>
+      {hasDiagrams ? (
+        <>
+          <ProblemSectionScrollable content={content} />
+          {research && (
+            <div className="problem-research-below">
+              <ResearchStats stats={research.stats} />
+            </div>
+          )}
+        </>
+      ) : (
+        <div className="problem-grid">
+          <div className="problem-narrative">
+            {content.map((part, i) => (
+              <div key={i} className="problem-part">
+                <span className="problem-part-label">{part.label}</span>
+                <p>{part.text}</p>
+              </div>
+            ))}
           </div>
-          <div className="problem-part">
-            <span className="problem-part-label">Why</span>
-            <p>{content.why}</p>
-          </div>
-          <div className="problem-part">
-            <span className="problem-part-label">What</span>
-            <p>{content.what}</p>
+          <div className="problem-sidebar">
+            {research && <ResearchStats stats={research.stats} />}
           </div>
         </div>
-        <div className="problem-sidebar">
-          {research && <ResearchStats stats={research.stats} />}
-        </div>
-      </div>
+      )}
       {aiCallout && <AICallout icon={aiCallout.icon} text={aiCallout.text} />}
     </section>
   );
@@ -74,29 +163,47 @@ function ProblemSection({ section }) {
 
 function DesignIterationSection({ section }) {
   const { content, aiCallout } = section;
+  const isArray = Array.isArray(content);
+  const hasDiagrams = isArray && content.some((part) => part.diagram);
+
   return (
     <section id={section.id} className="project-section">
       <h2 className="section-heading">{section.heading}</h2>
-      {content.challenge && (
-        <div className="iteration-block">
-          <h3 className="iteration-subhead">The Challenge</h3>
-          <p>{content.challenge}</p>
-        </div>
-      )}
-      {content.iteration && (
-        <div className="iteration-block">
-          <h3 className="iteration-subhead">The Iteration</h3>
-          <p>{content.iteration}</p>
-        </div>
-      )}
-      {aiCallout && <AICallout icon={aiCallout.icon} text={aiCallout.text} />}
-      {content.decisions && content.decisions.length > 0 && (
-        <div className="decisions-grid">
-          {content.decisions.map((d, i) => (
-            <DecisionCard key={i} {...d} />
+      {isArray && hasDiagrams ? (
+        <ProblemSectionScrollable content={content} />
+      ) : isArray ? (
+        <div className="problem-narrative">
+          {content.map((part, i) => (
+            <div key={i} className="problem-part">
+              <span className="problem-part-label">{part.label}</span>
+              <p>{part.text}</p>
+            </div>
           ))}
         </div>
+      ) : (
+        <>
+          {content.challenge && (
+            <div className="iteration-block">
+              <h3 className="iteration-subhead">The Challenge</h3>
+              <p>{content.challenge}</p>
+            </div>
+          )}
+          {content.iteration && (
+            <div className="iteration-block">
+              <h3 className="iteration-subhead">The Iteration</h3>
+              <p>{content.iteration}</p>
+            </div>
+          )}
+          {content.decisions && content.decisions.length > 0 && (
+            <div className="decisions-grid">
+              {content.decisions.map((d, i) => (
+                <DecisionCard key={i} {...d} />
+              ))}
+            </div>
+          )}
+        </>
       )}
+      {aiCallout && <AICallout icon={aiCallout.icon} text={aiCallout.text} />}
     </section>
   );
 }
@@ -125,10 +232,66 @@ function OutcomeSection({ section, metrics }) {
   );
 }
 
+function RedactedBlock() {
+  const [revealed, setRevealed] = useState(false);
+  return (
+    <span
+      className={`redacted-mark${revealed ? " revealed" : ""}`}
+      onClick={() => setRevealed(true)}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") setRevealed(true); }}
+      aria-label="Redacted content, click to reveal"
+    >
+      {revealed ? "[redacted]" : "                              "}
+    </span>
+  );
+}
+
+function WhatsNextSection({ section }) {
+  const { content } = section;
+  return (
+    <section id={section.id} className="project-section">
+      <h2 className="section-heading">{section.heading}</h2>
+
+      {content.reflection && (
+        <div className="outcome-reflection">
+          <span className="reflection-label">Reflection</span>
+          <p>{content.reflection}</p>
+        </div>
+      )}
+
+      {content.futureImprovements && content.futureImprovements.length > 0 && (
+        <div className="future-improvements">
+          <span className="reflection-label">Future Improvements</span>
+          <div className="improvements-list">
+            {content.futureImprovements.map((item, i) => (
+              <div key={i} className="improvement-item">
+                <div className="improvement-header">
+                  <h3 className="improvement-title">
+                    {item.redacted ? <RedactedBlock /> : item.title}
+                  </h3>
+                  <span className={`improvement-status${item.redacted ? " status-redacted" : ""}`}>
+                    {item.redacted ? "Launching re:Invent 2025" : item.status === "launched" ? "Launched" : item.status}
+                  </span>
+                </div>
+                <p className="improvement-desc">
+                  {item.redacted ? <RedactedBlock /> : item.description}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </section>
+  );
+}
+
 const SECTION_RENDERERS = {
   problem: ProblemSection,
   "design-iteration": DesignIterationSection,
   outcome: OutcomeSection,
+  "whats-next": WhatsNextSection,
 };
 
 export default function ProjectDetailClient({ project }) {
@@ -187,6 +350,17 @@ export default function ProjectDetailClient({ project }) {
                 </div>
               )}
             </div>
+            {project.keynote && (
+              <a
+                href={project.keynote.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="keynote-callout"
+              >
+                <span className="keynote-label">{project.keynote.label}</span>
+                <span className="keynote-icon">↗</span>
+              </a>
+            )}
             <MetricsCounter metrics={project.metrics} />
           </div>
         </header>

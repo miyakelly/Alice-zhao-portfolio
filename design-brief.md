@@ -21,17 +21,31 @@ Everything is designed for a hiring manager who has 30 seconds.
 
 ## 4. Design Direction
 
+### Visual Concept: Ancient Cartography Meets Modern Technology
+
+The overall aesthetic combines the material quality of antique maps and scientific charts with modern digital precision. The site feels like a modern interface printed on aged paper, as if a cartographer's drafting table were used to layout a tech portfolio.
+
+**Visual reference:** Henry David Thoreau's Kalendar (Milkweed Editions) — warm cream paper with visible grain, hand-ruled pencil gridlines, faded sepia ink annotations. Not distressed or grunge; archival and scientific.
+
+**How this manifests:**
+- **Paper texture substrate.** Warm parchment base color (#F0EADD light / #110F0B dark) with three layered effects: SVG feTurbulence grain noise, tiling construction draft lines (pencil-weight ruled lines, compass arcs, measurement ticks, faint serif annotations like "fig. iii" and "N 47°"), and edge vignette darkening. All at very low opacity (3-6%), felt more than seen.
+- **Draft line pattern.** A 600x600px tiling SVG with hand-ruled horizontal/vertical lines (imperfect, sub-pixel offsets), construction circles at intersections, compass arcs, dashed diagonals, and faint text annotations. Evokes cartographic construction marks.
+- **Warm color palette.** All neutrals shifted toward parchment/sepia. Ink on aged paper, not black on white.
+- **Dark mode.** Aged dark leather/vellum quality. Same grain texture with adjusted blend mode (soft-light instead of multiply). Warm dark browns instead of cool blacks.
+
+### Design DNA (from reference sites)
+
 Based on six reference sites (Overwatch, OCI, Ledger, Beings, Wodniack, VWLab), the shared DNA is:
 
 - **Clean + techy, not flashy.** Restrained palettes, generous whitespace, monospace accents for technical credibility (Overwatch, Ledger)
-- **Contained framing.** Bracketed corners, thin borders, grid cells that feel like a HUD or dashboard — not cards floating in space (Ledger, Overwatch)
+- **Contained framing.** Bracketed corners, thin borders, grid cells that feel like a HUD or dashboard, not cards floating in space (Ledger, Overwatch)
 - **Typography as hero content.** Oversized split-line headers, generous letter-spacing, code motifs. Type itself becomes the visual, not a label on top of an image (Wodniack)
 - **Systematic numbering as design language.** Project codes, numbered sections, sequential IDs. Reinforces "this person thinks in systems" (Wodniack, VWLab, OCI)
 - **Motion as proof of craft.** When product visuals are limited, animation IS the portfolio. Scroll-driven reveals, SVG morphing, interactive data visualizations demonstrate technical skill (VWLab)
-- **Sequential reveal.** Content that builds as you scroll — text that types in, elements that fade into position, not everything visible at once (Overwatch)
+- **Sequential reveal.** Content that builds as you scroll, text that types in, elements that fade into position, not everything visible at once (Overwatch)
 - **Substance over decoration.** High-quality content carries the weight, not gradients or glow effects (Beings)
 
-**Tone:** Like a well-designed developer tool's marketing page — precise, confident, unhurried. Not a Dribbble shot. Not a startup landing page.
+**Tone:** Like a well-designed developer tool's marketing page, precise, confident, unhurried. Not a Dribbble shot. Not a startup landing page. The ancient substrate adds warmth and personality that pure tech-minimalism lacks.
 
 ## 5. Visual Strategy: Limited Product Visuals
 
