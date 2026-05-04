@@ -35,7 +35,7 @@ export default function Navigation({ breadcrumb, isHome }) {
         {isHome ? (
           <a href="#" className="nav-logo">Alice (Liang) Zhao</a>
         ) : (
-          <Link href="/" className="nav-logo">Alice Zhao</Link>
+          <Link href="/" className="nav-logo">Alice (Liang) Zhao</Link>
         )}
         <nav className="breadcrumb">
           {breadcrumb}
