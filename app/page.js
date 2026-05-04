@@ -4,6 +4,7 @@ import { Fragment } from "react";
 import Link from "next/link";
 import { projectOrder, projects } from "./data/projects";
 import Navigation from "./components/Navigation";
+import HomepageScroll from "./components/HomepageScroll";
 
 const MARQUEE_ITEMS = [
   "UX Design", "AI Products", "Agent Design", "Prototyping",
@@ -28,77 +29,8 @@ const HIW_NOW = [
 export default function Home() {
   return (
     <>
-      <Navigation
-        isHome
-        breadcrumb={<span className="breadcrumb-current">Home</span>}
-      />
 
-      <div className="bento" id="work">
-        <div className="cell-hero">
-          <div className="hero-avatar-col">
-            <div className="hero-avatar">photo</div>
-          </div>
-          <div className="hero-bio-col">
-            <div className="hero-intro">
-              <p className="hero-intro-text">
-                <span className="hero-name-inline">Alice Zhao.</span>{" "}
-                Currently building AI products for AWS, a critical part of Amazon. Senior UX Designer + Builder — amateur cook, passionate food explorer. Mostly Seattle.
-              </p>
-            </div>
-            <div className="hero-bottom"></div>
-          </div>
-          <div className="hero-strip">
-            <a href="resume.pdf" download className="strip-link"><span>Resume ↓</span></a>
-            <a href="https://www.linkedin.com/in/liangzhaoux/" target="_blank" rel="noreferrer" className="strip-link"><span>LinkedIn ↗</span></a>
-            <a href="mailto:liangzhao0801@gmail.com" className="strip-link"><span>Email ↗</span></a>
-          </div>
-        </div>
-
-        {projectOrder.map((slug) => {
-          const p = projects[slug];
-          return (
-            <Link key={slug} href={`/projects/${slug}/`} className={`cell-card ${p.gridClass}`}>
-              <div className="card-top">
-                <span className="card-year">{p.year}</span>
-                <div className="card-tags">
-                  {p.tags.map((t) => (
-                    <span key={t} className={`tag${t === "AI" ? " tag-ai" : ""}`}>{t}</span>
-                  ))}
-                </div>
-              </div>
-              <div className="card-body">
-                <h2 className="card-title">{p.cardTitle.split("\n").map((line, i, arr) => (
-                  <Fragment key={i}>{line}{i < arr.length - 1 && <br />}</Fragment>
-                ))}</h2>
-                <p className="card-desc">{p.cardDescription}</p>
-                <div className="card-img">[ project screens ]</div>
-              </div>
-              <div className="card-footer">
-                <span className="card-role">{p.role}</span>
-                <span className="card-arrow">↗</span>
-              </div>
-            </Link>
-          );
-        })}
-
-        <a href="#" className="cell-card cell-lab2" style={{ cursor: "default" }}>
-          <div className="card-top">
-            <span className="card-year">2025</span>
-            <div className="card-tags">
-              <span className="tag tag-lab">Lab</span>
-            </div>
-          </div>
-          <div className="card-body">
-            <h2 className="card-title" style={{ opacity: 0.4 }}>[ Coming<br />Soon ]</h2>
-            <p className="card-desc" style={{ opacity: 0.3 }}>Next AI experiment.</p>
-            <div className="card-img">[ — ]</div>
-          </div>
-          <div className="card-footer">
-            <span className="card-role" style={{ opacity: 0.3 }}>Experiment</span>
-            <span className="card-arrow" style={{ opacity: 0.3 }}>—</span>
-          </div>
-        </a>
-      </div>
+      <HomepageScroll />
 
       <div className="marquee">
         <div className="marquee-track">
