@@ -32,10 +32,11 @@
   gap: 6px;
 }
 .project-title {
+  font-family: var(--f-display);
   font-size: clamp(28px, 4vw, 52px);
   font-weight: 700;
-  letter-spacing: -0.03em;
-  line-height: 1.1;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
   max-width: 900px;
   margin-bottom: 16px;
 }
@@ -145,9 +146,10 @@
   border-bottom: none;
 }
 .section-heading {
+  font-family: var(--f-display);
   font-size: clamp(24px, 3vw, 40px);
   font-weight: 700;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.02em;
   margin-bottom: 40px;
 }
 
@@ -486,6 +488,12 @@
   color: inherit;
 }
 
+.outcome-block {
+  margin-top: 40px;
+}
+.outcome-block:first-of-type {
+  margin-top: 32px;
+}
 .outcome-summary {
   font-size: 16px;
   line-height: 1.65;
@@ -616,9 +624,10 @@
   transition: color 0.2s;
 }
 .next-project-link {
+  font-family: var(--f-display);
   font-size: clamp(20px, 3vw, 36px);
   font-weight: 700;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.02em;
   color: var(--ink);
   text-decoration: none;
   display: flex;

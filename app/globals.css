@@ -1,3 +1,18 @@
+@font-face {
+  font-family: 'Satoshi';
+  src: url('/fonts/Satoshi-Variable.woff2') format('woff2');
+  font-weight: 300 900;
+  font-display: swap;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'EB Garamond';
+  src: url('/fonts/EBGaramond-variable.woff2') format('woff2');
+  font-weight: 400 800;
+  font-display: swap;
+  font-style: normal;
+}
+
 :root {
   --bg: #F0EADD;
   --bg2: #E8E1D3;
@@ -9,7 +24,8 @@
   --card: #131310;
   --card2: #1C1C18;
   --paper-line: #9e8b73;
-  --f: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --f: 'Satoshi', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --f-display: 'EB Garamond', Georgia, 'Times New Roman', serif;
 }
 [data-dark] {
   --bg: #110F0B;
@@ -247,10 +263,11 @@ nav.main-nav.scrolled { border-color: var(--border); }
 
 .card-body { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; }
 .card-title {
+  font-family: var(--f-display);
   font-size: clamp(20px, 2.4vw, 34px);
   font-weight: 700;
-  letter-spacing: -0.03em;
-  line-height: 1.05;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
   margin-top: 28px;
 }
 .cell-lab1 .card-title,
@@ -319,8 +336,9 @@ nav.main-nav.scrolled { border-color: var(--border); }
   padding-bottom: 20px; margin-bottom: 56px;
 }
 .hiw-title {
+  font-family: var(--f-display);
   font-size: clamp(36px, 5vw, 64px);
-  font-weight: 700; letter-spacing: -0.04em; line-height: 0.95;
+  font-weight: 700; letter-spacing: -0.02em; line-height: 1.0;
 }
 .hiw-year {
   font-size: 12px; font-weight: 700; letter-spacing: 0.08em;
@@ -381,8 +399,9 @@ nav.main-nav.scrolled { border-color: var(--border); }
   transition: border-color 0.2s;
 }
 .about-display {
+  font-family: var(--f-display);
   font-size: clamp(80px, 13vw, 180px);
-  font-weight: 700; letter-spacing: -0.055em; line-height: 0.82;
+  font-weight: 700; letter-spacing: -0.03em; line-height: 0.85;
   color: transparent;
   -webkit-text-stroke: 1.5px var(--border);
   margin-bottom: 56px;
@@ -414,8 +433,9 @@ nav.main-nav.scrolled { border-color: var(--border); }
 }
 .contact-grid { display: grid; grid-template-columns: 1fr 1fr; align-items: end; gap: 64px; }
 .contact-h {
+  font-family: var(--f-display);
   font-size: clamp(52px, 7vw, 96px);
-  font-weight: 700; letter-spacing: -0.048em; line-height: 0.9;
+  font-weight: 700; letter-spacing: -0.02em; line-height: 0.95;
 }
 .clink {
   display: flex; justify-content: space-between; align-items: center;

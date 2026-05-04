@@ -177,13 +177,28 @@ export const projects = {
         id: "outcome",
         navLabel: "03 Outcome",
         heading: "Shipped Product and Results",
-        content: {
-          summary: "S3 Tables launched at AWS re:Invent 2024, featured as the top announcement in CEO Matt Garman's keynote. In the first 6 months: 12.7k table buckets created containing 48.5k tables with 4.5% week-over-week usage growth, 411 TB of data stored, and 1.3 billion weekly requests. The product established AWS as the first cloud provider with native table capabilities built into object storage — no competitor offers an equivalent.",
-          reflection: "The biggest lesson was that the hardest design problem wasn't any single screen — it was creating the framework that let a 50-person team move fast on a brand new product category. The JTBD framework turned out to be my highest-leverage contribution: it didn't just define what we'd build, it gave everyone a shared language for making trade-offs under extreme time pressure.",
-        },
-        productVisuals: [
-          { alt: "Table bucket creation flow with GDC integration", placeholder: true },
-          { alt: "Table management console with compaction settings", placeholder: true },
+        content: [
+          {
+            subheading: "Overall Summary",
+            text: "S3 Tables launched at AWS re:Invent 2024, featured as the top announcement in CEO Matt Garman's keynote. It introduced native table capabilities to S3, enabling customers to store, manage, and query structured data for analytics and AI/ML workloads without custom infrastructure.",
+            productVisuals: [
+              { alt: "S3 Tables console overview", placeholder: true },
+            ],
+          },
+          {
+            subheading: "Seamless Integration",
+            text: "What previously required custom-built infrastructure is now handled automatically. And the integration that originally required customers to configure across multiple AWS services is reduced to a single click during table bucket creation.",
+            productVisuals: [
+              { alt: "Integration flow with single-click setup", placeholder: true },
+            ],
+          },
+          {
+            subheading: "View and Manage Tabular Data",
+            text: "Once created, customers manage their tables from a single console. Table bucket details, permission controls, and storage settings are all accessible without switching between services.",
+            productVisuals: [
+              { alt: "Table management console", placeholder: true },
+            ],
+          },
         ],
       },
       {

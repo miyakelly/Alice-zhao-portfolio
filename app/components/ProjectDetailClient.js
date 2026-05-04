@@ -210,23 +210,47 @@ function DesignIterationSection({ section }) {
 
 function OutcomeSection({ section, metrics }) {
   const { content, productVisuals } = section;
+  const isArray = Array.isArray(content);
+
   return (
     <section id={section.id} className="project-section">
       <h2 className="section-heading">{section.heading}</h2>
-      {productVisuals && productVisuals.length > 0 && (
-        <div className="outcome-visuals">
-          {productVisuals.map((v, i) => (
-            <DeviceFrame key={i} alt={v.alt} placeholder={v.placeholder} />
+
+      {isArray ? (
+        <>
+          <MetricsCounter metrics={metrics} />
+          {content.map((block, i) => (
+            <div key={i} className="outcome-block">
+              <h3 className="iteration-subhead">{block.subheading}</h3>
+              <p className="outcome-summary">{block.text}</p>
+              {block.productVisuals && block.productVisuals.length > 0 && (
+                <div className="outcome-visuals">
+                  {block.productVisuals.map((v, j) => (
+                    <DeviceFrame key={j} alt={v.alt} placeholder={v.placeholder} />
+                  ))}
+                </div>
+              )}
+            </div>
           ))}
-        </div>
-      )}
-      <MetricsCounter metrics={metrics} />
-      {content.summary && <p className="outcome-summary">{content.summary}</p>}
-      {content.reflection && (
-        <div className="outcome-reflection">
-          <span className="reflection-label">Reflection</span>
-          <p>{content.reflection}</p>
-        </div>
+        </>
+      ) : (
+        <>
+          {productVisuals && productVisuals.length > 0 && (
+            <div className="outcome-visuals">
+              {productVisuals.map((v, i) => (
+                <DeviceFrame key={i} alt={v.alt} placeholder={v.placeholder} />
+              ))}
+            </div>
+          )}
+          <MetricsCounter metrics={metrics} />
+          {content.summary && <p className="outcome-summary">{content.summary}</p>}
+          {content.reflection && (
+            <div className="outcome-reflection">
+              <span className="reflection-label">Reflection</span>
+              <p>{content.reflection}</p>
+            </div>
+          )}
+        </>
       )}
     </section>
   );
