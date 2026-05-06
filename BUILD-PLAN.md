@@ -56,9 +56,48 @@ Add the hero card (avatar + intro text) inside the sticky container. At progress
 **Review checkpoint:** Does the hero size/position feel right at both ends? Is the shrink smooth? Does the avatar stay stable?
 
 #### Step 3: Secondary cards positioning and convergence
-Add all secondary cards with off-screen start positions and final bento grid end positions. Wire up progress-driven interpolation. No real content inside cards yet, just colored/labeled rectangles to verify spacing, gaps, convergence paths, and the no-overlap constraint.
 
-**Review checkpoint:** Do cards come from the right edges? Do they stop at the right positions? Any overlap? Does the assembled grid match the Figma?
+**Layout:** 4-column pinwheel grid, rotationally symmetric around the center avatar.
+
+```
+| ???        | S3 Tables      | Streamlining        | Who Am I  |
+|            |                |      [avatar]        |           |
+| My Lab     | Agent          | My Design Process    | Links     |
+```
+
+**Columns:** sideLeft (narrow), centerLeft (wide), centerRight (wide), sideRight (narrow). Roughly 1:2:2:1 ratio.
+
+**Height split:** 3:4 ratio per column. Side-left: ??? (3) / My Lab (4). Side-right: Who Am I (4) / Links (3). Center-left: S3 Tables (4) / Agent (3). Center-right: Streamlining (3) / My Design Process (4). Avatar gap at center intersection.
+
+**Size pairings (rotationally symmetric):**
+- ??? = Links (short)
+- My Lab = Who Am I (tall)
+- S3 Tables = My Design Process (tall center)
+- Streamlining = Agent (short center)
+
+**Entry directions:**
+
+| Card | Enters from |
+|---|---|
+| ??? | left |
+| My Lab | left |
+| S3 Tables | top |
+| Agent | bottom |
+| Streamlining | top |
+| My Design Process | bottom |
+| Who Am I | right |
+| Links | right |
+
+**Sub-steps (review after each):**
+
+##### Step 3A: Final layout only (no animation)
+Hardcode all 8 cards at their end-state positions using the new pinwheel grid math. Temporarily ignore scroll progress. Verify: do the positions, sizes, and proportions match the wireframe?
+
+##### Step 3B: Hero end state
+Update the hero card so at progress=1 it shrinks to a small circle at the center intersection of the 4 center cards. Verify: does the avatar land in the right spot relative to the surrounding cards?
+
+##### Step 3C: Convergence animation
+Wire scroll progress back up so cards enter from off-screen edges and converge into the layout from 3A. Verify: do the entry directions and timing feel right?
 
 #### Step 4: Card content + styling
 Fill in actual card content (project titles, tags, years, about, contact links, How I Design Now). Apply existing card styles.

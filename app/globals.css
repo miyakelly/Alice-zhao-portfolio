@@ -193,9 +193,6 @@ nav.main-nav.scrolled { border-color: var(--border); }
 }
 .scroll-hero-wrap {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
 }
 .scroll-hero-shadow {
   position: absolute;

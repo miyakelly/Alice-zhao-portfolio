@@ -20,18 +20,18 @@ const HERO_SLIDES = [
   "/img/hero-card/uUzyjQw1zPGuTy4XirHoCcr8odl0tEiupNpbCzp4-478125760.jpg",
 ];
 
-// 3x3 grid with hero in center cell. Sizes computed dynamically from hero's current size.
-// Phase 1 (inner): cards adjacent to hero, arrive progress 0–0.7
-// Phase 2 (outer): corner cards, arrive progress 0.5–1.0
+// Pinwheel grid: 4 center cards positioned relative to the hero, 4 side cards flanking.
+// Each center card aligns with one hero edge and has a gap on the perpendicular side.
+// Rotationally symmetric: S3 Tables ↔ My Design Process, Streamlining ↔ Agent.
 const CARD_DEFS = [
-  { id: "s3-tables", label: "S3 Tables", col: 0, row: 1, from: "left", phase: 1 },
-  { id: "sda", label: "Simplifying Data Access", col: 1, row: 0, from: "top", phase: 1 },
-  { id: "hidn", label: "How I Design Now", col: 2, row: 1, from: "right", phase: 1 },
-  { id: "agent-opp", label: "Agent Opportunities", col: 1, row: 2, from: "bottom", phase: 1 },
-  { id: "about", label: "About", col: 0, row: 0, from: "left", phase: 2 },
-  { id: "who-am-i", label: "Who Am I", col: 2, row: 0, from: "right", phase: 2 },
-  { id: "my-lab", label: "My Lab", col: 0, row: 2, from: "left", phase: 2 },
-  { id: "links", label: "Links", col: 2, row: 2, from: "right", phase: 2 },
+  { id: "about",     label: "???",                       pos: "side-tl",   from: "left" },
+  { id: "my-lab",    label: "My Lab",                    pos: "side-bl",   from: "left" },
+  { id: "s3-tables", label: "S3 Tables",                 pos: "center-tl", from: "top-left" },
+  { id: "agent-opp", label: "Agent Opportunities",       pos: "center-bl", from: "bottom-left" },
+  { id: "sda",       label: "Streamlining Data Access",  pos: "center-tr", from: "top-right" },
+  { id: "hidn",      label: "My Design Process",         pos: "center-br", from: "bottom-right" },
+  { id: "who-am-i",  label: "Who Am I",                  pos: "side-tr",   from: "right" },
+  { id: "links",     label: "Links",                     pos: "side-br",   from: "right" },
 ];
 
 function useScrollProgress(containerRef) {
@@ -183,12 +183,42 @@ export default function HomepageScroll() {
   const heroSize = lerp(heroStart, heroEnd, progress);
 
   const gridGap = 20;
-  const sideW = Math.max(0, (vw - heroSize - gridGap * 4) / 2);
-  const sideH = Math.max(0, (vh - heroSize - gridGap * 4) / 2);
-  const colLefts = [gridGap, gridGap + sideW + gridGap, gridGap + sideW + gridGap + heroSize + gridGap];
-  const colWidths = [sideW, heroSize, sideW];
-  const rowTops = [gridGap, gridGap + sideH + gridGap, gridGap + sideH + gridGap + heroSize + gridGap];
-  const rowHeights = [sideH, heroSize, sideH];
+  const gridPad = 20;
+  const totalW = vw - 2 * gridPad;
+  const totalH = vh - 2 * gridPad;
+  const topY = gridPad;
+  const bottomY = topY + totalH;
+
+  const sideW = (totalW - 3 * gridGap) / 6;
+
+  const heroCX = vw / 2;
+  const heroCY = topY + totalH / 2;
+  const centerL = gridPad + sideW + gridGap;
+  const centerR = vw - gridPad - sideW - gridGap;
+
+  const heroTEnd = heroCY - heroEnd / 2;
+  const shortH = heroTEnd - gridGap - topY;
+  const tallH = bottomY - heroTEnd;
+
+  const heroLNow = heroCX - heroSize / 2;
+  const heroRNow = heroCX + heroSize / 2;
+  const heroTNow = heroCY - heroSize / 2;
+
+  const shortHNow = heroTNow - gridGap - topY;
+  const tallHNow = bottomY - heroTNow;
+
+  function getCardBounds(pos) {
+    switch (pos) {
+      case "side-tl":   return { left: gridPad, top: topY, width: sideW, height: shortH };
+      case "side-bl":   return { left: gridPad, top: topY + shortH + gridGap, width: sideW, height: tallH };
+      case "center-tl": return { left: centerL, top: topY, width: heroLNow - gridGap - centerL, height: tallHNow };
+      case "center-bl": return { left: centerL, top: topY + tallHNow + gridGap, width: heroRNow - centerL, height: shortHNow };
+      case "center-tr": return { left: heroLNow, top: topY, width: centerR - heroLNow, height: shortHNow };
+      case "center-br": return { left: heroRNow + gridGap, top: topY + shortHNow + gridGap, width: centerR - heroRNow - gridGap, height: tallHNow };
+      case "side-tr":   return { left: vw - gridPad - sideW, top: topY, width: sideW, height: tallH };
+      case "side-br":   return { left: vw - gridPad - sideW, top: topY + tallH + gridGap, width: sideW, height: shortH };
+    }
+  }
 
   const introText = getIntroText(progress);
   const hasText = introText !== null;
@@ -227,9 +257,18 @@ export default function HomepageScroll() {
     slideshow.stop();
   };
 
-  function getLocalT(phase) {
-    if (phase === 1) return Math.min(1, Math.max(0, progress / 0.7));
-    return Math.min(1, Math.max(0, (progress - 0.5) / 0.5));
+  function getCardOffset(from, bounds) {
+    let offsetX = 0;
+    let offsetY = 0;
+    switch (from) {
+      case "left":         offsetX = -(bounds.left + bounds.width); break;
+      case "right":        offsetX = vw - bounds.left; break;
+      case "top-left":     offsetX = -(bounds.left + bounds.width); offsetY = -(bounds.top + bounds.height); break;
+      case "top-right":    offsetX = vw - bounds.left; offsetY = -(bounds.top + bounds.height); break;
+      case "bottom-left":  offsetX = -(bounds.left + bounds.width); offsetY = vh - bounds.top; break;
+      case "bottom-right": offsetX = vw - bounds.left; offsetY = vh - bounds.top; break;
+    }
+    return { offsetX, offsetY };
   }
 
   return (
@@ -240,33 +279,28 @@ export default function HomepageScroll() {
         </div>
 
         {CARD_DEFS.map((def) => {
-          const left = colLefts[def.col];
-          const top = rowTops[def.row];
-          const w = colWidths[def.col];
-          const h = rowHeights[def.row];
-          if (w <= 0 || h <= 0) return null;
+          const bounds = getCardBounds(def.pos);
+          if (bounds.width <= 0 || bounds.height <= 0) return null;
 
-          const localT = getLocalT(def.phase);
-          let offsetX = 0;
-          let offsetY = 0;
-          switch (def.from) {
-            case "left": offsetX = lerp(-(left + w + gridGap), 0, localT); break;
-            case "right": offsetX = lerp(vw - left + gridGap, 0, localT); break;
-            case "top": offsetY = lerp(-(top + h + gridGap), 0, localT); break;
-            case "bottom": offsetY = lerp(vh - top + gridGap, 0, localT); break;
+          const isCenter = def.pos.startsWith("center");
+          const style = {
+            left: bounds.left,
+            top: bounds.top,
+            width: bounds.width,
+            height: bounds.height,
+          };
+
+          if (!isCenter) {
+            const { offsetX, offsetY } = getCardOffset(def.from, bounds);
+            const t = Math.min(1, Math.max(0, (progress - 0.6) / 0.4));
+            style.transform = `translate(${lerp(offsetX, 0, t)}px, ${lerp(offsetY, 0, t)}px)`;
           }
 
           return (
             <div
               key={def.id}
               className="scroll-secondary-card"
-              style={{
-                left,
-                top,
-                width: w,
-                height: h,
-                transform: `translate(${offsetX}px, ${offsetY}px)`,
-              }}
+              style={style}
             >
               {def.label}
             </div>
@@ -276,6 +310,8 @@ export default function HomepageScroll() {
         <div
           className={`scroll-hero-wrap${hoverable ? " hoverable" : ""}`}
           style={{
+            left: heroCX - heroSize / 2,
+            top: heroCY - heroSize / 2,
             width: heroSize,
             height: heroSize,
           }}
