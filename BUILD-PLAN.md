@@ -6,7 +6,7 @@ A living document tracking implementation plans for major features. Each plan st
 
 ## Homepage Scroll Animation
 
-**Status:** In progress — Step 1 complete
+**Status:** In progress — Step 3 complete, Step 4 in progress
 
 ### Overview
 
@@ -90,17 +90,34 @@ Add the hero card (avatar + intro text) inside the sticky container. At progress
 
 **Sub-steps (review after each):**
 
-##### Step 3A: Final layout only (no animation)
+##### Step 3A: Final layout only (no animation) ✅
 Hardcode all 8 cards at their end-state positions using the new pinwheel grid math. Temporarily ignore scroll progress. Verify: do the positions, sizes, and proportions match the wireframe?
 
-##### Step 3B: Hero end state
+##### Step 3B: Hero end state ✅
 Update the hero card so at progress=1 it shrinks to a small circle at the center intersection of the 4 center cards. Verify: does the avatar land in the right spot relative to the surrounding cards?
 
-##### Step 3C: Convergence animation
+##### Step 3C: Convergence animation ✅
 Wire scroll progress back up so cards enter from off-screen edges and converge into the layout from 3A. Verify: do the entry directions and timing feel right?
 
-#### Step 4: Card content + styling
+**Final convergence approach:**
+- Center cards: positions computed from hero's CURRENT bounds (always 20px gap to hero) + off-screen transform from END-STATE bounds that lerps to 0 over progress 0-1. Cards enter diagonally from corners (S3 top-left, Streamlining top-right, Agent bottom-left, My Design Process bottom-right). Gap to hero reduces linearly from large to 20px.
+- Side cards: end-state positions + off-screen transform that combines their own offset with their neighboring center card's offset. This ensures side cards enter after center cards and maintain a gap that reduces to 20px.
+- Hero: positioned via JS (same coordinate system as cards), shrinks from heroStart to heroEnd over progress 0-1.
+
+#### Step 4: Card content + styling — in progress
 Fill in actual card content (project titles, tags, years, about, contact links, How I Design Now). Apply existing card styles.
+
+**Done so far:**
+- SecondaryCard component extracted with hover effect (lift up-right, shadow, slideshow) matching hero card. Hover only active at progress=1.
+- Project cards (S3 Tables, Agent, Streamlining) have year, title (EB Garamond 72px), and impact placeholder (Satoshi 12px) with 20px padding.
+- S3 Tables card linked to `/projects/s3-tables`.
+- Each card has a `slides` array (empty, to be filled with project-specific images).
+
+**Still to do:**
+- Impact statement copy for each project
+- Slideshow images for each card
+- Content for non-project cards (???, My Lab, Who Am I, Links)
+- Remaining card links (href)
 
 **Review checkpoint:** Does the content layout inside each card work at both the start (progress=0) and end (progress=1) sizes?
 
