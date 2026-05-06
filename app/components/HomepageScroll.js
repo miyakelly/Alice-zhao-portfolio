@@ -8,16 +8,23 @@ const HERO_SLIDES = [
   "/img/hero-card/Ada-1945299396.jpg",
   "/img/hero-card/How-ENIAC-Worked-min-1024x536-4207126977.png",
   "/img/hero-card/IMG_2613-2533134824.jpg",
+  "/img/hero-card/me-1.jpg",
   "/img/hero-card/Intel 4004 (1971).jpg",
   "/img/hero-card/MV5BOTU3NWJjNDktZGU5Zi00ZWYwLTg1MzQtYWNlN2Q4ZTNjNDU4XkEyXkFqcGc@._V1_-1615251397.jpg",
   "/img/hero-card/OIP-1311303196.jpg",
   "/img/hero-card/deep-blue-vs-garry-kasparov-chess-3360251239.jpg",
   "/img/hero-card/doAmESF84E3NVgu2mbEBAX-1312980986.jpg",
   "/img/hero-card/first-web-server_0451b7775b0ff60c530e897c31ea3ad1-3243532772.jpg",
+  "/img/hero-card/me-3.jpg",
   "/img/hero-card/hst_launch_hi-658738499.jpg",
   "/img/hero-card/sputnik-1-satellite-806590417.jpg",
   "/img/hero-card/steve-wozniak-working-in-garage-2-1562671878.jpg",
   "/img/hero-card/uUzyjQw1zPGuTy4XirHoCcr8odl0tEiupNpbCzp4-478125760.jpg",
+  "/img/hero-card/arduino-uno-pinout-80294469.jpg",
+  "/img/hero-card/hedy-lamarr-2000-908a22cd2d3c490ab20edfa189e95a72-643054585.jpg",
+  "/img/hero-card/Perlman_Radia+CIC+judge-595700236.jpg",
+  "/img/hero-card/me-2.jpg",
+
 ];
 
 // Pinwheel grid: 4 center cards positioned relative to the hero, 4 side cards flanking.
@@ -196,6 +203,8 @@ export default function HomepageScroll() {
   const centerL = gridPad + sideW + gridGap;
   const centerR = vw - gridPad - sideW - gridGap;
 
+  const heroLEnd = heroCX - heroEnd / 2;
+  const heroREnd = heroCX + heroEnd / 2;
   const heroTEnd = heroCY - heroEnd / 2;
   const shortH = heroTEnd - gridGap - topY;
   const tallH = bottomY - heroTEnd;
@@ -257,6 +266,15 @@ export default function HomepageScroll() {
     slideshow.stop();
   };
 
+  function getEndBounds(pos) {
+    switch (pos) {
+      case "center-tl": return { left: centerL, top: topY, width: heroLEnd - gridGap - centerL, height: tallH };
+      case "center-bl": return { left: centerL, top: topY + tallH + gridGap, width: heroREnd - centerL, height: shortH };
+      case "center-tr": return { left: heroLEnd, top: topY, width: centerR - heroLEnd, height: shortH };
+      case "center-br": return { left: heroREnd + gridGap, top: topY + shortH + gridGap, width: centerR - heroREnd - gridGap, height: tallH };
+    }
+  }
+
   function getCardOffset(from, bounds) {
     let offsetX = 0;
     let offsetY = 0;
@@ -290,10 +308,18 @@ export default function HomepageScroll() {
             height: bounds.height,
           };
 
-          if (!isCenter) {
-            const { offsetX, offsetY } = getCardOffset(def.from, bounds);
-            const t = Math.min(1, Math.max(0, (progress - 0.6) / 0.4));
-            style.transform = `translate(${lerp(offsetX, 0, t)}px, ${lerp(offsetY, 0, t)}px)`;
+          if (isCenter) {
+            const endBounds = getEndBounds(def.pos);
+            const { offsetX, offsetY } = getCardOffset(def.from, endBounds);
+            style.transform = `translate(${lerp(offsetX, 0, progress)}px, ${lerp(offsetY, 0, progress)}px)`;
+          } else {
+            const neighborPos = def.pos.replace("side", "center");
+            const neighborDef = CARD_DEFS.find(d => d.pos === neighborPos);
+            const neighborEndBounds = getEndBounds(neighborPos);
+            const neighborOffset = getCardOffset(neighborDef.from, neighborEndBounds);
+            const { offsetX: sideOffsetX } = getCardOffset(def.from, bounds);
+            const totalX = neighborOffset.offsetX + sideOffsetX;
+            style.transform = `translate(${lerp(totalX, 0, progress)}px, 0px)`;
           }
 
           return (

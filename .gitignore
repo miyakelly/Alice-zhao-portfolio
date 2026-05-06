@@ -42,6 +42,7 @@ yarn-error.log*
 
 # raw project content (sensitive/internal docs)
 /project-details/
+/design-process/
 
 # typescript
 *.tsbuildinfo
