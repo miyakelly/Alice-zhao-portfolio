@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import Link from "next/link";
 
 const HERO_SLIDES = [
   "/img/hero-card/206311main_wright_brothers_full-1024x637-2214572863.jpg",
@@ -31,14 +32,14 @@ const HERO_SLIDES = [
 // Each center card aligns with one hero edge and has a gap on the perpendicular side.
 // Rotationally symmetric: S3 Tables ↔ My Design Process, Streamlining ↔ Agent.
 const CARD_DEFS = [
-  { id: "about",     label: "???",                       pos: "side-tl",   from: "left" },
-  { id: "my-lab",    label: "My Lab",                    pos: "side-bl",   from: "left" },
-  { id: "s3-tables", label: "S3 Tables",                 pos: "center-tl", from: "top-left" },
-  { id: "agent-opp", label: "Agent Opportunities",       pos: "center-bl", from: "bottom-left" },
-  { id: "sda",       label: "Streamlining Data Access",  pos: "center-tr", from: "top-right" },
-  { id: "hidn",      label: "My Design Process",         pos: "center-br", from: "bottom-right" },
-  { id: "who-am-i",  label: "Who Am I",                  pos: "side-tr",   from: "right" },
-  { id: "links",     label: "Links",                     pos: "side-br",   from: "right" },
+  { id: "about",     label: "???",                       pos: "side-tl",   from: "left",         slides: [] },
+  { id: "my-lab",    label: "My Lab",                    pos: "side-bl",   from: "left",         slides: [] },
+  { id: "s3-tables", label: "S3 Tables",                 pos: "center-tl", from: "top-left",     slides: [], href: "/projects/s3-tables", year: "2025",            title: "S3 Tables",                impact: "Impact statement placeholder" },
+  { id: "agent-opp", label: "Agent Opportunities",       pos: "center-bl", from: "bottom-left",  slides: [],                                     year: "2025 — ongoing",  title: "Agent Opportunities",      impact: "Impact statement placeholder" },
+  { id: "sda",       label: "Streamlining Data Access",  pos: "center-tr", from: "top-right",    slides: [],                                     year: "2024",            title: "Streamlining Data Access", impact: "Impact statement placeholder" },
+  { id: "hidn",      label: "My Design Process",         pos: "center-br", from: "bottom-right", slides: [] },
+  { id: "who-am-i",  label: "Who Am I",                  pos: "side-tr",   from: "right",        slides: [] },
+  { id: "links",     label: "Links",                     pos: "side-br",   from: "right",        slides: [] },
 ];
 
 function useScrollProgress(containerRef) {
@@ -172,6 +173,58 @@ function useFitTitle(titleRef) {
   }, [titleRef]);
 
   return ratioRef;
+}
+
+function SecondaryCard({ def, style, hoverable }) {
+  const slideshow = useSlideshow(def.slides, 200);
+  const cursorOverRef = useRef(false);
+
+  useEffect(() => {
+    if (!hoverable && slideshow.active) slideshow.stop();
+    if (hoverable && !slideshow.active && cursorOverRef.current) slideshow.start();
+  }, [hoverable, slideshow.active, slideshow.start, slideshow.stop]);
+
+  const onEnter = () => {
+    cursorOverRef.current = true;
+    if (hoverable && def.slides.length > 0) slideshow.start();
+  };
+  const onLeave = () => {
+    cursorOverRef.current = false;
+    slideshow.stop();
+  };
+
+  const Wrapper = def.href ? Link : "div";
+  const wrapperProps = def.href ? { href: def.href } : {};
+
+  return (
+    <Wrapper
+      {...wrapperProps}
+      className={`scroll-secondary-card${hoverable ? " hoverable" : ""}`}
+      style={style}
+      onMouseEnter={onEnter}
+      onMouseLeave={onLeave}
+    >
+      <div className="scroll-card-shadow" />
+      <div className={`scroll-card-face${slideshow.active ? " sliding" : ""}`}>
+        {slideshow.active && (
+          <img
+            className="scroll-card-slideshow"
+            src={def.slides[slideshow.index]}
+            alt=""
+          />
+        )}
+        {def.title ? (
+          <div className="scroll-card-content">
+            <span className="scroll-card-year">{def.year}</span>
+            <h2 className="scroll-card-title">{def.title}</h2>
+            <p className="scroll-card-impact">{def.impact}</p>
+          </div>
+        ) : (
+          <span className="scroll-card-label">{def.label}</span>
+        )}
+      </div>
+    </Wrapper>
+  );
 }
 
 export default function HomepageScroll() {
@@ -323,13 +376,12 @@ export default function HomepageScroll() {
           }
 
           return (
-            <div
+            <SecondaryCard
               key={def.id}
-              className="scroll-secondary-card"
+              def={def}
               style={style}
-            >
-              {def.label}
-            </div>
+              hoverable={progress >= 1}
+            />
           );
         })}
 
