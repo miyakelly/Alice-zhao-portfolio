@@ -175,6 +175,22 @@ nav.main-nav.scrolled { border-color: var(--border); }
   padding: 4px 8px;
   opacity: 0.7;
 }
+.scroll-secondary-card {
+  position: absolute;
+  border: 1px solid #000;
+  background: var(--bg2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: monospace;
+  font-size: 11px;
+  color: var(--muted);
+  text-align: center;
+  padding: 8px;
+}
+[data-dark] .scroll-secondary-card {
+  border-color: var(--ink);
+}
 .scroll-hero-wrap {
   position: absolute;
   top: 50%;

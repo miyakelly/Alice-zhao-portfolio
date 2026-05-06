@@ -20,6 +20,20 @@ const HERO_SLIDES = [
   "/img/hero-card/uUzyjQw1zPGuTy4XirHoCcr8odl0tEiupNpbCzp4-478125760.jpg",
 ];
 
+// 3x3 grid with hero in center cell. Sizes computed dynamically from hero's current size.
+// Phase 1 (inner): cards adjacent to hero, arrive progress 0–0.7
+// Phase 2 (outer): corner cards, arrive progress 0.5–1.0
+const CARD_DEFS = [
+  { id: "s3-tables", label: "S3 Tables", col: 0, row: 1, from: "left", phase: 1 },
+  { id: "sda", label: "Simplifying Data Access", col: 1, row: 0, from: "top", phase: 1 },
+  { id: "hidn", label: "How I Design Now", col: 2, row: 1, from: "right", phase: 1 },
+  { id: "agent-opp", label: "Agent Opportunities", col: 1, row: 2, from: "bottom", phase: 1 },
+  { id: "about", label: "About", col: 0, row: 0, from: "left", phase: 2 },
+  { id: "who-am-i", label: "Who Am I", col: 2, row: 0, from: "right", phase: 2 },
+  { id: "my-lab", label: "My Lab", col: 0, row: 2, from: "left", phase: 2 },
+  { id: "links", label: "Links", col: 2, row: 2, from: "right", phase: 2 },
+];
+
 function useScrollProgress(containerRef) {
   const [progress, setProgress] = useState(0);
 
@@ -63,19 +77,19 @@ function useScrollProgress(containerRef) {
   return progress;
 }
 
-function useViewportWidth() {
-  const [vw, setVw] = useState(1440);
+function useViewportSize() {
+  const [size, setSize] = useState({ vw: 1440, vh: 900 });
 
   useEffect(() => {
     function onResize() {
-      setVw(window.innerWidth);
+      setSize({ vw: window.innerWidth, vh: window.innerHeight });
     }
     onResize();
     window.addEventListener("resize", onResize);
     return () => window.removeEventListener("resize", onResize);
   }, []);
 
-  return vw;
+  return size;
 }
 
 function lerp(a, b, t) {
@@ -158,7 +172,7 @@ export default function HomepageScroll() {
   const titleRef = useRef(null);
   const progress = useScrollProgress(containerRef);
 
-  const vw = useViewportWidth();
+  const { vw, vh } = useViewportSize();
   const isMobile = vw < 768;
   const heroStart = isMobile ? Math.min(vw * 0.9, 640) : Math.min(530, vw * 0.37);
   const heroEnd = isMobile ? 100 : 120;
@@ -167,6 +181,14 @@ export default function HomepageScroll() {
   const avatarSize = lerp(avatarStart, avatarEnd, progress);
 
   const heroSize = lerp(heroStart, heroEnd, progress);
+
+  const gridGap = 20;
+  const sideW = Math.max(0, (vw - heroSize - gridGap * 4) / 2);
+  const sideH = Math.max(0, (vh - heroSize - gridGap * 4) / 2);
+  const colLefts = [gridGap, gridGap + sideW + gridGap, gridGap + sideW + gridGap + heroSize + gridGap];
+  const colWidths = [sideW, heroSize, sideW];
+  const rowTops = [gridGap, gridGap + sideH + gridGap, gridGap + sideH + gridGap + heroSize + gridGap];
+  const rowHeights = [sideH, heroSize, sideH];
 
   const introText = getIntroText(progress);
   const hasText = introText !== null;
@@ -205,12 +227,51 @@ export default function HomepageScroll() {
     slideshow.stop();
   };
 
+  function getLocalT(phase) {
+    if (phase === 1) return Math.min(1, Math.max(0, progress / 0.7));
+    return Math.min(1, Math.max(0, (progress - 0.5) / 0.5));
+  }
+
   return (
     <div className="scroll-runway" ref={containerRef}>
       <div className="scroll-sticky">
         <div className="scroll-progress-debug">
           {progress.toFixed(3)}
         </div>
+
+        {CARD_DEFS.map((def) => {
+          const left = colLefts[def.col];
+          const top = rowTops[def.row];
+          const w = colWidths[def.col];
+          const h = rowHeights[def.row];
+          if (w <= 0 || h <= 0) return null;
+
+          const localT = getLocalT(def.phase);
+          let offsetX = 0;
+          let offsetY = 0;
+          switch (def.from) {
+            case "left": offsetX = lerp(-(left + w + gridGap), 0, localT); break;
+            case "right": offsetX = lerp(vw - left + gridGap, 0, localT); break;
+            case "top": offsetY = lerp(-(top + h + gridGap), 0, localT); break;
+            case "bottom": offsetY = lerp(vh - top + gridGap, 0, localT); break;
+          }
+
+          return (
+            <div
+              key={def.id}
+              className="scroll-secondary-card"
+              style={{
+                left,
+                top,
+                width: w,
+                height: h,
+                transform: `translate(${offsetX}px, ${offsetY}px)`,
+              }}
+            >
+              {def.label}
+            </div>
+          );
+        })}
 
         <div
           className={`scroll-hero-wrap${hoverable ? " hoverable" : ""}`}
