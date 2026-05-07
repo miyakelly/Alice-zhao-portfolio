@@ -79,7 +79,17 @@
   text-align: left;
   padding: 20px;
 }
+.metaRow {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
 .year {
+  font-family: var(--f);
+  font-size: clamp(10px, 1.2vw, 12px);
+  color: var(--muted);
+}
+.type {
   font-family: var(--f);
   font-size: clamp(10px, 1.2vw, 12px);
   color: var(--muted);
@@ -98,6 +108,9 @@
   font-size: clamp(10px, 1.2vw, 16px);
   line-height: 1.4;
   color: var(--ink);
+}
+.tags {
+  margin-top: auto;
 }
 .secCardFront.sliding .content {
   color: #fff;

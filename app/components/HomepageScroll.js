@@ -45,7 +45,9 @@ const CARD_DEFS = [
     ...def,
     title: p.cardTitle,
     year: p.year,
+    type: p.type,
     impact: p.impact,
+    tags: p.tags,
     href: `/projects/${p.slug}`,
     slides: [],
   };
@@ -128,7 +130,7 @@ const INTRO_BREAKPOINTS = [
   },
   {
     maxProgress: 0.75,
-    text: "Currently at Amazon AWS.",
+    text: "Defining agentic CX at AWS.",
   },
 ];
 
@@ -223,9 +225,13 @@ function SecondaryCard({ def, style, hoverable }) {
         )}
         {def.title ? (
           <div className={s.content}>
-            <span className={s.year}>{def.year}</span>
+            <div className={s.metaRow}>
+              <span className={s.year}>{def.year}</span>
+              <span className={s.type}>{def.type}</span>
+            </div>
             <h2 className={s.title}>{def.title}</h2>
             <p className={s.impact}>{def.impact}</p>
+            <span className={s.tags}>{def.tags}</span>
           </div>
         ) : (
           <span className={s.label}>{def.label}</span>
