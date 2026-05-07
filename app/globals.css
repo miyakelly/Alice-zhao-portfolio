@@ -12,6 +12,13 @@
   font-display: swap;
   font-style: normal;
 }
+@font-face {
+  font-family: 'IBM Plex Mono';
+  src: url('/fonts/IBMPlexMono-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+  font-style: normal;
+}
 
 :root {
   --bg: #F0F8FF;
@@ -25,6 +32,7 @@
   --paper-line: #738B9E;
   --f: 'Satoshi', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   --f-display: 'EB Garamond', Georgia, 'Times New Roman', serif;
+  --f-mono: 'IBM Plex Mono', 'SF Mono', 'Fira Code', monospace;
 }
 [data-dark] {
   --bg: #110F0B;

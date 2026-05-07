@@ -78,11 +78,33 @@
   align-items: flex-start;
   text-align: left;
   padding: 20px;
+  box-sizing: border-box;
+  /* border: 1px solid red; */
 }
+.centerLayout {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
 .metaRow {
   display: flex;
   justify-content: space-between;
   width: 100%;
+}
+.centerLayout .metaRow {
+  position: absolute;
+  inset: 20px 20px auto 20px;
+  width: auto;
+}
+.centerLayout .title {
+  margin-top: 0;
+}
+.centerLayout .tags {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  margin-top: 0;
 }
 .year {
   font-family: var(--f);
@@ -97,10 +119,11 @@
 .title {
   margin: 20px 0 0;
   font-family: var(--f-display);
-  font-size: clamp(18px, 4vw, 56px);
+  font-size: clamp(18px, 4vw, 48px);
   font-weight: 400;
   line-height: 0.8;
   color: var(--ink);
+  white-space: pre-line;
 }
 .impact {
   margin: 12px 0 0;
@@ -111,6 +134,7 @@
 }
 .tags {
   margin-top: auto;
+  font-family: var(--f-mono);
 }
 .secCardFront.sliding .content {
   color: #fff;

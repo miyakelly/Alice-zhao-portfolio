@@ -233,7 +233,7 @@ export const projects = {
     impact: "Impact statement placeholder",
     description: "",
     type: "AWS",
-    year: "2025 — present",
+    year: "2025 - present",
     role: "Lead UX Designer",
     timeline: "",
     team: [],

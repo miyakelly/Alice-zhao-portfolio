@@ -30,14 +30,47 @@ const HERO_SLIDES = [
 ];
 
 const CARD_DEFS = [
-  { id: "about",     label: "???",               pos: "side-tl",   from: "left" },
-  { id: "my-lab",    label: "My Lab",            pos: "side-bl",   from: "left" },
-  { id: "s3-tables", slug: "s3-tables",          pos: "center-tl", from: "top-left" },
-  { id: "agent-opp", slug: "agent-opportunities", pos: "center-bl", from: "bottom-left" },
-  { id: "sda",       slug: "simplifying-data-access", pos: "center-tr", from: "top-right" },
-  { id: "hidn",      label: "My Design Process", pos: "center-br", from: "bottom-right" },
-  { id: "who-am-i",  label: "Who Am I",          pos: "side-tr",   from: "right" },
-  { id: "links",     label: "Links",             pos: "side-br",   from: "right" },
+  { id: "???",     
+    label: "???",               
+    pos: "side-tl",   
+    from: "left" },
+  { id: "my-lab",    
+    title: "My Lab",    
+    year: "2015 - present",  
+    type: "Seattle",      
+    pos: "side-bl",   
+    from: "left", 
+    layout: "center" },
+  { id: "s3-tables", 
+    slug: "s3-tables",          
+    pos: "center-tl", 
+    from: "top-left" },
+  { id: "agent-opp", 
+    slug: "agent-opportunities", 
+    pos: "center-bl", 
+    from: "bottom-left" },
+  { id: "sda",       
+    slug: "simplifying-data-access", 
+    pos: "center-tr", 
+    from: "top-right" },
+  { id: "hidn",      
+    title: "My Design Process", 
+    year: "2014 - present",
+    pos: "center-br", 
+    from: "bottom-right", 
+    layout: "center" },
+  { id: "about",  
+    title: "About me",  
+    year: "1760CE - 2026",  
+    type: "Earth",   
+    tags: "Human",   
+    pos: "side-tr",   
+    from: "right", 
+    layout: "center" },
+  { id: "links",     
+    label: "Links",             
+    pos: "side-br",   
+    from: "right" },
 ].map(def => {
   if (!def.slug) return { ...def, slides: [] };
   const p = projects[def.slug];
@@ -224,14 +257,16 @@ function SecondaryCard({ def, style, hoverable }) {
           />
         )}
         {def.title ? (
-          <div className={s.content}>
+          <div className={`${s.content} ${def.layout === "center" ? s.centerLayout : ""}`}>
             <div className={s.metaRow}>
-              <span className={s.year}>{def.year}</span>
-              <span className={s.type}>{def.type}</span>
+              {def.year && <span className={s.year}>{def.year}</span>}
+              {def.type && <span className={s.type}>{def.type}</span>}
             </div>
-            <h2 className={s.title}>{def.title}</h2>
-            <p className={s.impact}>{def.impact}</p>
-            <span className={s.tags}>{def.tags}</span>
+            <h2 className={s.title}>
+              {def.title}
+            </h2>
+            {def.impact && <p className={s.impact}>{def.impact}</p>}
+            {def.tags && <span className={s.tags}>{def.tags}</span>}
           </div>
         ) : (
           <span className={s.label}>{def.label}</span>
@@ -253,9 +288,7 @@ export default function HomepageScroll() {
   // It shrinks down to a square that's 80px on mobile or 120px on desktop.
   const heroStart = isMobile ? Math.min(vw * 0.9, 640) : Math.min(530, vw * 0.37);
   const heroEnd = isMobile ? 60 : 120;
-  const avatarStart = (heroStart - 48 * 2) * 0.4;
-  const avatarEnd = heroEnd;
-  const avatarSize = lerp(avatarStart, avatarEnd, progress);
+  const avatarFixed = (heroStart - 48 * 2) * 0.4;
 
   const heroSize = lerp(heroStart, heroEnd, progress);
   //The space between adgacent cards starts at 20px on desktop (with 20px padding on either side) 
@@ -324,10 +357,10 @@ export default function HomepageScroll() {
     ? lerp(1, 0, (progress - 0.65) / 0.1)
     : 1;
 
-  const paddingT = progress > 0.65
-    ? lerp(20, 0, Math.min(1, (progress - 0.65) / 0.1))
-    : 20;
-  const padding = Math.max(0, paddingT);
+  const avatarSize = Math.min(avatarFixed, heroSize);
+  const avatarPad = Math.max(0, (heroSize - avatarFixed) / 2);
+  const textBlend = Math.min(1, Math.max(0, (progress - 0.65) / 0.1));
+  const padding = lerp(20, avatarPad, textBlend);
 
   const titleRatioRef = useFitTitle(titleRef);
   const maxTitleSize = Math.min(36, vw * 0.025);
@@ -444,17 +477,24 @@ export default function HomepageScroll() {
                 alt=""
               />
             )}
-            <div className={s.heroInner} style={{ padding }}>
+            <div
+              className={s.heroInner}
+              style={{
+                padding,
+                alignItems: hasText ? 'flex-start' : 'center',
+                justifyContent: hasText ? 'space-between' : 'center',
+              }}
+            >
               <div
                 className={s.heroAvatar}
                 style={{
-                  width: hasText ? avatarSize : heroSize - padding * 2,
-                  height: hasText ? avatarSize : heroSize - padding * 2,
-                  minWidth: hasText ? avatarSize : heroSize - padding * 2,
-                  minHeight: hasText ? avatarSize : heroSize - padding * 2,
+                  width: avatarSize,
+                  height: avatarSize,
+                  minWidth: avatarSize,
+                  minHeight: avatarSize,
                 }}
               >
-                photo
+                <img src="/img/aboutMe/AliceZhao-Avatar.PNG" alt="Alice Zhao" />
               </div>
               {hasText && (
                 <div className={s.heroText} style={{ opacity: textOpacity }}>
