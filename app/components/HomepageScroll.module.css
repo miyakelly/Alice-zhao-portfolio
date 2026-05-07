@@ -1,0 +1,234 @@
+.runway {
+  height: 300vh;
+  position: relative;
+  overflow-clip-margin: 0px;
+  overflow-x: clip;
+}
+.sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+}
+.progressDebug {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  z-index: 500;
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  font-size: 11px;
+  color: var(--muted);
+  background: var(--bg2);
+  padding: 4px 8px;
+  opacity: 0.7;
+}
+
+.card {
+  position: absolute;
+  text-decoration: none;
+}
+.shadow {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  opacity: 0;
+  transition: opacity 0.3s cubic-bezier(0.25, 0, 0.3, 1);
+}
+.secCardFront {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border: 1px solid #000;
+  background: var(--bg2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: monospace;
+  font-size: clamp(9px, 1.1vw, 11px);
+  color: var(--muted);
+  text-align: center;
+  overflow: hidden;
+  transition: transform 0.3s cubic-bezier(0.25, 0, 0.3, 1);
+}
+.card.hoverable:hover .secCardFront {
+  transform: translate(8px, -8px);
+}
+.card.hoverable:hover .shadow {
+  opacity: 1;
+}
+.slideshow {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+.label {
+  position: relative;
+  z-index: 1;
+}
+.content {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  padding: 20px;
+}
+.year {
+  font-family: var(--f);
+  font-size: clamp(10px, 1.2vw, 12px);
+  color: var(--muted);
+}
+.title {
+  margin: 20px 0 0;
+  font-family: var(--f-display);
+  font-size: clamp(18px, 4vw, 56px);
+  font-weight: 400;
+  line-height: 0.8;
+  color: var(--ink);
+}
+.impact {
+  margin: 12px 0 0;
+  font-family: var(--f);
+  font-size: clamp(10px, 1.2vw, 16px);
+  line-height: 1.4;
+  color: var(--ink);
+}
+.secCardFront.sliding .content {
+  color: #fff;
+}
+.secCardFront.sliding .year,
+.secCardFront.sliding .title,
+.secCardFront.sliding .impact {
+  color: #fff;
+}
+.secCardFront.sliding .label {
+  color: #fff;
+}
+:global([data-dark]) .secCardFront {
+  border-color: var(--ink);
+}
+:global([data-dark]) .shadow {
+  background: var(--ink);
+}
+
+.heroWrap {
+  position: absolute;
+}
+.heroShadow {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  opacity: 0;
+  transition: opacity 0.3s cubic-bezier(0.25, 0, 0.3, 1);
+}
+.heroCard {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border: 1px solid #000;
+  background: var(--bg);
+  transition: background 0.2s, transform 0.3s cubic-bezier(0.25, 0, 0.3, 1);
+}
+.heroWrap.hoverable:hover .heroCard {
+  transform: translate(8px, -8px);
+}
+.heroWrap.hoverable:hover .heroShadow {
+  opacity: 1;
+}
+:global([data-dark]) .heroCard {
+  border-color: var(--ink);
+}
+:global([data-dark]) .heroShadow {
+  background: var(--ink);
+}
+.heroSlideshow {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+.heroCard.sliding .heroInner {
+  position: relative;
+  z-index: 1;
+}
+.heroCard.sliding .heroTitle,
+.heroCard.sliding .heroIntro {
+  color: #fff;
+}
+.heroCard.sliding .heroAvatar {
+  opacity: 0;
+}
+.heroInner {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  overflow: hidden;
+}
+.heroAvatar {
+  border-radius: 0;
+  background: var(--border);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: monospace;
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+  flex-shrink: 0;
+  transition: background 0.2s;
+}
+.heroAvatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.heroText {
+  display: flex;
+  flex-direction: column;
+}
+.heroTitle {
+  font-family: var(--f-display);
+  font-size: clamp(20px, 2.5vw, 36px);
+  font-weight: 400;
+  line-height: 1.2;
+  color: var(--ink);
+  transition: color 0.2s;
+}
+.heroIntro {
+  font-family: var(--f);
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--muted);
+  text-align: left;
+  overflow: hidden;
+  flex-shrink: 1;
+  min-height: 0;
+  margin-top: 8px;
+  transition: color 0.2s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .runway {
+    height: auto;
+  }
+  .sticky {
+    position: relative;
+    top: 0;
+    height: auto;
+  }
+  .progressDebug {
+    display: none;
+  }
+}

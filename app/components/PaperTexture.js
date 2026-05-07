@@ -1,9 +1,11 @@
 "use client";
 
+import styles from "./PaperTexture.module.css";
+
 export default function PaperTexture() {
   return (
-    <div className="paper-texture" aria-hidden="true">
-      <svg className="paper-grain" preserveAspectRatio="none">
+    <div className={styles.texture} aria-hidden="true">
+      <svg className={styles.grain} preserveAspectRatio="none">
         <defs>
           <filter id="paper-noise">
             <feTurbulence
@@ -26,7 +28,7 @@ export default function PaperTexture() {
         <rect width="100%" height="100%" fill="url(#grain-tile)" />
       </svg>
 
-      <svg className="paper-lines" preserveAspectRatio="none">
+      <svg className={styles.lines} preserveAspectRatio="none">
         <defs>
           <pattern
             id="draft-lines"
@@ -58,7 +60,7 @@ export default function PaperTexture() {
         <rect width="100%" height="100%" fill="url(#draft-lines)" />
       </svg>
 
-      <div className="paper-vignette" />
+      <div className={styles.vignette} />
     </div>
   );
 }

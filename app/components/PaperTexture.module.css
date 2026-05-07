@@ -1,0 +1,44 @@
+.texture {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  pointer-events: none;
+}
+.grain {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.04;
+  mix-blend-mode: multiply;
+}
+:global([data-dark]) .grain {
+  opacity: 0.06;
+  mix-blend-mode: soft-light;
+}
+.lines {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.05;
+}
+:global([data-dark]) .lines {
+  opacity: 0.04;
+}
+.vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 40%,
+    rgba(140, 120, 90, 0.06) 100%
+  );
+}
+:global([data-dark]) .vignette {
+  background: radial-gradient(
+    ellipse at center,
+    transparent 40%,
+    rgba(0, 0, 0, 0.12) 100%
+  );
+}

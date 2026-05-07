@@ -2,6 +2,8 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { projects } from "../data/projects";
+import s from "./HomepageScroll.module.css";
 
 const HERO_SLIDES = [
   "/img/hero-card/206311main_wright_brothers_full-1024x637-2214572863.jpg",
@@ -25,22 +27,29 @@ const HERO_SLIDES = [
   "/img/hero-card/hedy-lamarr-2000-908a22cd2d3c490ab20edfa189e95a72-643054585.jpg",
   "/img/hero-card/Perlman_Radia+CIC+judge-595700236.jpg",
   "/img/hero-card/me-2.jpg",
-
 ];
 
-// Pinwheel grid: 4 center cards positioned relative to the hero, 4 side cards flanking.
-// Each center card aligns with one hero edge and has a gap on the perpendicular side.
-// Rotationally symmetric: S3 Tables ↔ My Design Process, Streamlining ↔ Agent.
 const CARD_DEFS = [
-  { id: "about",     label: "???",                       pos: "side-tl",   from: "left",         slides: [] },
-  { id: "my-lab",    label: "My Lab",                    pos: "side-bl",   from: "left",         slides: [] },
-  { id: "s3-tables", label: "S3 Tables",                 pos: "center-tl", from: "top-left",     slides: [], href: "/projects/s3-tables", year: "2025",            title: "S3 Tables",                impact: "Impact statement placeholder" },
-  { id: "agent-opp", label: "Agent Opportunities",       pos: "center-bl", from: "bottom-left",  slides: [],                                     year: "2025 — ongoing",  title: "Agent Opportunities",      impact: "Impact statement placeholder" },
-  { id: "sda",       label: "Streamlining Data Access",  pos: "center-tr", from: "top-right",    slides: [],                                     year: "2024",            title: "Streamlining Data Access", impact: "Impact statement placeholder" },
-  { id: "hidn",      label: "My Design Process",         pos: "center-br", from: "bottom-right", slides: [] },
-  { id: "who-am-i",  label: "Who Am I",                  pos: "side-tr",   from: "right",        slides: [] },
-  { id: "links",     label: "Links",                     pos: "side-br",   from: "right",        slides: [] },
-];
+  { id: "about",     label: "???",               pos: "side-tl",   from: "left" },
+  { id: "my-lab",    label: "My Lab",            pos: "side-bl",   from: "left" },
+  { id: "s3-tables", slug: "s3-tables",          pos: "center-tl", from: "top-left" },
+  { id: "agent-opp", slug: "agent-opportunities", pos: "center-bl", from: "bottom-left" },
+  { id: "sda",       slug: "simplifying-data-access", pos: "center-tr", from: "top-right" },
+  { id: "hidn",      label: "My Design Process", pos: "center-br", from: "bottom-right" },
+  { id: "who-am-i",  label: "Who Am I",          pos: "side-tr",   from: "right" },
+  { id: "links",     label: "Links",             pos: "side-br",   from: "right" },
+].map(def => {
+  if (!def.slug) return { ...def, slides: [] };
+  const p = projects[def.slug];
+  return {
+    ...def,
+    title: p.cardTitle,
+    year: p.year,
+    impact: p.impact,
+    href: `/projects/${p.slug}`,
+    slides: [],
+  };
+});
 
 function useScrollProgress(containerRef) {
   const [progress, setProgress] = useState(0);
@@ -130,7 +139,6 @@ function getIntroText(progress) {
   return null;
 }
 
-// Cycles through images on a timer. interval = ms between swaps (lower = faster, 250 = 4 imgs/sec).
 function useSlideshow(images, interval = 250) {
   const [active, setActive] = useState(false);
   const [index, setIndex] = useState(0);
@@ -199,28 +207,28 @@ function SecondaryCard({ def, style, hoverable }) {
   return (
     <Wrapper
       {...wrapperProps}
-      className={`scroll-secondary-card${hoverable ? " hoverable" : ""}`}
+      className={`${s.card}${hoverable ? ` ${s.hoverable}` : ""}`}
       style={style}
       onMouseEnter={onEnter}
       onMouseLeave={onLeave}
     >
-      <div className="scroll-card-shadow" />
-      <div className={`scroll-card-face${slideshow.active ? " sliding" : ""}`}>
+      <div className={s.shadow} />
+      <div className={`${s.secCardFront}${slideshow.active ? ` ${s.sliding}` : ""}`}>
         {slideshow.active && (
           <img
-            className="scroll-card-slideshow"
+            className={s.slideshow}
             src={def.slides[slideshow.index]}
             alt=""
           />
         )}
         {def.title ? (
-          <div className="scroll-card-content">
-            <span className="scroll-card-year">{def.year}</span>
-            <h2 className="scroll-card-title">{def.title}</h2>
-            <p className="scroll-card-impact">{def.impact}</p>
+          <div className={s.content}>
+            <span className={s.year}>{def.year}</span>
+            <h2 className={s.title}>{def.title}</h2>
+            <p className={s.impact}>{def.impact}</p>
           </div>
         ) : (
-          <span className="scroll-card-label">{def.label}</span>
+          <span className={s.label}>{def.label}</span>
         )}
       </div>
     </Wrapper>
@@ -234,49 +242,70 @@ export default function HomepageScroll() {
 
   const { vw, vh } = useViewportSize();
   const isMobile = vw < 768;
+  // The hero card starts as a square that's 90% of the viewport width on mobile (capped at 640px), 
+  // or 37% of the viewport width on desktop (capped at 530px). 
+  // It shrinks down to a square that's 80px on mobile or 120px on desktop.
   const heroStart = isMobile ? Math.min(vw * 0.9, 640) : Math.min(530, vw * 0.37);
-  const heroEnd = isMobile ? 100 : 120;
+  const heroEnd = isMobile ? 60 : 120;
   const avatarStart = (heroStart - 48 * 2) * 0.4;
   const avatarEnd = heroEnd;
   const avatarSize = lerp(avatarStart, avatarEnd, progress);
 
   const heroSize = lerp(heroStart, heroEnd, progress);
-
-  const gridGap = 20;
-  const gridPad = 20;
+  //The space between adgacent cards starts at 20px on desktop (with 20px padding on either side) 
+  //or 8px on mobile (with 8px padding on either side), and shrinks down to 0.
+  const gridGap = isMobile ? 8 : 20;
+  //The outer margin between the cards and the viewport edges starts at 20px on desktop or 8px on mobile, 
+  //and shrinks down to 0.
+  const gridPad = isMobile ? 8 : 20;
   const totalW = vw - 2 * gridPad;
   const totalH = vh - 2 * gridPad;
   const topY = gridPad;
   const bottomY = topY + totalH;
 
-  const sideW = (totalW - 3 * gridGap) / 6;
+  // mobileRowH describes the height of the mobile rows of the side cards. 
+  // The 0.15 mean 15% of the viewport height of each row, so 30% total for the side cards.
+  const mobileRowH = isMobile ? Math.round(totalH * 0.15) : 0;
+  const pTop = isMobile ? topY + mobileRowH + gridGap : topY;
+  const pBottom = isMobile ? bottomY - mobileRowH - gridGap : bottomY;
+
+  const sideW = isMobile ? 0 : (totalW - 3 * gridGap) / 6;
 
   const heroCX = vw / 2;
-  const heroCY = topY + totalH / 2;
-  const centerL = gridPad + sideW + gridGap;
-  const centerR = vw - gridPad - sideW - gridGap;
+  const heroCY = pTop + (pBottom - pTop) / 2;
+  const centerL = isMobile ? gridPad : gridPad + sideW + gridGap;
+  const centerR = isMobile ? vw - gridPad : vw - gridPad - sideW - gridGap;
 
   const heroLEnd = heroCX - heroEnd / 2;
   const heroREnd = heroCX + heroEnd / 2;
   const heroTEnd = heroCY - heroEnd / 2;
-  const shortH = heroTEnd - gridGap - topY;
-  const tallH = bottomY - heroTEnd;
+  const shortH = heroTEnd - gridGap - pTop;
+  const tallH = pBottom - heroTEnd;
 
   const heroLNow = heroCX - heroSize / 2;
   const heroRNow = heroCX + heroSize / 2;
   const heroTNow = heroCY - heroSize / 2;
 
-  const shortHNow = heroTNow - gridGap - topY;
-  const tallHNow = bottomY - heroTNow;
+  const shortHNow = heroTNow - gridGap - pTop;
+  const tallHNow = pBottom - heroTNow;
 
   function getCardBounds(pos) {
+    if (isMobile && pos.startsWith("side")) {
+      const halfW = (totalW - gridGap) / 2;
+      switch (pos) {
+        case "side-tl": return { left: gridPad, top: topY, width: halfW, height: mobileRowH };
+        case "side-tr": return { left: gridPad + halfW + gridGap, top: topY, width: halfW, height: mobileRowH };
+        case "side-bl": return { left: gridPad, top: bottomY - mobileRowH, width: halfW, height: mobileRowH };
+        case "side-br": return { left: gridPad + halfW + gridGap, top: bottomY - mobileRowH, width: halfW, height: mobileRowH };
+      }
+    }
     switch (pos) {
       case "side-tl":   return { left: gridPad, top: topY, width: sideW, height: shortH };
       case "side-bl":   return { left: gridPad, top: topY + shortH + gridGap, width: sideW, height: tallH };
-      case "center-tl": return { left: centerL, top: topY, width: heroLNow - gridGap - centerL, height: tallHNow };
-      case "center-bl": return { left: centerL, top: topY + tallHNow + gridGap, width: heroRNow - centerL, height: shortHNow };
-      case "center-tr": return { left: heroLNow, top: topY, width: centerR - heroLNow, height: shortHNow };
-      case "center-br": return { left: heroRNow + gridGap, top: topY + shortHNow + gridGap, width: centerR - heroRNow - gridGap, height: tallHNow };
+      case "center-tl": return { left: centerL, top: pTop, width: heroLNow - gridGap - centerL, height: tallHNow };
+      case "center-bl": return { left: centerL, top: pTop + tallHNow + gridGap, width: heroRNow - centerL, height: shortHNow };
+      case "center-tr": return { left: heroLNow, top: pTop, width: centerR - heroLNow, height: shortHNow };
+      case "center-br": return { left: heroRNow + gridGap, top: pTop + shortHNow + gridGap, width: centerR - heroRNow - gridGap, height: tallHNow };
       case "side-tr":   return { left: vw - gridPad - sideW, top: topY, width: sideW, height: tallH };
       case "side-br":   return { left: vw - gridPad - sideW, top: topY + tallH + gridGap, width: sideW, height: shortH };
     }
@@ -321,10 +350,10 @@ export default function HomepageScroll() {
 
   function getEndBounds(pos) {
     switch (pos) {
-      case "center-tl": return { left: centerL, top: topY, width: heroLEnd - gridGap - centerL, height: tallH };
-      case "center-bl": return { left: centerL, top: topY + tallH + gridGap, width: heroREnd - centerL, height: shortH };
-      case "center-tr": return { left: heroLEnd, top: topY, width: centerR - heroLEnd, height: shortH };
-      case "center-br": return { left: heroREnd + gridGap, top: topY + shortH + gridGap, width: centerR - heroREnd - gridGap, height: tallH };
+      case "center-tl": return { left: centerL, top: pTop, width: heroLEnd - gridGap - centerL, height: tallH };
+      case "center-bl": return { left: centerL, top: pTop + tallH + gridGap, width: heroREnd - centerL, height: shortH };
+      case "center-tr": return { left: heroLEnd, top: pTop, width: centerR - heroLEnd, height: shortH };
+      case "center-br": return { left: heroREnd + gridGap, top: pTop + shortH + gridGap, width: centerR - heroREnd - gridGap, height: tallH };
     }
   }
 
@@ -343,9 +372,9 @@ export default function HomepageScroll() {
   }
 
   return (
-    <div className="scroll-runway" ref={containerRef}>
-      <div className="scroll-sticky">
-        <div className="scroll-progress-debug">
+    <div className={s.runway} ref={containerRef}>
+      <div className={s.sticky}>
+        <div className={s.progressDebug}>
           {progress.toFixed(3)}
         </div>
 
@@ -365,6 +394,10 @@ export default function HomepageScroll() {
             const endBounds = getEndBounds(def.pos);
             const { offsetX, offsetY } = getCardOffset(def.from, endBounds);
             style.transform = `translate(${lerp(offsetX, 0, progress)}px, ${lerp(offsetY, 0, progress)}px)`;
+          } else if (isMobile) {
+            const isTopRow = def.pos === "side-tl" || def.pos === "side-tr";
+            const offsetY = isTopRow ? -(bounds.top + bounds.height) : (vh - bounds.top);
+            style.transform = `translate(0px, ${lerp(offsetY, 0, progress)}px)`;
           } else {
             const neighborPos = def.pos.replace("side", "center");
             const neighborDef = CARD_DEFS.find(d => d.pos === neighborPos);
@@ -386,7 +419,7 @@ export default function HomepageScroll() {
         })}
 
         <div
-          className={`scroll-hero-wrap${hoverable ? " hoverable" : ""}`}
+          className={`${s.heroWrap}${hoverable ? ` ${s.hoverable}` : ""}`}
           style={{
             left: heroCX - heroSize / 2,
             top: heroCY - heroSize / 2,
@@ -396,18 +429,18 @@ export default function HomepageScroll() {
           onMouseEnter={onEnter}
           onMouseLeave={onLeave}
         >
-          <div className="scroll-hero-shadow" />
-          <div className={`scroll-hero-card${slideshow.active ? " sliding" : ""}`}>
+          <div className={s.heroShadow} />
+          <div className={`${s.heroCard}${slideshow.active ? ` ${s.sliding}` : ""}`}>
             {slideshow.active && (
               <img
-                className="scroll-hero-slideshow"
+                className={s.heroSlideshow}
                 src={HERO_SLIDES[slideshow.index]}
                 alt=""
               />
             )}
-            <div className="scroll-hero-inner" style={{ padding }}>
+            <div className={s.heroInner} style={{ padding }}>
               <div
-                className="scroll-hero-avatar"
+                className={s.heroAvatar}
                 style={{
                   width: hasText ? avatarSize : heroSize - padding * 2,
                   height: hasText ? avatarSize : heroSize - padding * 2,
@@ -418,15 +451,15 @@ export default function HomepageScroll() {
                 photo
               </div>
               {hasText && (
-                <div className="scroll-hero-text" style={{ opacity: textOpacity }}>
+                <div className={s.heroText} style={{ opacity: textOpacity }}>
                   <h1
                     ref={titleRef}
-                    className="scroll-hero-title"
+                    className={s.heroTitle}
                     style={titleFontSize ? { fontSize: titleFontSize } : undefined}
                   >
                     Alice Zhao, a UX Designer
                   </h1>
-                  <p className="scroll-hero-intro">
+                  <p className={s.heroIntro}>
                     {introText}
                   </p>
                 </div>

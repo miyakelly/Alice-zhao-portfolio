@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { projects } from "../data/projects";
 import Navigation from "./Navigation";
+import navStyles from "./Navigation.module.css";
 import SectionNav from "./SectionNav";
 import AICallout from "./AICallout";
 import DeviceFrame from "./DeviceFrame";
@@ -329,8 +330,8 @@ export default function ProjectDetailClient({ project }) {
         breadcrumb={
           <>
             <Link href="/">Home</Link>
-            <span className="breadcrumb-sep">/</span>
-            <span className="breadcrumb-current">
+            <span className={navStyles.sep}>/</span>
+            <span className={navStyles.current}>
               {project.description
                 ? project.description.split(" ").slice(0, 4).join(" ") + "…"
                 : "Project"}
