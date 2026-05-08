@@ -1,0 +1,15 @@
+.heroText {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+.problem,
+.solution {
+  font-family: var(--f);
+  font-size: clamp(24px, 3.5vw, 40px);
+  font-weight: 700;
+  line-height: 1.1;
+  /* letter-spacing: -0.02em; */
+  color: var(--ink);
+  transition: color 0.2s;
+}

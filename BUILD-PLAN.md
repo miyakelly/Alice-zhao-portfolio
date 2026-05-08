@@ -4,6 +4,104 @@ A living document tracking implementation plans for major features. Each plan st
 
 ---
 
+## Project Detail Page — Visual Style Alignment
+
+**Status:** In progress — Pass 1 complete, Pass 2 next
+
+### Overview
+
+Align the project detail pages with the homepage's visual language: warm parchment backgrounds, thin 1px borders (not filled backgrounds), monospace accents, 400-weight display type, and the restrained cartographic aesthetic. The current project pages feel like a different site (inverted dark hero, heavy 700 weights, filled background boxes).
+
+### Key Decisions
+
+- **No inverted hero.** The dark `var(--card)` background is replaced with `var(--bg)` + a bottom border. Content stays readable through type hierarchy, not color inversion.
+- **Borders over fills.** Containers (decision cards, metrics, reflections, research stats, improvement items, AI callouts) use `1px solid var(--border)` instead of `background: var(--bg2)`.
+- **Monospace vocabulary.** All metadata labels, tags, nav links, and technical text use `var(--f-mono)` (IBM Plex Mono) at small sizes with loose letter-spacing.
+- **Display type at 400.** EB Garamond headings and titles use font-weight 400 (not 700) throughout.
+- **Tags get styled.** Previously unstyled `.tag` spans now have monospace font, thin border, small sizing. AI tag gets accent color.
+
+### Three-Pass Approach
+
+#### Pass 1: Hero section ✅
+
+The biggest visual disconnect. Flip the hero from inverted dark to light, align typography, add tag styles.
+
+**Changes made:**
+- Hero background: `var(--card)` → `var(--bg)` with `border-bottom: 1px solid var(--border)`
+- Title weight: 700 → 400
+- Year: switched to `var(--f-mono)` at `clamp(10px, 1.2vw, 12px)`, color `var(--muted)`
+- Description: `opacity: 0.6` → explicit `color: var(--muted)`
+- Meta details border: `color-mix(in srgb, currentColor 12%, transparent)` → `var(--border)`
+- Meta labels: added `var(--f-mono)`, removed `font-weight: 700`
+- Added `.tag` and `.tag-ai` styles (monospace, thin borders)
+- Keynote callout: rounded border removed, switched to monospace font
+- Metrics in hero: removed `color-mix` overrides (no longer needed on light bg)
+
+**Also updated (same pass, cascading impact):**
+- Section nav links → `var(--f-mono)`
+- Section headings → weight 400
+- Problem part labels → `var(--f-mono)`
+- Research stats → border instead of fill, display font for values
+- AI callout → border instead of fill, monospace text
+- Decision cards → border grid instead of gap + fill
+- Metrics strip → border outline, items separated by left borders
+- Outcome reflection → border instead of fill
+- Future improvements → border instead of fill, stacked borders
+- Device frame → light bg, border dots
+- Next project label → monospace
+- Mobile: adjusted decision card and metrics strip borders for stacked layout
+
+**Files modified:** `app/project.css`
+
+#### Pass 2: Content sections — component-level alignment
+
+Align remaining content components with the border + monospace vocabulary. Review each section in the browser and fix anything that still feels off.
+
+**To check:**
+- Problem scroll layout: diagram area styling, sticky behavior
+- Iteration blocks: subheading size/weight balance
+- Outcome visuals: device frame proportions and spacing
+- Redacted marker: still uses `var(--ink)` fill (intentional, keep it)
+- Responsive: verify all border changes work on mobile stacked layouts
+- Dark mode: verify border visibility with dark theme variables
+
+**Review checkpoint:** Does the full page (hero through next-project link) feel like the same site as the homepage?
+
+#### Pass 3: Typography and spacing
+
+Final pass to tighten spacing, align font sizes with the homepage scale, and ensure information density is consistent.
+
+**To check:**
+- Body text size consistency (`15px` throughout vs homepage patterns)
+- Spacing rhythm (padding, margins) — tighter where possible
+- Section padding: 64px may be too generous if homepage is denser
+- Line-heights across body copy, labels, headings
+- Max-width constraints on text blocks
+
+**Review checkpoint:** Scan through both the homepage and a project page side by side. Do they feel like the same designer made them?
+
+### Files
+
+| File | Purpose |
+|---|---|
+| `app/project.css` | All project detail page styles |
+| `app/components/ProjectDetailClient.js` | Main project detail component |
+| `app/components/SectionNav.js` | Sticky section navigation |
+| `app/components/AICallout.js` | AI tool usage callouts |
+| `app/components/MetricsCounter.js` | Animated metrics display |
+| `app/components/DeviceFrame.js` | Browser frame for screenshots |
+| `app/data/projects.js` | Project content data (read-only reference) |
+
+### Constraints
+
+- No animation libraries (CSS transitions only)
+- `prefers-reduced-motion: reduce` — page must work as static layout
+- Dark mode must remain functional (borders use `var(--border)` which adapts)
+- Responsive: all borders must handle mobile stacking gracefully
+- Font loading: IBM Plex Mono uses `font-display: swap`
+
+---
+
 ## Homepage Scroll Animation
 
 **Status:** In progress — Step 3 complete, Step 4 in progress

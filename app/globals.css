@@ -44,6 +44,25 @@
   --card2: #211E18;
   --paper-line: #5a5040;
 }
+.hover-card {
+  transition: transform 0.3s cubic-bezier(0.25, 0, 0.3, 1),
+              box-shadow 0.3s cubic-bezier(0.25, 0, 0.3, 1);
+}
+.hover-card:hover {
+  transform: translate(8px, -8px);
+  box-shadow: -8px 8px 0 #000;
+}
+@media (hover: none) {
+  .hover-card:active {
+    transform: translate(4px, -4px);
+    box-shadow: -4px 4px 0 #000;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hover-card { transition: none; }
+  .hover-card:hover { transform: none; box-shadow: none; }
+}
+
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
 body {

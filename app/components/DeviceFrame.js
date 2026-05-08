@@ -1,6 +1,6 @@
 export default function DeviceFrame({ children, alt, placeholder }) {
   return (
-    <div className="device-frame">
+    <div className="device-frame hover-card">
       <div className="device-frame-bar">
         <span className="device-dot" />
         <span className="device-dot" />

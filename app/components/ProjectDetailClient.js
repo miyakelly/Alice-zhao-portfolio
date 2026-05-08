@@ -9,6 +9,10 @@ import SectionNav from "./SectionNav";
 import AICallout from "./AICallout";
 import DeviceFrame from "./DeviceFrame";
 import MetricsCounter from "./MetricsCounter";
+import HeroText from "./HeroText";
+import ProjectLogistics from "./ProjectLogistics";
+import MetricStack from "./MetricStack";
+import HeroVisual from "./HeroVisual";
 import {
   DiagramImagine,
   DiagramProblem,
@@ -40,7 +44,7 @@ function ResearchStats({ stats }) {
   return (
     <div className="research-stats">
       {stats.map((s, i) => (
-        <div key={i} className="research-stat">
+        <div key={i} className="research-stat hover-card">
           <span className="research-stat-value">{s.value}</span>
           <span className="research-stat-label">{s.label}</span>
         </div>
@@ -51,7 +55,7 @@ function ResearchStats({ stats }) {
 
 function DecisionCard({ before, after, why }) {
   return (
-    <div className="decision-card">
+    <div className="decision-card hover-card">
       <div className="decision-before">
         <span className="decision-label">Before</span>
         <p>{before}</p>
@@ -128,7 +132,8 @@ function ProblemSectionScrollable({ content }) {
 
 function ProblemSection({ section }) {
   const { content, aiCallout, research } = section;
-  const hasDiagrams = content.some((part) => part.diagram);
+  const isArray = Array.isArray(content);
+  const hasDiagrams = isArray && content.some((part) => part.diagram);
 
   return (
     <section id={section.id} className="project-section">
@@ -142,7 +147,7 @@ function ProblemSection({ section }) {
             </div>
           )}
         </>
-      ) : (
+      ) : isArray ? (
         <div className="problem-grid">
           <div className="problem-narrative">
             {content.map((part, i) => (
@@ -156,7 +161,7 @@ function ProblemSection({ section }) {
             {research && <ResearchStats stats={research.stats} />}
           </div>
         </div>
-      )}
+      ) : null}
       {aiCallout && <AICallout icon={aiCallout.icon} text={aiCallout.text} />}
     </section>
   );
@@ -332,9 +337,7 @@ export default function ProjectDetailClient({ project }) {
             <Link href="/">Home</Link>
             <span className={navStyles.sep}>/</span>
             <span className={navStyles.current}>
-              {project.description
-                ? project.description.split(" ").slice(0, 4).join(" ") + "…"
-                : "Project"}
+              {project.navTitle || "Project"}
             </span>
           </>
         }
@@ -343,50 +346,24 @@ export default function ProjectDetailClient({ project }) {
       <article className="project-detail">
         <header className="project-hero">
           <div className="project-hero-inner">
-            <div className="project-meta-row">
-              <span className="project-year">{project.year}</span>
-              <div className="project-tags">
-                {project.tags.map((t) => (
-                  <span key={t} className={`tag${t === "AI" ? " tag-ai" : ""}`}>{t}</span>
-                ))}
-              </div>
-            </div>
-            <h1 className="project-title">{project.title}</h1>
-            <p className="project-description">{project.description}</p>
-            <div className="project-meta-details">
-              <div className="meta-detail">
-                <span className="meta-label">Role</span>
-                <span className="meta-value">{project.role}</span>
-              </div>
-              {project.timeline && (
-                <div className="meta-detail">
-                  <span className="meta-label">Timeline</span>
-                  <span className="meta-value">{project.timeline}</span>
-                </div>
-              )}
-              {project.team && project.team.length > 0 && (
-                <div className="meta-detail">
-                  <span className="meta-label">Team</span>
-                  <ul className="meta-team-list">
-                    {project.team.map((member, i) => (
-                      <li key={i}>{member}</li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-            </div>
-            {project.keynote && (
-              <a
-                href={project.keynote.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="keynote-callout"
-              >
-                <span className="keynote-label">{project.keynote.label}</span>
-                <span className="keynote-icon">↗</span>
-              </a>
-            )}
-            <MetricsCounter metrics={project.metrics} />
+            <HeroVisual
+              src={project.heroImage}
+              alt={project.title}
+            />
+            <ProjectLogistics
+              role={project.role}
+              timeline={project.timeline}
+              team={project.team}
+            />
+            <HeroText
+              problem={project.heroProblem}
+              solution={project.heroSolution}
+              keynote={project.keynote}
+            />
+            <MetricStack
+              metrics={project.metrics}
+              direction="vertical"
+            />
           </div>
         </header>
 
