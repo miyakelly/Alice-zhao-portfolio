@@ -63,7 +63,7 @@ const CARD_DEFS = [
     title: "About me",  
     year: "1760CE - 2026",  
     type: "Earth",   
-    tags: "Human",   
+    tags: "Human, mostly",   
     pos: "side-tr",   
     from: "right", 
     layout: "center" },
@@ -288,7 +288,7 @@ export default function HomepageScroll() {
   // It shrinks down to a square that's 80px on mobile or 120px on desktop.
   const heroStart = isMobile ? Math.min(vw * 0.9, 640) : Math.min(530, vw * 0.37);
   const heroEnd = isMobile ? 60 : 120;
-  const avatarFixed = (heroStart - 48 * 2) * 0.4;
+  const avatarFixed = Math.max((heroStart - 48 * 2) * 0.4, heroEnd);
 
   const heroSize = lerp(heroStart, heroEnd, progress);
   //The space between adgacent cards starts at 20px on desktop (with 20px padding on either side) 
@@ -365,7 +365,7 @@ export default function HomepageScroll() {
   const titleRatioRef = useFitTitle(titleRef);
   const maxTitleSize = Math.min(36, vw * 0.025);
   const availableWidth = heroSize - padding * 2;
-  const titleFontSize = titleRatioRef.current
+  const titleFontSize = !isMobile && titleRatioRef.current
     ? Math.min(maxTitleSize, availableWidth * titleRatioRef.current)
     : null;
 
@@ -435,8 +435,13 @@ export default function HomepageScroll() {
             style.transform = `translate(${lerp(offsetX, 0, progress)}px, ${lerp(offsetY, 0, progress)}px)`;
           } else if (isMobile) {
             const isTopRow = def.pos === "side-tl" || def.pos === "side-tr";
-            const offsetY = isTopRow ? -(bounds.top + bounds.height) : (vh - bounds.top);
-            style.transform = `translate(0px, ${lerp(offsetY, 0, progress)}px)`;
+            const neighborPos = def.pos.replace("side", "center");
+            const neighborDef = CARD_DEFS.find(d => d.pos === neighborPos);
+            const neighborEndBounds = getEndBounds(neighborPos);
+            const neighborOffset = getCardOffset(neighborDef.from, neighborEndBounds);
+            const sideOffsetY = isTopRow ? -(bounds.top + bounds.height) : (vh - bounds.top);
+            const totalY = neighborOffset.offsetY + sideOffsetY;
+            style.transform = `translate(0px, ${lerp(totalY, 0, progress)}px)`;
           } else {
             const neighborPos = def.pos.replace("side", "center");
             const neighborDef = CARD_DEFS.find(d => d.pos === neighborPos);
