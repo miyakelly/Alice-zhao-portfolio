@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import styles from "./Navigation.module.css";
 
-export default function Navigation({ breadcrumb, isHome }) {
+export default function Navigation({ title, isHome }) {
   const [dark, setDark] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -33,14 +33,12 @@ export default function Navigation({ breadcrumb, isHome }) {
         >
           <span></span><span></span><span></span>
         </button>
+        {title && <span className={styles.title}>{title}</span>}
         {isHome ? (
-          <a href="#" className={styles.logo}>Alice (Liang) Zhao</a>
+          <a href="#" className={styles.name}>Alice Zhao</a>
         ) : (
-          <Link href="/" className={styles.logo}>Alice (Liang) Zhao</Link>
+          <Link href="/" className={styles.name}>Alice Zhao</Link>
         )}
-        <nav className={styles.breadcrumb}>
-          {breadcrumb}
-        </nav>
         <button
           className={styles.modeBtn}
           onClick={() => setDark((d) => !d)}

@@ -116,20 +116,20 @@ export const projects = {
       {
         id: "problem",
         navLabel: "01 Problem",
-        heading: "The Problem",
+        heading: "The problem",
         content: [
           {
             label: "Imagine",
-            text: "You lead data infrastructure at a billion-dollar company. Every year, you spend millions storing tabular data in S3 buckets that only support unstructured storage, while maintaining custom infrastructure just to keep that data ready for analytics and AI/ML workloads. You need a solution built for tabular data that eliminates the custom infrastructure entirely.",
+            text: "You are the director of technology at a billion-dollar company, spending millions storing tabular data in S3 buckets that only support unstructured storage, while maintaining custom infrastructure just to keep that data ready for AI/ML workloads. You need a solution built for tabular data that eliminates the custom infrastructure entirely.",
             diagram: "imagine",
           },
           {
-            label: "How I identified the problem",
-            text: "After reviewing transcripts from over 20 enterprise customer interviews, a clear pattern emerged. Teams were stitching together multiple tools for basic operations: keeping data up-to-date, managing access control, and integrating storage with query engines. All of which were costly and time-consuming to maintain. Customers told us they didn't want to think about table maintenance, that it was an operational burden, and that they were looking for a better way to improve query performance. The real cost wasn't just the infrastructure, it was the resources and expertise tied up maintaining it instead of building products.",
+            label: "Identify the problem",
+            text: "After reviewing transcripts from 20+ enterprise customer interviews, a clear pattern emerged. Teams were stitching together multiple tools for basic operations: keeping data up-to-date, managing access control, and integrating storage with query engines. All of which were costly and time-consuming to maintain. Customers told us they didn't want to think about table maintenance, that it was an operational burden, and that they were looking for a better way to improve query performance. The real cost wasn't just the infrastructure, it was the resources and expertise tied up maintaining it instead of building products.",
             diagram: "problem",
           },
           {
-            label: "What we built",
+            label: "What to build",
             text: "We decided to build a completely new S3 product, S3 Tables, designed specifically for analytics and AI/ML workloads. Instead of requiring customers to build and maintain their own infrastructure, S3 Tables handles data maintenance and query engine integration automatically. The result is a streamlined experience where customers go from storing data to analyzing it without assembling anything in between.",
             diagram: "solution",
           },

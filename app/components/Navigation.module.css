@@ -1,10 +1,10 @@
 .nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 300;
   height: 40px;
-  display: flex; align-items: center; justify-content: space-between;
+  display: flex; align-items: center;
   padding: 0;
   background: var(--bg);
-  border-bottom: 1px solid transparent;
+  /* border-bottom: 1px solid transparent; */
   transition: border-color 0.2s, background 0.2s;
 }
 .nav.scrolled { border-color: var(--border); }
@@ -29,13 +29,30 @@
 .menuBtn.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
 .menuBtn.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
 
-.logo {
-  font-size: 13px; font-weight: 700; letter-spacing: -0.01em;
-  text-decoration: none; color: var(--ink); transition: color 0.2s; margin-left: 20px;
+.title {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink);
+  margin-left: 12px;
+  white-space: nowrap;
+  transition: color 0.2s;
+}
+.name {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  text-decoration: none;
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  transition: color 0.2s;
 }
 
 .modeBtn {
   width: 40px; height: 40px; flex-shrink: 0;
+  margin-left: auto;
   background: var(--card);
   border: none; cursor: pointer;
   display: flex; align-items: center; justify-content: center;
@@ -55,14 +72,6 @@
 :global([data-dark]) .iconMoon { opacity: 0; transform: rotate(-90deg) scale(0.6); }
 :global([data-dark]) .iconSun  { opacity: 1; transform: rotate(0deg) scale(1); }
 
-.breadcrumb {
-  display: flex; align-items: center; gap: 8px; font-size: 12px;
-  flex: 1; justify-content: center;
-}
-.breadcrumb a { color: var(--muted); text-decoration: none; transition: color 0.15s; }
-.breadcrumb a:hover { color: var(--ink); }
-.sep { color: var(--border); font-size: 11px; transition: color 0.2s; }
-.current { color: var(--ink); font-weight: 500; transition: color 0.2s; }
 
 .overlay {
   display: none; position: fixed; inset: 0; z-index: 298;
@@ -109,5 +118,5 @@
 
 @media (max-width: 900px) {
   .nav { padding: 0; }
-  .breadcrumb { display: none; }
+  .title { display: none; }
 }

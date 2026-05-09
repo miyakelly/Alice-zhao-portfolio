@@ -14,3 +14,12 @@
   text-align: right;
   transition: color 0.2s;
 }
+@media (max-width: 900px) {
+  .sidebar {
+    align-items: flex-start;
+    align-self: start;
+  }
+  .item {
+    text-align: left;
+  }
+}

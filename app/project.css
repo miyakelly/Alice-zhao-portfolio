@@ -13,6 +13,7 @@
   flex-direction: column;
   border-bottom: 1px solid var(--border);
   transition: background 0.2s, color 0.2s, border-color 0.2s;
+  overflow-x: hidden;
 }
 .project-hero-inner {
   display: grid;
@@ -28,16 +29,18 @@
   margin: 0 -40px 0 0;
 }
 .project-hero-inner > :nth-child(2) {
-  grid-column: 7 / 9;
-  grid-row: 2;
-  align-self: end;
-  padding-right: 40px;
-}
-.project-hero-inner > :nth-child(3) {
   grid-column: 1 / 7;
   grid-row: 2;
   align-self: end;
   padding-top: 20px;
+  position: relative;
+  z-index: 1;
+}
+.project-hero-inner > :nth-child(3) {
+  grid-column: 7 / 9;
+  grid-row: 2;
+  align-self: end;
+  padding-right: 40px;
 }
 .project-hero-inner > :nth-child(4) {
   grid-column: 1 / -1;
@@ -101,9 +104,9 @@
   border-bottom: none;
 }
 .section-heading {
-  font-family: var(--f-display);
-  font-size: clamp(24px, 3vw, 40px);
-  font-weight: 400;
+  font-family: var(--f);
+  font-size: clamp(12px, 3vw, 16px);
+  font-weight: 600;
   letter-spacing: -0.02em;
   margin-bottom: 40px;
 }
@@ -124,9 +127,8 @@
 }
 .problem-part-label {
   display: block;
-  font-family: var(--f-mono);
-  font-size: 10px;
-  letter-spacing: 0.06em;
+  font-family: var(--f);
+  font-size: clamp(16px, 3vw, 20px);
   text-transform: uppercase;
   color: var(--accent);
   margin-bottom: 8px;
@@ -577,26 +579,39 @@
 /* ── RESPONSIVE ── */
 @media (max-width: 900px) {
   .project-hero {
-    padding: 48px 24px 36px;
+    padding: 0;
   }
   .project-hero-inner {
     grid-template-columns: 1fr;
     gap: 24px;
+    padding: 0;
   }
-  .project-hero-inner > :nth-child(1),
-  .project-hero-inner > :nth-child(2),
-  .project-hero-inner > :nth-child(3),
+  .project-hero-inner > :nth-child(1) {
+    grid-column: 1;
+    grid-row: 1;
+    margin-left: 40px;
+  }
+  .project-hero-inner > :nth-child(2) {
+    grid-column: 1;
+    grid-row: 2;
+    padding: 20px 40px 0;
+  }
+  .project-hero-inner > :nth-child(3) {
+    grid-column: 1;
+    grid-row: 3;
+    align-self: start;
+    padding: 0 40px;
+  }
   .project-hero-inner > :nth-child(4) {
     grid-column: 1;
-    grid-row: auto;
-    padding-top: 0;
-    margin-top: 0;
+    grid-row: 4;
+    padding: 24px 40px 0;
   }
   .project-content {
-    padding: 0 24px;
+    padding: 0 40px;
   }
   .section-nav-track {
-    padding: 0 24px;
+    padding: 0 40px;
   }
   .problem-grid {
     grid-template-columns: 1fr;

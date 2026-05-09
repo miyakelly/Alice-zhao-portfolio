@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { projects } from "../data/projects";
 import Navigation from "./Navigation";
-import navStyles from "./Navigation.module.css";
 import SectionNav from "./SectionNav";
 import AICallout from "./AICallout";
 import DeviceFrame from "./DeviceFrame";
@@ -329,36 +328,63 @@ export default function ProjectDetailClient({ project }) {
     ? projects[project.nextProject]
     : null;
 
+  const imageRef = useRef(null);
+  const textRef = useRef(null);
+
+  useEffect(() => {
+    const prefersReduced = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    if (prefersReduced) return;
+
+    const PARALLAX = 0.5;
+
+    function onScroll() {
+      const scrollY = window.scrollY;
+
+      if (imageRef.current) {
+        imageRef.current.style.transform = `translateY(${scrollY * PARALLAX}px)`;
+      }
+
+      if (imageRef.current && textRef.current) {
+        const imageBottom = imageRef.current.getBoundingClientRect().bottom;
+        const paragraphs = textRef.current.querySelectorAll("p");
+        paragraphs.forEach((p) => {
+          const overlap = Math.max(0, imageBottom - p.getBoundingClientRect().top);
+          p.style.setProperty("--overlap", `${overlap}px`);
+        });
+      }
+    }
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    requestAnimationFrame(onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
     <>
-      <Navigation
-        breadcrumb={
-          <>
-            <Link href="/">Home</Link>
-            <span className={navStyles.sep}>/</span>
-            <span className={navStyles.current}>
-              {project.navTitle || "Project"}
-            </span>
-          </>
-        }
-      />
+      <Navigation title={project.navTitle || "Project"} />
 
       <article className="project-detail">
         <header className="project-hero">
           <div className="project-hero-inner">
-            <HeroVisual
-              src={project.heroImage}
-              alt={project.title}
-            />
+            <div ref={imageRef} style={{ willChange: "transform" }}>
+              <HeroVisual
+                src={project.heroImage}
+                alt={project.title}
+              />
+            </div>
+            <div ref={textRef}>
+              <HeroText
+                problem={project.heroProblem}
+                solution={project.heroSolution}
+                keynote={project.keynote}
+              />
+            </div>
             <ProjectLogistics
               role={project.role}
               timeline={project.timeline}
               team={project.team}
-            />
-            <HeroText
-              problem={project.heroProblem}
-              solution={project.heroSolution}
-              keynote={project.keynote}
             />
             <MetricStack
               metrics={project.metrics}
