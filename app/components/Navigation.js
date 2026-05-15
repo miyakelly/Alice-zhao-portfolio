@@ -1,22 +1,34 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import styles from "./Navigation.module.css";
 
 export default function Navigation({ title, isHome }) {
   const [dark, setDark] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+  const navRef = useRef(null);
 
   useEffect(() => {
     document.body.toggleAttribute("data-dark", dark);
   }, [dark]);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 10);
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
+    const onNavVisibility = (e) => {
+      if (!navRef.current) return;
+      const p = e.detail.progress;
+      navRef.current.style.transform = `translateY(${-p * 60}px)`;
+    };
+    const onToggleDrawer = () => setDrawerOpen((o) => !o);
+    const onToggleMode = () => setDark((d) => !d);
+    window.addEventListener("nav-visibility", onNavVisibility);
+    window.addEventListener("toggle-drawer", onToggleDrawer);
+    window.addEventListener("toggle-mode", onToggleMode);
+    return () => {
+      window.removeEventListener("nav-visibility", onNavVisibility);
+      window.removeEventListener("toggle-drawer", onToggleDrawer);
+      window.removeEventListener("toggle-mode", onToggleMode);
+    };
   }, []);
 
   const closeDrawer = () => setDrawerOpen(false);
@@ -25,7 +37,7 @@ export default function Navigation({ title, isHome }) {
 
   return (
     <>
-      <nav className={`${styles.nav}${scrolled ? ` ${styles.scrolled}` : ""}`}>
+      <div className={styles.fixedBtns}>
         <button
           className={`${styles.menuBtn}${drawerOpen ? ` ${styles.open}` : ""}`}
           onClick={() => setDrawerOpen((o) => !o)}
@@ -33,12 +45,6 @@ export default function Navigation({ title, isHome }) {
         >
           <span></span><span></span><span></span>
         </button>
-        {title && <span className={styles.title}>{title}</span>}
-        {isHome ? (
-          <a href="#" className={styles.name}>Alice Zhao</a>
-        ) : (
-          <Link href="/" className={styles.name}>Alice Zhao</Link>
-        )}
         <button
           className={styles.modeBtn}
           onClick={() => setDark((d) => !d)}
@@ -47,6 +53,15 @@ export default function Navigation({ title, isHome }) {
           <span className={`${styles.icon} ${styles.iconMoon}`}>☽</span>
           <span className={`${styles.icon} ${styles.iconSun}`}>☀</span>
         </button>
+      </div>
+
+      <nav ref={navRef} className={styles.nav}>
+        {title && <span className={styles.title}>{title}</span>}
+        {isHome ? (
+          <a href="#" className={styles.name}>Alice Zhao</a>
+        ) : (
+          <Link href="/" className={styles.name}>Alice Zhao</Link>
+        )}
       </nav>
 
       <div className={`${styles.overlay}${drawerOpen ? ` ${styles.open}` : ""}`} onClick={closeDrawer} />

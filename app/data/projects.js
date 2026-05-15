@@ -89,8 +89,8 @@ export const projects = {
     title: "Designing AWS S3 Tables that eliminates complex infrastructure for AI/ML workload",
     cardTitle: "AWS S3 Tables:\n0→1 in 8 weeks",
     navTitle: "AWS S3 Tables: 0 → 1 in 8 weeks",
-    heroProblem: "Companies were spending millions and months building and maintaining custom infrastructure just to keep their data analytics running.",
-    heroSolution: "S3 Tables, {keynote}, handles your infrastructure automatically, letting teams turn big data into insights in seconds.",
+    heroProblem: "Companies spend millions and months building and maintaining complex infrastructure for data analytics and AI/ML workloads.",
+    heroSolution: "S3 Tables, {keynote}, handles your infrastructure automatically, providing a seamless console experience that lets teams turn big data into insights in seconds.",
     impact: "A seamless console experience that turns big data into insights in seconds",
     description: "Companies were spending millions building and maintaining custom infrastructure just to keep their data analytics running. S3 Tables handles that automatically, letting teams redirect engineering resources from maintenance to actual insights.",
     type: "AWS",
@@ -115,22 +115,22 @@ export const projects = {
     sections: [
       {
         id: "problem",
-        navLabel: "01 Problem",
-        heading: "The problem",
+        navLabel: "01 The problem",
+        heading: ["01 The problem,", " the customers, and what to build became clear after transcribing 20+ customer interviews with internal AI tools"],
         content: [
           {
-            label: "Imagine",
-            text: "You are the director of technology at a billion-dollar company, spending millions storing tabular data in S3 buckets that only support unstructured storage, while maintaining custom infrastructure just to keep that data ready for AI/ML workloads. You need a solution built for tabular data that eliminates the custom infrastructure entirely.",
+            label: "Customers",
+            text: "Customers like the director of technology at a billion-dollar company are spending millions storing tabular data in an unstructured storage, while maintaining custom infrastructure just to keep that data ready for AI/ML workloads.",
             diagram: "imagine",
           },
           {
-            label: "Identify the problem",
-            text: "After reviewing transcripts from 20+ enterprise customer interviews, a clear pattern emerged. Teams were stitching together multiple tools for basic operations: keeping data up-to-date, managing access control, and integrating storage with query engines. All of which were costly and time-consuming to maintain. Customers told us they didn't want to think about table maintenance, that it was an operational burden, and that they were looking for a better way to improve query performance. The real cost wasn't just the infrastructure, it was the resources and expertise tied up maintaining it instead of building products.",
+            label: "Problems",
+            text: "Customers need a better way to improve basic operations like keeping data up-to-date, managing data access, and integrating with query engines, so they can allocate the resources and expertise for building products.",
             diagram: "problem",
           },
           {
             label: "What to build",
-            text: "We decided to build a completely new S3 product, S3 Tables, designed specifically for analytics and AI/ML workloads. Instead of requiring customers to build and maintain their own infrastructure, S3 Tables handles data maintenance and query engine integration automatically. The result is a streamlined experience where customers go from storing data to analyzing it without assembling anything in between.",
+            text: "We decided to build S3 Tables, a new product that is designed for analytics and AI/ML workloads. It handles data maintenance and query engine integration automatically. The result is a streamlined experience where customers go from storing data to analyzing it without assembling anything in between.",
             diagram: "solution",
           },
         ],
@@ -142,7 +142,7 @@ export const projects = {
       {
         id: "design-iteration",
         navLabel: "02 Design Iteration",
-        heading: "Challenges and Iteration",
+        heading: ["02 Challenges emerged and iteration", ],
         content: [
           {
             label: "The First Challenge: Defining What to Build in 8 Weeks",
@@ -183,7 +183,7 @@ export const projects = {
       {
         id: "outcome",
         navLabel: "03 Outcome",
-        heading: "Shipped Product and Results",
+        heading: ["03 Outcome", " is overwhelmingly positive"],
         content: [
           {
             subheading: "Overall Summary",
@@ -211,7 +211,7 @@ export const projects = {
       {
         id: "whats-next",
         navLabel: "04 What's Next",
-        heading: "What's Next",
+        heading: ["04 What's next", " for S3 Tables"],
         content: {
           reflection: "The biggest lesson was that the hardest design problem wasn't any single screen, it was creating the framework that let a 50-person team move fast on a brand new product category. The JTBD framework turned out to be my highest-leverage contribution: it didn't just define what we'd build, it gave everyone a shared language for making trade-offs under extreme time pressure.",
           futureImprovements: [

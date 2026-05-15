@@ -12,31 +12,6 @@ import HeroText from "./HeroText";
 import ProjectLogistics from "./ProjectLogistics";
 import MetricStack from "./MetricStack";
 import HeroVisual from "./HeroVisual";
-import {
-  DiagramImagine,
-  DiagramProblem,
-  DiagramSolution,
-} from "./S3TablesProblemDiagrams";
-import {
-  DiagramScopingChaos,
-  DiagramScopingOrganized,
-  DiagramScopingPrioritized,
-  DiagramIntegrationChallenge,
-  DiagramIntegrationOptions,
-  DiagramIntegrationSolution,
-} from "./S3TablesIterationDiagrams";
-
-const DIAGRAM_COMPONENTS = {
-  imagine: DiagramImagine,
-  problem: DiagramProblem,
-  solution: DiagramSolution,
-  "scoping-chaos": DiagramScopingChaos,
-  "scoping-organized": DiagramScopingOrganized,
-  "scoping-prioritized": DiagramScopingPrioritized,
-  "integration-challenge": DiagramIntegrationChallenge,
-  "integration-options": DiagramIntegrationOptions,
-  "integration-solution": DiagramIntegrationSolution,
-};
 
 function ResearchStats({ stats }) {
   if (!stats || stats.length === 0) return null;
@@ -73,57 +48,102 @@ function DecisionCard({ before, after, why }) {
   );
 }
 
-function ProblemSectionScrollable({ content }) {
+const VISUAL_COLUMNS = ["S3 Tables", "Integration", "Engine"];
+
+function ProblemSectionSticky({ content }) {
+  const runwayRef = useRef(null);
+  const frameRef = useRef(null);
   const [activeIndex, setActiveIndex] = useState(0);
-  const partRefs = useRef([]);
+  const [isReduced, setIsReduced] = useState(false);
+  const numSteps = content.length;
 
   useEffect(() => {
-    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (prefersReduced) return;
+    const reduced = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    setIsReduced(reduced);
+    if (reduced) return;
 
-    const observers = [];
-    partRefs.current.forEach((el, i) => {
-      if (!el) return;
-      const observer = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) setActiveIndex(i);
-        },
-        { rootMargin: "-40% 0px -40% 0px" }
+    function onScroll() {
+      if (!runwayRef.current || !frameRef.current) return;
+      const rect = runwayRef.current.getBoundingClientRect();
+      const stickyTop = 80;
+      const scrolled = stickyTop - rect.top;
+      const frameH = frameRef.current.offsetHeight;
+      const scrollable = runwayRef.current.offsetHeight - frameH;
+      if (scrollable <= 0) return;
+      const progress = Math.max(0, Math.min(0.999, scrolled / scrollable));
+      setActiveIndex(
+        Math.min(numSteps - 1, Math.floor(progress * numSteps))
       );
-      observer.observe(el);
-      observers.push(observer);
-    });
-    return () => observers.forEach((o) => o.disconnect());
-  }, [content]);
+    }
 
-  return (
-    <div className="problem-scroll-layout">
-      <div className="problem-scroll-text">
+    window.addEventListener("scroll", onScroll, { passive: true });
+    requestAnimationFrame(onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [numSteps]);
+
+  if (isReduced) {
+    return (
+      <div>
         {content.map((part, i) => (
-          <div
-            key={i}
-            ref={(el) => (partRefs.current[i] = el)}
-            className="problem-scroll-part"
-          >
+          <div key={i} className="ps-fallback-part">
             <span className="problem-part-label">{part.label}</span>
             <p>{part.text}</p>
           </div>
         ))}
       </div>
-      <div className="problem-scroll-diagrams">
-        <div className="problem-scroll-diagrams-sticky">
-          {content.map((part, i) => {
-            const DiagramComp = part.diagram && DIAGRAM_COMPONENTS[part.diagram];
-            return (
+    );
+  }
+
+  function slideOffset(i) {
+    if (i < activeIndex) return -100;
+    if (i > activeIndex) return 100;
+    return 0;
+  }
+
+  return (
+    <div
+      ref={runwayRef}
+      className="ps-runway"
+      style={{ height: `${numSteps * 100}vh` }}
+    >
+      <div ref={frameRef} className="ps-frame">
+        <div className="ps-rule" />
+        <div className="ps-grid">
+          <div className="ps-text">
+            {content.map((part, i) => (
               <div
                 key={i}
-                className={`problem-scroll-diagram ${activeIndex === i ? "active" : ""}`}
+                className="ps-text-slide"
+                style={{ transform: `translateY(${slideOffset(i)}%)` }}
               >
-                {DiagramComp ? <DiagramComp /> : null}
+                <span className="problem-part-label">{part.label}</span>
+                <p className="ps-body">{part.text}</p>
               </div>
-            );
-          })}
+            ))}
+          </div>
+          <div className="ps-visuals">
+            {VISUAL_COLUMNS.map((_, ci) => (
+              <div key={ci} className="ps-rect">
+                {content.map((_, si) => {
+                  const hue = (ci * 120 + si * 40) % 360;
+                  return (
+                    <div
+                      key={si}
+                      className="ps-rect-slide"
+                      style={{
+                        transform: `translateY(${slideOffset(si)}%)`,
+                        background: `hsl(${hue}, 30%, 80%)`,
+                      }}
+                    />
+                  );
+                })}
+              </div>
+            ))}
+          </div>
         </div>
+        <div className="ps-rule" />
       </div>
     </div>
   );
@@ -136,10 +156,15 @@ function ProblemSection({ section }) {
 
   return (
     <section id={section.id} className="project-section">
-      <h2 className="section-heading">{section.heading}</h2>
+      <h2 className="section-heading">
+        {Array.isArray(section.heading) ? (
+          <>{section.heading[0]}<span className="section-heading-muted">{section.heading[1]}</span></>
+        ) : section.heading}
+      </h2>
+      {section.summary && <p className="section-summary">{section.summary}</p>}
       {hasDiagrams ? (
         <>
-          <ProblemSectionScrollable content={content} />
+          <ProblemSectionSticky content={content} />
           {research && (
             <div className="problem-research-below">
               <ResearchStats stats={research.stats} />
@@ -175,7 +200,7 @@ function DesignIterationSection({ section }) {
     <section id={section.id} className="project-section">
       <h2 className="section-heading">{section.heading}</h2>
       {isArray && hasDiagrams ? (
-        <ProblemSectionScrollable content={content} />
+        <ProblemSectionSticky content={content} />
       ) : isArray ? (
         <div className="problem-narrative">
           {content.map((part, i) => (

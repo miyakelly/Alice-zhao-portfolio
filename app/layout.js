@@ -1,6 +1,7 @@
 import "./globals.css";
 import "./project.css";
 import PaperTexture from "./components/PaperTexture";
+import CursorTrail from "./components/CursorTrail";
 
 export const metadata = {
   title: "Alice Zhao|UX Builder",
@@ -12,6 +13,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body>
         <PaperTexture />
+        {/* <CursorTrail /> */}
         {children}
       </body>
     </html>

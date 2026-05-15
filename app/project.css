@@ -1,17 +1,16 @@
 /* ── PROJECT DETAIL PAGE ── */
 
 .project-detail {
-  margin-top: 40px;
+  margin-top: 60px;
 }
 
 /* ── HERO ── */
 .project-hero {
   background: var(--bg);
   color: var(--ink);
-  min-height: calc(100vh - 40px);
+  min-height: calc(100vh - 60px);
   display: flex;
   flex-direction: column;
-  border-bottom: 1px solid var(--border);
   transition: background 0.2s, color 0.2s, border-color 0.2s;
   overflow-x: hidden;
 }
@@ -21,7 +20,7 @@
   gap: 20px;
   grid-template-rows: 1fr auto auto;
   flex: 1;
-  padding: 0 0 0 40px;
+  padding: 0 0 60px 60px;
 }
 .project-hero-inner > :nth-child(1) {
   grid-column: 1 / -1;
@@ -40,7 +39,7 @@
   grid-column: 7 / 9;
   grid-row: 2;
   align-self: end;
-  padding-right: 40px;
+  padding-right: 60px;
 }
 .project-hero-inner > :nth-child(4) {
   grid-column: 1 / -1;
@@ -50,65 +49,169 @@
 
 /* ── SECTION NAV ── */
 
+.section-nav-sentinel {
+  height: 0;
+  pointer-events: none;
+}
 .section-nav {
   position: sticky;
-  top: 40px;
+  top: 60px;
   z-index: 200;
   background: var(--bg);
+  border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  height: 60px;
   transition: background 0.2s, border-color 0.2s;
+  will-change: top;
 }
+
+/* Track (desktop) */
 .section-nav-track {
   display: flex;
+  flex: 1;
   gap: 0;
-  padding: 0 40px;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
 }
 .section-nav-track::-webkit-scrollbar {
   display: none;
 }
+
+/* Links */
 .section-nav-link {
-  font-family: var(--f-mono);
-  font-size: 11px;
-  letter-spacing: 0.04em;
+  font-family: var(--f);
+  font-size: 15px;
+  font-weight: 400;
   color: var(--muted);
   text-decoration: none;
-  padding: 16px 24px;
+  padding: 0 24px;
   white-space: nowrap;
-  border-bottom: 2px solid transparent;
-  transition: color 0.15s, border-color 0.15s;
+  transition: color 0.15s;
+  height: 100%;
+  display: flex;
+  align-items: center;
 }
 .section-nav-link:hover {
   color: var(--ink);
 }
 .section-nav-link.active {
-  color: var(--accent);
-  border-bottom-color: var(--accent);
+  color: var(--ink);
+  font-weight: 700;
+}
+
+/* Dropdown (mobile — hidden on desktop) */
+.section-nav-dropdown {
+  display: none;
+}
+
+
+/* ── SECTION NAV MOBILE ── */
+@media (max-width: 900px) {
+  .section-nav {
+    margin: 0;
+    padding: 0 60px;
+  }
+  .section-nav-track {
+    display: none;
+  }
+  .section-nav-dropdown {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    height: 100%;
+    padding: 0 16px;
+  }
+  .section-nav-dropdown-trigger {
+    font-family: var(--f);
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--ink);
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0;
+    white-space: nowrap;
+    transition: color 0.15s;
+  }
+  .section-nav-chevron {
+    font-size: 12px;
+    transition: transform 0.2s;
+    color: var(--muted);
+  }
+  .section-nav-chevron.open {
+    transform: rotate(180deg);
+  }
+  .section-nav-dropdown-list {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+  }
+  .section-nav-dropdown-item {
+    font-family: var(--f);
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--muted);
+    text-decoration: none;
+    padding: 12px 16px;
+    transition: color 0.15s, background 0.15s;
+  }
+  .section-nav-dropdown-item:hover {
+    color: var(--ink);
+    background: var(--bg2);
+  }
+  .section-nav-dropdown-item.active {
+    color: var(--ink);
+    font-weight: 700;
+  }
 }
 
 /* ── PROJECT CONTENT ── */
 .project-content {
-  padding: 0 40px;
+  padding: 0 60px;
 }
 
 /* ── SECTIONS ── */
 .project-section {
-  padding: 64px 0;
+  padding: 96px 0;
   border-bottom: 1px solid var(--border);
-  scroll-margin-top: 120px;
+  scroll-margin-top: 80px;
   transition: border-color 0.2s;
 }
 .project-section:last-child {
   border-bottom: none;
 }
 .section-heading {
-  font-family: var(--f);
-  font-size: clamp(12px, 3vw, 16px);
+  font-family: var(--f-display);
+  font-size: clamp(12px, 5vw, 48px);
   font-weight: 600;
   letter-spacing: -0.02em;
   margin-bottom: 40px;
+  color: var(--ink);
+}
+.section-heading-muted {
+  color: var(--muted);
+  font-family: var(--f);
+}
+.section-summary {
+  max-width: 900px;
+  font-size: 48px;
+  text-align: left;
+  line-height: 1.1;
+  color: var(--muted);
 }
 
 
@@ -141,68 +244,83 @@
   transition: color 0.2s;
 }
 
-/* ── PROBLEM SCROLL LAYOUT ── */
-.problem-scroll-layout {
-  display: grid;
-  grid-template-columns: 2fr 3fr;
-  gap: 64px;
-  margin-bottom: 32px;
-}
-.problem-scroll-text {
-  display: flex;
-  flex-direction: column;
-}
-.problem-scroll-part {
-  min-height: 60vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 32px 0;
-}
-.problem-scroll-part:last-child {
-  min-height: 40vh;
-}
-.problem-scroll-diagrams {
+/* ── PROBLEM STICKY LAYOUT ── */
+.ps-runway {
   position: relative;
 }
-.problem-scroll-diagrams-sticky {
+.ps-frame {
   position: sticky;
-  top: 120px;
-  height: 60vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  top: 80px;
 }
-.problem-scroll-diagram {
+.ps-rule {
+  height: 1px;
+  background: var(--border);
+  transition: background 0.2s;
+}
+.ps-grid {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 48px;
+  padding: 40px 0;
+}
+.ps-text {
+  overflow: hidden;
+  position: relative;
+  min-height: 0;
+}
+.ps-text-slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.ps-body {
+  font-family: var(--f);
+  font-size: 18px;
+  line-height: 1.6;
+  color: var(--ink);
+  margin-top: 12px;
+  transition: color 0.2s;
+}
+.ps-visuals {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+.ps-rect {
+  aspect-ratio: 2/3;
+  overflow: hidden;
+  position: relative;
+  background: var(--bg2);
+  transition: background 0.2s;
+}
+.ps-rect-slide {
   position: absolute;
   inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 32px;
-  opacity: 0;
-  transition: opacity 0.4s ease;
-  pointer-events: none;
+  background: var(--bg2);
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), background 0.2s;
 }
-.problem-scroll-diagram svg {
-  width: 85%;
-  height: auto;
-  max-height: 100%;
+
+/* reduced-motion fallback */
+.ps-fallback-part {
+  margin-bottom: 28px;
 }
-.problem-scroll-diagram.active {
-  opacity: 1;
-  pointer-events: auto;
+.ps-fallback-part:last-child {
+  margin-bottom: 0;
 }
+
 .problem-research-below {
   margin-bottom: 32px;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .problem-scroll-diagram {
+  .ps-text-slide,
+  .ps-rect-slide {
     transition: none;
-  }
-  .problem-scroll-part {
-    min-height: auto;
   }
 }
 
@@ -589,53 +707,41 @@
   .project-hero-inner > :nth-child(1) {
     grid-column: 1;
     grid-row: 1;
-    margin-left: 40px;
+    margin-left: 60px;
   }
   .project-hero-inner > :nth-child(2) {
     grid-column: 1;
     grid-row: 2;
-    padding: 20px 40px 0;
+    padding: 20px 60px 0;
   }
   .project-hero-inner > :nth-child(3) {
     grid-column: 1;
     grid-row: 3;
     align-self: start;
-    padding: 0 40px;
+    padding: 0 60px;
   }
   .project-hero-inner > :nth-child(4) {
     grid-column: 1;
     grid-row: 4;
-    padding: 24px 40px 0;
+    padding: 24px 60px 0;
   }
   .project-content {
-    padding: 0 40px;
-  }
-  .section-nav-track {
-    padding: 0 40px;
+    padding: 0 60px;
   }
   .problem-grid {
     grid-template-columns: 1fr;
     gap: 32px;
   }
-  .problem-scroll-layout {
-    grid-template-columns: 1fr;
-    gap: 32px;
+  .ps-runway {
+    height: auto !important;
   }
-  .problem-scroll-part {
-    min-height: auto;
-    padding: 16px 0;
-  }
-  .problem-scroll-diagrams-sticky {
+  .ps-frame {
     position: relative;
     top: auto;
-    height: auto;
   }
-  .problem-scroll-diagram {
-    position: relative;
-    opacity: 1;
-  }
-  .problem-scroll-diagram:not(.active) {
-    display: none;
+  .ps-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
   }
   .decision-card {
     grid-template-columns: 1fr;

@@ -97,14 +97,13 @@
   inset: 20px 20px auto 20px;
   width: auto;
 }
-.centerLayout .title {
-  margin-top: 0;
-}
 .centerLayout .tags {
   position: absolute;
   bottom: 20px;
   left: 20px;
+  right: 20px;
   margin-top: 0;
+  text-align: center;
 }
 .year {
   font-family: var(--f);
@@ -117,13 +116,12 @@
   color: var(--muted);
 }
 .title {
-  margin: 20px 0 0;
-  font-family: var(--f-display);
-  font-size: clamp(18px, 4vw, 48px);
+  margin: 30px 0 10px 0;
+  font-family: var(--f);
+  font-size: clamp(18px, 4vw, 52px);
   font-weight: 400;
   line-height: 0.8;
   color: var(--ink);
-  white-space: pre-line;
 }
 .impact {
   margin: 12px 0 0;
@@ -237,7 +235,7 @@
 }
 .heroTitle {
   font-family: var(--f-display);
-  font-size: clamp(28px, 2.5vw, 36px);
+  font-size: clamp(20px, 2.5vw, 36px);
   font-weight: 400;
   line-height: 1.2;
   color: var(--ink);
