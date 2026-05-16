@@ -1,6 +1,7 @@
 export const projects = {
   "simplifying-data-access": {
     slug: "simplifying-data-access",
+    heroImage: "/img/s3tables/heroimg-1.JPEG",
     title: "I designed a unified console that cut multi-service data access from hours to minutes for AWS storage customers",
     cardTitle: "Streamlining data access",
     navTitle: "Streamlining data access",
@@ -29,16 +30,13 @@ export const projects = {
       {
         id: "problem",
         navLabel: "01 Problem",
-        heading: "Who, Why, and What",
+        heading: "01 Problem",
+        summary: "Two personas, four separate consoles, and hours of context-switching revealed the need for a unified data access experience",
         content: [
           { label: "Who", text: "Two key personas: **Storage Admins** managing infrastructure connecting storage services across S3, FSx, EFS, and on-prem systems — facing high costs and operational complexity when integrating third-party applications. **Developers** struggling with cumbersome multi-service data access and repetitive task execution." },
           { label: "Why", text: "Customers had no unified way to manage data access across AWS storage services. Each service had its own console, its own permission model, its own workflow. This meant hours of context-switching, duplicated configuration, and integration failures — especially when connecting on-premises systems." },
           { label: "What", text: "A single console that unifies data access management across all storage services — letting customers configure, monitor, and troubleshoot from one place instead of four." },
         ],
-        aiCallout: {
-          icon: "claude",
-          text: "Synthesized 30+ survey responses and 6 customer interviews → surfaced 4 key pain points and 2 core personas in hours",
-        },
         research: {
           stats: [
             { value: "6", label: "Customer interviews" },
@@ -50,7 +48,8 @@ export const projects = {
       {
         id: "design-iteration",
         navLabel: "02 Design Iteration",
-        heading: "Challenges and Iteration",
+        heading: "02 Design Iteration",
+        summary: "Internal testing exposed that 40% of multi-step configurations failed midway, driving a fundamental rethink of the flow",
         content: {
           challenge: "Internal testing revealed that sequential API calls caused loss of customer input and partial failures. When a multi-step configuration failed midway, customers lost all their progress with no way to recover.",
           iteration: "We implemented a pattern displaying all required steps upfront, resolving durability issues. Instead of sequential calls that could fail silently, the new flow showed customers the full scope of configuration before they started — and preserved their input if any step failed.",
@@ -62,15 +61,12 @@ export const projects = {
             },
           ],
         },
-        aiCallout: {
-          icon: "kiro",
-          text: "Built 3 interactive prototypes in 2 days → tested multi-step flows with real interactions instead of Figma clickthroughs",
-        },
       },
       {
         id: "outcome",
         navLabel: "03 Outcome",
-        heading: "Shipped Product and Results",
+        heading: "03 Outcome",
+        summary: "Launched to GA with 34 customers in the first month, 90% satisfaction, and 194% month-over-month growth validating the unified approach",
         content: {
           summary: "The unified console launched to GA, onboarding 34 customers in the first month with a 90% satisfaction rate. Month-over-month growth hit 194% within two months, validating the bet on unified data access management.",
           reflection: "This project taught me that the biggest design wins often come from simplifying the system model, not the UI. The interface was straightforward — the hard part was convincing stakeholders that four separate experiences should become one.",
@@ -86,6 +82,7 @@ export const projects = {
 
   "s3-tables": {
     slug: "s3-tables",
+    heroImage: "/img/s3tables/heroimg-1.JPEG",
     title: "Designing AWS S3 Tables that eliminates complex infrastructure for AI/ML workload",
     cardTitle: "AWS S3 Tables:\n0→1 in 8 weeks",
     navTitle: "AWS S3 Tables: 0 → 1 in 8 weeks",
@@ -116,7 +113,8 @@ export const projects = {
       {
         id: "problem",
         navLabel: "01 The problem",
-        heading: ["01 The problem,", " the customers, and what to build became clear after transcribing 20+ customer interviews with internal AI tools"],
+        heading: "01 The problem",
+        summary: "The customers, their pain points, and what to build became clear after transcribing 20+ customer interviews with internal AI tools",
         content: [
           {
             label: "Customers",
@@ -134,15 +132,12 @@ export const projects = {
             diagram: "solution",
           },
         ],
-        aiCallout: {
-          icon: "claude",
-          text: "Used AI tools to synthesize pain points from 20+ customer interviews, competitive analysis, and community forums → identified 6 core pain point clusters that shaped the product direction",
-        },
       },
       {
         id: "design-iteration",
         navLabel: "02 Design Iteration",
-        heading: ["02 Challenges emerged and iteration", ],
+        heading: "02 Design Iteration",
+        summary: "Two core challenges shaped the product: scoping a new category in 8 weeks, and making four AWS services feel like one",
         content: [
           {
             label: "The First Challenge: Defining What to Build in 8 Weeks",
@@ -175,15 +170,12 @@ export const projects = {
             diagram: "integration-solution",
           },
         ],
-        aiCallout: {
-          icon: "claude",
-          text: "Used AI tools to map competitive landscape and gather customer pain points from forums and social media → accelerated the discovery phase that informed the JTBD framework",
-        },
       },
       {
         id: "outcome",
         navLabel: "03 Outcome",
-        heading: ["03 Outcome", " is overwhelmingly positive"],
+        heading: "03 Outcome",
+        summary: "Launched at AWS re:Invent 2024 as the top announcement in the CEO keynote, with 500+ TB stored and 97% integration opt-in within 6 months",
         content: [
           {
             subheading: "Overall Summary",
@@ -211,7 +203,8 @@ export const projects = {
       {
         id: "whats-next",
         navLabel: "04 What's Next",
-        heading: ["04 What's next", " for S3 Tables"],
+        heading: "04 What's Next",
+        summary: "The JTBD framework became the highest-leverage contribution, giving a 50-person team a shared language for trade-offs under time pressure",
         content: {
           reflection: "The biggest lesson was that the hardest design problem wasn't any single screen, it was creating the framework that let a 50-person team move fast on a brand new product category. The JTBD framework turned out to be my highest-leverage contribution: it didn't just define what we'd build, it gave everyone a shared language for making trade-offs under extreme time pressure.",
           futureImprovements: [
@@ -235,6 +228,7 @@ export const projects = {
 
   "agent-opportunities": {
     slug: "agent-opportunities",
+    heroImage: "/img/s3tables/heroimg-1.JPEG",
     title: "",
     cardTitle: "Defining next phase of AWS agentic experience",
     navTitle: "AWS agentic experience",
@@ -253,22 +247,23 @@ export const projects = {
       {
         id: "problem",
         navLabel: "01 Problem",
-        heading: "Who, Why, and What",
+        heading: "01 Problem",
+        summary: "",
         content: { who: "", why: "", what: "" },
-        aiCallout: null,
         research: { stats: [] },
       },
       {
         id: "design-iteration",
         navLabel: "02 Design Iteration",
-        heading: "Challenges and Iteration",
+        heading: "02 Design Iteration",
+        summary: "",
         content: { challenge: "", iteration: "", decisions: [] },
-        aiCallout: null,
       },
       {
         id: "outcome",
         navLabel: "03 Outcome",
-        heading: "Shipped Product and Results",
+        heading: "03 Outcome",
+        summary: "",
         content: { summary: "", reflection: "" },
         productVisuals: [],
       },

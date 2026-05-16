@@ -5,7 +5,6 @@ import Link from "next/link";
 import { projects } from "../data/projects";
 import Navigation from "./Navigation";
 import SectionNav from "./SectionNav";
-import AICallout from "./AICallout";
 import DeviceFrame from "./DeviceFrame";
 import MetricsCounter from "./MetricsCounter";
 import HeroText from "./HeroText";
@@ -50,7 +49,7 @@ function DecisionCard({ before, after, why }) {
 
 const VISUAL_COLUMNS = ["S3 Tables", "Integration", "Engine"];
 
-function ProblemSectionSticky({ content }) {
+function ProblemSectionSticky({ heading, summary, content }) {
   const runwayRef = useRef(null);
   const frameRef = useRef(null);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -67,7 +66,7 @@ function ProblemSectionSticky({ content }) {
     function onScroll() {
       if (!runwayRef.current || !frameRef.current) return;
       const rect = runwayRef.current.getBoundingClientRect();
-      const stickyTop = 80;
+      const stickyTop = 60;
       const scrolled = stickyTop - rect.top;
       const frameH = frameRef.current.offsetHeight;
       const scrollable = runwayRef.current.offsetHeight - frameH;
@@ -83,9 +82,17 @@ function ProblemSectionSticky({ content }) {
     return () => window.removeEventListener("scroll", onScroll);
   }, [numSteps]);
 
+  const headerEl = (heading || summary) && (
+    <div className="ps-header">
+      {heading && <h2 className="section-heading">{heading}</h2>}
+      {summary && <p className="section-summary">{summary}</p>}
+    </div>
+  );
+
   if (isReduced) {
     return (
       <div>
+        {headerEl}
         {content.map((part, i) => (
           <div key={i} className="ps-fallback-part">
             <span className="problem-part-label">{part.label}</span>
@@ -109,19 +116,32 @@ function ProblemSectionSticky({ content }) {
       style={{ height: `${numSteps * 100}vh` }}
     >
       <div ref={frameRef} className="ps-frame">
+        {headerEl}
         <div className="ps-rule" />
         <div className="ps-grid">
           <div className="ps-text">
-            {content.map((part, i) => (
-              <div
-                key={i}
-                className="ps-text-slide"
-                style={{ transform: `translateY(${slideOffset(i)}%)` }}
-              >
-                <span className="problem-part-label">{part.label}</span>
-                <p className="ps-body">{part.text}</p>
-              </div>
-            ))}
+            <div className="ps-label-area">
+              {content.map((part, i) => (
+                <span
+                  key={i}
+                  className="ps-label-slide problem-part-label"
+                  style={{ transform: `translateY(${slideOffset(i)}%)` }}
+                >
+                  {part.label}
+                </span>
+              ))}
+            </div>
+            <div className="ps-body-area">
+              {content.map((part, i) => (
+                <p
+                  key={i}
+                  className="ps-body-slide ps-body"
+                  style={{ transform: `translateY(${slideOffset(i)}%)` }}
+                >
+                  {part.text}
+                </p>
+              ))}
+            </div>
           </div>
           <div className="ps-visuals">
             {VISUAL_COLUMNS.map((_, ci) => (
@@ -150,21 +170,15 @@ function ProblemSectionSticky({ content }) {
 }
 
 function ProblemSection({ section }) {
-  const { content, aiCallout, research } = section;
+  const { content, research } = section;
   const isArray = Array.isArray(content);
   const hasDiagrams = isArray && content.some((part) => part.diagram);
 
   return (
     <section id={section.id} className="project-section">
-      <h2 className="section-heading">
-        {Array.isArray(section.heading) ? (
-          <>{section.heading[0]}<span className="section-heading-muted">{section.heading[1]}</span></>
-        ) : section.heading}
-      </h2>
-      {section.summary && <p className="section-summary">{section.summary}</p>}
       {hasDiagrams ? (
         <>
-          <ProblemSectionSticky content={content} />
+          <ProblemSectionSticky heading={section.heading} summary={section.summary} content={content} />
           {research && (
             <div className="problem-research-below">
               <ResearchStats stats={research.stats} />
@@ -172,6 +186,11 @@ function ProblemSection({ section }) {
           )}
         </>
       ) : isArray ? (
+        <>
+        <div className="ps-header">
+          <h2 className="section-heading">{section.heading}</h2>
+          {section.summary && <p className="section-summary">{section.summary}</p>}
+        </div>
         <div className="problem-grid">
           <div className="problem-narrative">
             {content.map((part, i) => (
@@ -185,55 +204,61 @@ function ProblemSection({ section }) {
             {research && <ResearchStats stats={research.stats} />}
           </div>
         </div>
+        </>
       ) : null}
-      {aiCallout && <AICallout icon={aiCallout.icon} text={aiCallout.text} />}
     </section>
   );
 }
 
 function DesignIterationSection({ section }) {
-  const { content, aiCallout } = section;
+  const { content } = section;
   const isArray = Array.isArray(content);
   const hasDiagrams = isArray && content.some((part) => part.diagram);
 
   return (
     <section id={section.id} className="project-section">
-      <h2 className="section-heading">{section.heading}</h2>
       {isArray && hasDiagrams ? (
-        <ProblemSectionSticky content={content} />
-      ) : isArray ? (
-        <div className="problem-narrative">
-          {content.map((part, i) => (
-            <div key={i} className="problem-part">
-              <span className="problem-part-label">{part.label}</span>
-              <p>{part.text}</p>
-            </div>
-          ))}
-        </div>
+        <ProblemSectionSticky heading={section.heading} summary={section.summary} content={content} />
       ) : (
         <>
-          {content.challenge && (
-            <div className="iteration-block">
-              <h3 className="iteration-subhead">The Challenge</h3>
-              <p>{content.challenge}</p>
-            </div>
-          )}
-          {content.iteration && (
-            <div className="iteration-block">
-              <h3 className="iteration-subhead">The Iteration</h3>
-              <p>{content.iteration}</p>
-            </div>
-          )}
-          {content.decisions && content.decisions.length > 0 && (
-            <div className="decisions-grid">
-              {content.decisions.map((d, i) => (
-                <DecisionCard key={i} {...d} />
+          <div className="ps-header">
+            <h2 className="section-heading">{section.heading}</h2>
+            {section.summary && <p className="section-summary">{section.summary}</p>}
+          </div>
+          {isArray ? (
+            <div className="problem-narrative">
+              {content.map((part, i) => (
+                <div key={i} className="problem-part">
+                  <span className="problem-part-label">{part.label}</span>
+                  <p>{part.text}</p>
+                </div>
               ))}
             </div>
+          ) : (
+            <>
+              {content.challenge && (
+                <div className="iteration-block">
+                  <h3 className="iteration-subhead">The Challenge</h3>
+                  <p>{content.challenge}</p>
+                </div>
+              )}
+              {content.iteration && (
+                <div className="iteration-block">
+                  <h3 className="iteration-subhead">The Iteration</h3>
+                  <p>{content.iteration}</p>
+                </div>
+              )}
+              {content.decisions && content.decisions.length > 0 && (
+                <div className="decisions-grid">
+                  {content.decisions.map((d, i) => (
+                    <DecisionCard key={i} {...d} />
+                  ))}
+                </div>
+              )}
+            </>
           )}
         </>
       )}
-      {aiCallout && <AICallout icon={aiCallout.icon} text={aiCallout.text} />}
     </section>
   );
 }
@@ -244,7 +269,10 @@ function OutcomeSection({ section, metrics }) {
 
   return (
     <section id={section.id} className="project-section">
-      <h2 className="section-heading">{section.heading}</h2>
+      <div className="ps-header">
+        <h2 className="section-heading">{section.heading}</h2>
+        {section.summary && <p className="section-summary">{section.summary}</p>}
+      </div>
 
       {isArray ? (
         <>
@@ -306,7 +334,10 @@ function WhatsNextSection({ section }) {
   const { content } = section;
   return (
     <section id={section.id} className="project-section">
-      <h2 className="section-heading">{section.heading}</h2>
+      <div className="ps-header">
+        <h2 className="section-heading">{section.heading}</h2>
+        {section.summary && <p className="section-summary">{section.summary}</p>}
+      </div>
 
       {content.reflection && (
         <div className="outcome-reflection">
