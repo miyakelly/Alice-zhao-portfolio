@@ -21,15 +21,17 @@
 }
 
 :root {
-  --bg: #F0F8FF;
-  --bg2: #E4EEF7;
+  --bg: #ffffff;
+  --bg2: #ffffff;
   --ink: #0A0D10;
   --muted: #6F7F8A;
-  --accent: #C8401A;
+  --accent: #2936CF;
   --border: #D0DBDF;
   --card: #101316;
   --card2: #181C1F;
   --paper-line: #738B9E;
+  --card-border: 1px solid #000;
+  --card-shadow: #000;
   --f: 'Satoshi', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   --f-display: 'EB Garamond', Georgia, 'Times New Roman', serif;
   --f-mono: 'IBM Plex Mono', 'SF Mono', 'Fira Code', monospace;
@@ -43,6 +45,8 @@
   --card: #1A1712;
   --card2: #211E18;
   --paper-line: #5a5040;
+  --card-border: 1px solid var(--ink);
+  --card-shadow: var(--ink);
 }
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
