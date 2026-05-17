@@ -30,16 +30,16 @@ function DecisionCard({ before, after, why }) {
   return (
     <div className="decision-card hover-card">
       <div className="decision-before">
-        <span className="decision-label">Before</span>
+        <span className="micro-label">Before</span>
         <p>{before}</p>
       </div>
       <div className="decision-after">
-        <span className="decision-label">After</span>
+        <span className="micro-label">After</span>
         <p>{after}</p>
       </div>
       {why && (
         <div className="decision-why">
-          <span className="decision-label">Why</span>
+          <span className="micro-label">Why</span>
           <p>{why}</p>
         </div>
       )}
@@ -169,14 +169,79 @@ function ProblemSectionSticky({ heading, summary, content }) {
   );
 }
 
+function HighlightText({ text }) {
+  const parts = text.split(/\{\{(.+?)\}\}/g);
+  return parts.map((part, i) =>
+    i % 2 === 1 ? (
+      <mark key={i} className="scroll-highlight">{part}</mark>
+    ) : (
+      part
+    )
+  );
+}
+
+function ScrollHighlightObserver({ children }) {
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    const marks = el.querySelectorAll(".scroll-highlight");
+    if (prefersReduced) {
+      marks.forEach((m) => m.classList.add("highlighted"));
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("highlighted");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.8 }
+    );
+    marks.forEach((m) => observer.observe(m));
+    return () => observer.disconnect();
+  }, []);
+
+  return <div ref={ref}>{children}</div>;
+}
+
 function ProblemSection({ section }) {
   const { content, research } = section;
   const isArray = Array.isArray(content);
+  const hasParagraphs = !isArray && content.paragraphs;
   const hasDiagrams = isArray && content.some((part) => part.diagram);
 
   return (
     <section id={section.id} className="project-section">
-      {hasDiagrams ? (
+      {hasParagraphs ? (
+        <ScrollHighlightObserver>
+          <div className="problem-paragraphs">
+            <h2 className="section-heading">{section.heading}</h2>
+            {content.paragraphs.map((para, i) => (
+              <p key={i} className="section-summary">
+                <HighlightText text={para} />
+              </p>
+            ))}
+          </div>
+          {content.image && (
+            <div className="problem-image">
+              <DeviceFrame alt={content.image.alt} placeholder={content.image.placeholder} />
+            </div>
+          )}
+          {research && (
+            <div className="problem-research-below">
+              <ResearchStats stats={research.stats} />
+            </div>
+          )}
+        </ScrollHighlightObserver>
+      ) : hasDiagrams ? (
         <>
           <ProblemSectionSticky heading={section.heading} summary={section.summary} content={content} />
           {research && (
@@ -304,7 +369,7 @@ function OutcomeSection({ section, metrics }) {
           {content.summary && <p className="outcome-summary">{content.summary}</p>}
           {content.reflection && (
             <div className="outcome-reflection">
-              <span className="reflection-label">Reflection</span>
+              <span className="micro-label">Reflection</span>
               <p>{content.reflection}</p>
             </div>
           )}
@@ -341,14 +406,14 @@ function WhatsNextSection({ section }) {
 
       {content.reflection && (
         <div className="outcome-reflection">
-          <span className="reflection-label">Reflection</span>
+          <span className="micro-label">Reflection</span>
           <p>{content.reflection}</p>
         </div>
       )}
 
       {content.futureImprovements && content.futureImprovements.length > 0 && (
         <div className="future-improvements">
-          <span className="reflection-label">Future Improvements</span>
+          <span className="micro-label">Future Improvements</span>
           <div className="improvements-list">
             {content.futureImprovements.map((item, i) => (
               <div key={i} className="improvement-item">
@@ -374,7 +439,8 @@ function WhatsNextSection({ section }) {
 
 const SECTION_RENDERERS = {
   problem: ProblemSection,
-  "design-iteration": DesignIterationSection,
+  scoping: ProblemSection,
+  "design-iteration": ProblemSection,
   outcome: OutcomeSection,
   "whats-next": WhatsNextSection,
 };
@@ -467,7 +533,7 @@ export default function ProjectDetailClient({ project }) {
 
         {nextProject && (
           <div className="next-project">
-            <span className="next-project-label">Next Project</span>
+            <span className="micro-label next-project-label">Next Project</span>
             <Link href={`/projects/${nextProject.slug}/`} className="next-project-link">
               {nextProject.title || nextProject.slug}
               <span className="next-project-arrow">→</span>

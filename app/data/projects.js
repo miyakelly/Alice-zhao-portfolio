@@ -82,7 +82,7 @@ export const projects = {
 
   "s3-tables": {
     slug: "s3-tables",
-    heroImage: "/img/s3tables/heroimg-1.JPEG",
+    heroImage: "/img/s3tables/s3table-heroimg.jpg",
     title: "Designing AWS S3 Tables that eliminates complex infrastructure for AI/ML workload",
     cardTitle: "AWS S3 Tables:\n0→1 in 8 weeks",
     navTitle: "AWS S3 Tables: 0 → 1 in 8 weeks",
@@ -112,69 +112,46 @@ export const projects = {
     sections: [
       {
         id: "problem",
-        navLabel: "01 The problem",
-        heading: "01 The problem",
-        summary: "The customers, their pain points, and what to build became clear after transcribing 20+ customer interviews with internal AI tools",
-        content: [
-          {
-            label: "Customers",
-            text: "Customers like the director of technology at a billion-dollar company are spending millions storing tabular data in an unstructured storage, while maintaining custom infrastructure just to keep that data ready for AI/ML workloads.",
-            diagram: "imagine",
-          },
-          {
-            label: "Problems",
-            text: "Customers need a better way to improve basic operations like keeping data up-to-date, managing data access, and integrating with query engines, so they can allocate the resources and expertise for building products.",
-            diagram: "problem",
-          },
-          {
-            label: "What to build",
-            text: "We decided to build S3 Tables, a new product that is designed for analytics and AI/ML workloads. It handles data maintenance and query engine integration automatically. The result is a streamlined experience where customers go from storing data to analyzing it without assembling anything in between.",
-            diagram: "solution",
-          },
-        ],
+        navLabel: "01 Problem",
+        heading: "01 Problem",
+        content: {
+          paragraphs: [
+            "I used {{AI tools}} to synthesize 20+ customer interviews and revealed a pattern: {{customers}} at billion-dollar companies were burning millions storing tabular data in {{unstructured storage}} while maintaining {{custom infrastructure}}, struggling with basic operations like keeping data current, managing access, and integrating with query engines.",
+            "We decided to build a {{new product}} designed for analytics and AI/ML workloads: a streamlined experience where customers go from storing data to querying it without assembling anything in between.",
+          ],
+          image: { alt: "Problem space diagram", placeholder: true },
+        },
+      },
+      {
+        id: "scoping",
+        navLabel: "02 Scoping",
+        heading: "02 Scoping",
+        content: {
+          paragraphs: [
+            "With dozens of possible user actions and an {{8-week timeline}}, the risk wasn't building the wrong thing, it was trying to build everything.",
+            "To scope a brand new product with no existing UX precedent, I adapted a {{JTBD framework}} that categorized every user action into six groups (Create, List, View, Manage, Delete, Audit), each mapped to console steps, preconditions, and {{API dependencies}}. It gave a {{20-person team}} a shared language for making scope trade-offs under time pressure.",
+            "The framework produced a {{prioritized action plan}}: each user action with defined APIs, known limitations, and console impact, turning an ambiguous product space into a concrete roadmap for launch.",
+          ],
+          image: { alt: "JTBD framework diagram", placeholder: true },
+        },
       },
       {
         id: "design-iteration",
-        navLabel: "02 Design Iteration",
-        heading: "02 Design Iteration",
-        summary: "Two core challenges shaped the product: scoping a new category in 8 weeks, and making four AWS services feel like one",
-        content: [
-          {
-            label: "The First Challenge: Defining What to Build in 8 Weeks",
-            text: "I faced two major challenges during this project. The first was scoping a brand new product for launch. We knew the shape at a high level, but with dozens of possible user actions and an 8-week timeline, the risk wasn't building the wrong thing, it was trying to build everything.",
-            diagram: "scoping-chaos",
-          },
-          {
-            label: "My Approach",
-            text: "I adapted a JTBD framework I'd previously built to bring structure to a product with no existing UX precedent. The framework categorized every user action into six groups (Create, List, View, Manage, Delete, Audit), each mapped to console steps, preconditions, and API dependencies. More importantly, it gave a 50-person cross-functional team, including two directors, a shared language for making scope trade-offs under time pressure.",
-            diagram: "scoping-organized",
-          },
-          {
-            label: "Outcome",
-            text: "The framework produced a prioritized list of user actions, each with defined APIs, known limitations, and console impact, turning an ambiguous product space into a concrete action plan for launch.",
-            diagram: "scoping-prioritized",
-          },
-          {
-            label: "The Next Challenge: Making Multi-Service Integration Effortless",
-            text: "Once scope was locked, a second challenge emerged. S3 Tables is a storage product, but the value for customers is querying their data. That requires connecting four services: S3 for storage, Lake Formation for permissions, Glue Catalog for analytics service integration, and Athena for querying. The question wasn't whether to integrate, it was how to make four services feel like one.",
-            diagram: "integration-challenge",
-          },
-          {
-            label: "My Approach",
-            text: "I explored three approaches, each with different trade-offs between customer effort and flexibility. The team aligned on a default-on option within the create flow, preserving choice while removing friction. I also pushed back on the standard full-page pattern for namespace creation, proposing a multi-step modal instead and extending the design system to support it.",
-            diagram: "integration-options",
-          },
-          {
-            label: "Outcome",
-            text: "The final design reduced a multi-service integration to a single checkbox, further eliminating the infrastructure complexity that drove this project from the start. Customers create a table bucket and go straight to querying their data.",
-            diagram: "integration-solution",
-          },
-        ],
+        navLabel: "03 Design Iteration",
+        heading: "03 Design Iteration",
+        content: {
+          paragraphs: [
+            "S3 Tables is a {{storage}} product, but the value for customers is {{querying}} their data. That requires connecting {{four services}}: S3 for storage, Lake Formation for permissions, Glue Catalog for integration, and Athena for querying. The question was how to make four services feel like one.",
+            "I explored {{three approaches}}, each with different trade-offs between customer effort and flexibility. The team aligned on a {{default-on option}} within the create flow, preserving choice while removing friction. I also pushed back on the standard full-page pattern for namespace creation, proposing a {{multi-step modal}} and extending the design system to support it.",
+            "The final design reduced a multi-service integration to a {{single checkbox}}, eliminating the infrastructure complexity that drove this project from the start. Customers create a table bucket and go straight to querying their data.",
+          ],
+          image: { alt: "Integration design exploration", placeholder: true },
+        },
       },
       {
         id: "outcome",
-        navLabel: "03 Outcome",
-        heading: "03 Outcome",
+        navLabel: "04 Outcome",
+        heading: "04 Outcome",
         summary: "Launched at AWS re:Invent 2024 as the top announcement in the CEO keynote, with 500+ TB stored and 97% integration opt-in within 6 months",
         content: [
           {
@@ -202,8 +179,8 @@ export const projects = {
       },
       {
         id: "whats-next",
-        navLabel: "04 What's Next",
-        heading: "04 What's Next",
+        navLabel: "05 What's Next",
+        heading: "05 What's Next",
         summary: "The JTBD framework became the highest-leverage contribution, giving a 50-person team a shared language for trade-offs under time pressure",
         content: {
           reflection: "The biggest lesson was that the hardest design problem wasn't any single screen, it was creating the framework that let a 50-person team move fast on a brand new product category. The JTBD framework turned out to be my highest-leverage contribution: it didn't just define what we'd build, it gave everyone a shared language for making trade-offs under extreme time pressure.",

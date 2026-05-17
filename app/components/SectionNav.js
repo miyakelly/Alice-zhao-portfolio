@@ -44,6 +44,8 @@ export default function SectionNav({ sections }) {
       lastP = rounded;
 
       navRef.current.style.top = `${NAV_H * (1 - p)}px`;
+      navRef.current.style.opacity = p;
+      navRef.current.style.pointerEvents = p > 0.5 ? "auto" : "none";
       window.dispatchEvent(
         new CustomEvent("nav-visibility", { detail: { progress: p } })
       );
@@ -78,7 +80,7 @@ export default function SectionNav({ sections }) {
         ref={navRef}
         className="section-nav"
         aria-label="Project sections"
-        style={{ top: `${NAV_H}px` }}
+        style={{ top: `${NAV_H}px`, opacity: 0, pointerEvents: "none" }}
       >
         <div className="section-nav-track">
           {sections.map(({ id, navLabel }) => (
