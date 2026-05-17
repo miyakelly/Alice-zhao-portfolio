@@ -35,7 +35,27 @@
   --f: 'Satoshi', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   --f-display: 'EB Garamond', Georgia, 'Times New Roman', serif;
   --f-mono: 'IBM Plex Mono', 'SF Mono', 'Fira Code', monospace;
+
+  --nav-height: 3.75rem;
+  --page-gutter: 3.75rem;
+  --hero-top: 6.25rem;
+
+  --t-hero-title: clamp(2rem, 4vw, 4rem);
+  --t-hero-title-letter-spacing: clamp(0.001rem, 0.2vw, 0.0025rem);
+
+  --t-hero-subtitle: clamp(0.875rem, 1.5vw, 1.5rem);
+
+  --t-section-heading: clamp(1.25rem, 2.5vw, 3rem);
+
+  --t-hero-problem-statement: clamp(0.875rem, 2vw, 2rem);
+  --t-hero-problem-statement-font-weight: 400;
+  --t-metric: 3rem;
+  --t-body: 1rem;
+  --t-caption: 0.875rem;
+  --t-label: 1rem;
+  --t-badge: 0.5625rem;
 }
+
 [data-dark] {
   --bg: #110F0B;
   --bg2: #1A1712;

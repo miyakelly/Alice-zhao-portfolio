@@ -8,7 +8,8 @@ export default function HeroVisual({ src, alt }) {
         <Image
           src={src}
           alt={alt || ""}
-          fill
+          width={1920}
+          height={1080}
           sizes="(max-width: 900px) 100vw, 60vw"
           className={s.image}
         />

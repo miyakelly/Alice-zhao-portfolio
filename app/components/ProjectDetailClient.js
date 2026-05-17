@@ -7,9 +7,7 @@ import Navigation from "./Navigation";
 import SectionNav from "./SectionNav";
 import DeviceFrame from "./DeviceFrame";
 import MetricsCounter from "./MetricsCounter";
-import HeroText from "./HeroText";
-import ProjectLogistics from "./ProjectLogistics";
-import MetricStack from "./MetricStack";
+import ExternalLink from "./ExternalLink";
 import HeroVisual from "./HeroVisual";
 
 function ResearchStats({ stats }) {
@@ -47,127 +45,6 @@ function DecisionCard({ before, after, why }) {
   );
 }
 
-const VISUAL_COLUMNS = ["S3 Tables", "Integration", "Engine"];
-
-function ProblemSectionSticky({ heading, summary, content }) {
-  const runwayRef = useRef(null);
-  const frameRef = useRef(null);
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [isReduced, setIsReduced] = useState(false);
-  const numSteps = content.length;
-
-  useEffect(() => {
-    const reduced = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
-    setIsReduced(reduced);
-    if (reduced) return;
-
-    function onScroll() {
-      if (!runwayRef.current || !frameRef.current) return;
-      const rect = runwayRef.current.getBoundingClientRect();
-      const stickyTop = 60;
-      const scrolled = stickyTop - rect.top;
-      const frameH = frameRef.current.offsetHeight;
-      const scrollable = runwayRef.current.offsetHeight - frameH;
-      if (scrollable <= 0) return;
-      const progress = Math.max(0, Math.min(0.999, scrolled / scrollable));
-      setActiveIndex(
-        Math.min(numSteps - 1, Math.floor(progress * numSteps))
-      );
-    }
-
-    window.addEventListener("scroll", onScroll, { passive: true });
-    requestAnimationFrame(onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
-  }, [numSteps]);
-
-  const headerEl = (heading || summary) && (
-    <div className="ps-header">
-      {heading && <h2 className="section-heading">{heading}</h2>}
-      {summary && <p className="section-summary">{summary}</p>}
-    </div>
-  );
-
-  if (isReduced) {
-    return (
-      <div>
-        {headerEl}
-        {content.map((part, i) => (
-          <div key={i} className="ps-fallback-part">
-            <span className="problem-part-label">{part.label}</span>
-            <p>{part.text}</p>
-          </div>
-        ))}
-      </div>
-    );
-  }
-
-  function slideOffset(i) {
-    if (i < activeIndex) return -100;
-    if (i > activeIndex) return 100;
-    return 0;
-  }
-
-  return (
-    <div
-      ref={runwayRef}
-      className="ps-runway"
-      style={{ height: `${numSteps * 100}vh` }}
-    >
-      <div ref={frameRef} className="ps-frame">
-        {headerEl}
-        <div className="ps-rule" />
-        <div className="ps-grid">
-          <div className="ps-text">
-            <div className="ps-label-area">
-              {content.map((part, i) => (
-                <span
-                  key={i}
-                  className="ps-label-slide problem-part-label"
-                  style={{ transform: `translateY(${slideOffset(i)}%)` }}
-                >
-                  {part.label}
-                </span>
-              ))}
-            </div>
-            <div className="ps-body-area">
-              {content.map((part, i) => (
-                <p
-                  key={i}
-                  className="ps-body-slide ps-body"
-                  style={{ transform: `translateY(${slideOffset(i)}%)` }}
-                >
-                  {part.text}
-                </p>
-              ))}
-            </div>
-          </div>
-          <div className="ps-visuals">
-            {VISUAL_COLUMNS.map((_, ci) => (
-              <div key={ci} className="ps-rect">
-                {content.map((_, si) => {
-                  const hue = (ci * 120 + si * 40) % 360;
-                  return (
-                    <div
-                      key={si}
-                      className="ps-rect-slide"
-                      style={{
-                        transform: `translateY(${slideOffset(si)}%)`,
-                        background: `hsl(${hue}, 30%, 80%)`,
-                      }}
-                    />
-                  );
-                })}
-              </div>
-            ))}
-          </div>
-        </div>
-        <div className="ps-rule" />
-      </div>
-    </div>
-  );
-}
 
 function HighlightText({ text }) {
   const parts = text.split(/\{\{(.+?)\}\}/g);
@@ -216,7 +93,6 @@ function ProblemSection({ section }) {
   const { content, research } = section;
   const isArray = Array.isArray(content);
   const hasParagraphs = !isArray && content.paragraphs;
-  const hasDiagrams = isArray && content.some((part) => part.diagram);
 
   return (
     <section id={section.id} className="project-section">
@@ -241,15 +117,6 @@ function ProblemSection({ section }) {
             </div>
           )}
         </ScrollHighlightObserver>
-      ) : hasDiagrams ? (
-        <>
-          <ProblemSectionSticky heading={section.heading} summary={section.summary} content={content} />
-          {research && (
-            <div className="problem-research-below">
-              <ResearchStats stats={research.stats} />
-            </div>
-          )}
-        </>
       ) : isArray ? (
         <>
         <div className="ps-header">
@@ -277,52 +144,33 @@ function ProblemSection({ section }) {
 
 function DesignIterationSection({ section }) {
   const { content } = section;
-  const isArray = Array.isArray(content);
-  const hasDiagrams = isArray && content.some((part) => part.diagram);
+
+  if (content.paragraphs) return <ProblemSection section={section} />;
 
   return (
     <section id={section.id} className="project-section">
-      {isArray && hasDiagrams ? (
-        <ProblemSectionSticky heading={section.heading} summary={section.summary} content={content} />
-      ) : (
-        <>
-          <div className="ps-header">
-            <h2 className="section-heading">{section.heading}</h2>
-            {section.summary && <p className="section-summary">{section.summary}</p>}
-          </div>
-          {isArray ? (
-            <div className="problem-narrative">
-              {content.map((part, i) => (
-                <div key={i} className="problem-part">
-                  <span className="problem-part-label">{part.label}</span>
-                  <p>{part.text}</p>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <>
-              {content.challenge && (
-                <div className="iteration-block">
-                  <h3 className="iteration-subhead">The Challenge</h3>
-                  <p>{content.challenge}</p>
-                </div>
-              )}
-              {content.iteration && (
-                <div className="iteration-block">
-                  <h3 className="iteration-subhead">The Iteration</h3>
-                  <p>{content.iteration}</p>
-                </div>
-              )}
-              {content.decisions && content.decisions.length > 0 && (
-                <div className="decisions-grid">
-                  {content.decisions.map((d, i) => (
-                    <DecisionCard key={i} {...d} />
-                  ))}
-                </div>
-              )}
-            </>
-          )}
-        </>
+      <div className="ps-header">
+        <h2 className="section-heading">{section.heading}</h2>
+        {section.summary && <p className="section-summary">{section.summary}</p>}
+      </div>
+      {content.challenge && (
+        <div className="iteration-block">
+          <h3 className="iteration-subhead">The Challenge</h3>
+          <p>{content.challenge}</p>
+        </div>
+      )}
+      {content.iteration && (
+        <div className="iteration-block">
+          <h3 className="iteration-subhead">The Iteration</h3>
+          <p>{content.iteration}</p>
+        </div>
+      )}
+      {content.decisions && content.decisions.length > 0 && (
+        <div className="decisions-grid">
+          {content.decisions.map((d, i) => (
+            <DecisionCard key={i} {...d} />
+          ))}
+        </div>
       )}
     </section>
   );
@@ -440,7 +288,7 @@ function WhatsNextSection({ section }) {
 const SECTION_RENDERERS = {
   problem: ProblemSection,
   scoping: ProblemSection,
-  "design-iteration": ProblemSection,
+  "design-iteration": DesignIterationSection,
   outcome: OutcomeSection,
   "whats-next": WhatsNextSection,
 };
@@ -449,37 +297,38 @@ export default function ProjectDetailClient({ project }) {
   const nextProject = project.nextProject
     ? projects[project.nextProject]
     : null;
-
-  const imageRef = useRef(null);
-  const textRef = useRef(null);
+  const heroRef = useRef(null);
+  const metricsRef = useRef(null);
 
   useEffect(() => {
-    const prefersReduced = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
-    if (prefersReduced) return;
+    const hero = heroRef.current;
+    const metrics = metricsRef.current;
+    if (!hero || !metrics) return;
+    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReduced) {
+      metrics.style.transform = "translateY(0)";
+      return;
+    }
 
-    const PARALLAX = 0.5;
-
+    let ticking = false;
     function onScroll() {
-      const scrollY = window.scrollY;
-
-      if (imageRef.current) {
-        imageRef.current.style.transform = `translateY(${scrollY * PARALLAX}px)`;
-      }
-
-      if (imageRef.current && textRef.current) {
-        const imageBottom = imageRef.current.getBoundingClientRect().bottom;
-        const paragraphs = textRef.current.querySelectorAll("p");
-        paragraphs.forEach((p) => {
-          const overlap = Math.max(0, imageBottom - p.getBoundingClientRect().top);
-          p.style.setProperty("--overlap", `${overlap}px`);
-        });
-      }
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        const scrollY = window.scrollY;
+        const heroHeight = hero.offsetHeight;
+        const progress = Math.max(0, Math.min(1, scrollY / heroHeight));
+        const metricsHeight = metrics.offsetHeight;
+        const travel = metricsHeight; // how far the metrics should travel up
+        const startOffset = metricsHeight * 0.6; // how far below to start
+        const y = startOffset - travel * progress;
+        metrics.style.transform = `translateY(${y}px)`;
+        ticking = false;
+      });
     }
 
     window.addEventListener("scroll", onScroll, { passive: true });
-    requestAnimationFrame(onScroll);
+    onScroll();
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
@@ -488,30 +337,46 @@ export default function ProjectDetailClient({ project }) {
       <Navigation title={project.navTitle || "Project"} />
 
       <article className="project-detail">
-        <header className="project-hero">
+        <header className="project-hero" ref={heroRef}>
           <div className="project-hero-inner">
-            <div ref={imageRef} style={{ willChange: "transform" }}>
+            <div className="project-hero-heading">
+              <h1 className="project-hero-title">{project.cardTitle.main}</h1>
+              {project.impact && (
+                <p className="project-hero-subtitle">{project.impact.hero}</p>
+              )}
+            </div>
+            <div className="project-hero-text">
+              {project.heroProblem && <p>{project.heroProblem}</p>}
+              {project.heroSolution && (
+                <p>
+                  {project.externalLink
+                    ? project.heroSolution.split("{externalLink}").map((part, i, arr) =>
+                        i < arr.length - 1 ? (
+                          <span key={i}>{part}<ExternalLink href={project.externalLink.url}><svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{display:"inline", verticalAlign:"middle"}}><path d="M4 1.5H12.5V10M12.5 1.5L1.5 12.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg></ExternalLink></span>
+                        ) : part
+                      )
+                    : project.heroSolution}
+                </p>
+              )}
+            </div>
+            <div className="hero-image-container">
               <HeroVisual
                 src={project.heroImage}
                 alt={project.title}
               />
+              {project.metrics && project.metrics.length > 0 && (
+                <div className="hero-metrics" ref={metricsRef}>
+                  {project.metrics.map((m, i) => (
+                    <div key={i} className="hero-metric-card">
+                      <span className="hero-metric-value">
+                        {m.value}{m.suffix || ""}
+                      </span>
+                      <span className="hero-metric-label">{m.label}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
-            <div ref={textRef}>
-              <HeroText
-                problem={project.heroProblem}
-                solution={project.heroSolution}
-                keynote={project.keynote}
-              />
-            </div>
-            <ProjectLogistics
-              role={project.role}
-              timeline={project.timeline}
-              team={project.team}
-            />
-            <MetricStack
-              metrics={project.metrics}
-              direction="vertical"
-            />
           </div>
         </header>
 

@@ -76,10 +76,10 @@ const CARD_DEFS = [
   const p = projects[def.slug];
   return {
     ...def,
-    title: p.cardTitle,
+    title: typeof p.cardTitle === "object" ? `${p.cardTitle.main}${p.cardTitle.sub ? "\n" + p.cardTitle.sub : ""}` : p.cardTitle,
     year: p.year,
     type: p.type,
-    impact: p.impact,
+    impact: typeof p.impact === "object" ? p.impact.card : p.impact,
     tags: p.tags,
     href: `/projects/${p.slug}`,
     slides: [],
