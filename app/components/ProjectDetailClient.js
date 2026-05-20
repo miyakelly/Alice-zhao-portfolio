@@ -9,43 +9,33 @@ import DeviceFrame from "./DeviceFrame";
 import MetricsCounter from "./MetricsCounter";
 import ExternalLink from "./ExternalLink";
 import HeroVisual from "./HeroVisual";
-import MetricCard from "./MetricCard";
 
-function ResearchStats({ stats }) {
-  if (!stats || stats.length === 0) return null;
+function HeroBottomRow({ project, className }) {
   return (
-    <div className="research-stats">
-      {stats.map((s, i) => (
-        <div key={i} className="research-stat hover-card">
-          <span className="research-stat-value">{s.value}</span>
-          <span className="research-stat-label">{s.label}</span>
-        </div>
-      ))}
+    <div className={className}>
+      <div className="project-hero-heading">
+        <h1>{project.cardTitle.main}</h1>
+        {project.impact && (
+          <span className="project-hero-subtitle">{project.impact.hero}</span>
+        )}
+      </div>
+      <div className="project-hero-text">
+        {project.heroProblem && <p>{project.heroProblem}</p>}
+        {project.heroSolution && (
+          <p>
+            {project.externalLink
+              ? project.heroSolution.split("{externalLink}").map((part, i, arr) =>
+                  i < arr.length - 1 ? (
+                    <span key={i}>{part}<ExternalLink href={project.externalLink.url}><svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{display:"inline", verticalAlign:"middle"}}><path d="M4 1.5H12.5V10M12.5 1.5L1.5 12.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg></ExternalLink></span>
+                  ) : part
+                )
+              : project.heroSolution}
+          </p>
+        )}
+      </div>
     </div>
   );
 }
-
-function DecisionCard({ before, after, why }) {
-  return (
-    <div className="decision-card hover-card">
-      <div className="decision-before">
-        <span className="micro-label">Before</span>
-        <p>{before}</p>
-      </div>
-      <div className="decision-after">
-        <span className="micro-label">After</span>
-        <p>{after}</p>
-      </div>
-      {why && (
-        <div className="decision-why">
-          <span className="micro-label">Why</span>
-          <p>{why}</p>
-        </div>
-      )}
-    </div>
-  );
-}
-
 
 function HighlightText({ text }) {
   const parts = text.split(/\{\{(.+?)\}\}/g);
@@ -90,110 +80,21 @@ function ScrollHighlightObserver({ children }) {
   return <div ref={ref}>{children}</div>;
 }
 
-function ProblemSection({ section }) {
-  const { content, research } = section;
-  const isArray = Array.isArray(content);
-  const hasParagraphs = !isArray && content.paragraphs;
-
-  return (
-    <section id={section.id} className="project-section">
-      {hasParagraphs ? (
-        <ScrollHighlightObserver>
-          <div className="problem-paragraphs">
-            <h2>{section.heading}</h2>
-            {content.paragraphs.map((para, i) => (
-              <p key={i} className="section-summary">
-                <HighlightText text={para} />
-              </p>
-            ))}
-          </div>
-          {content.image && (
-            <div className="problem-image">
-              <DeviceFrame alt={content.image.alt} placeholder={content.image.placeholder} />
-            </div>
-          )}
-          {research && (
-            <div className="problem-research-below">
-              <ResearchStats stats={research.stats} />
-            </div>
-          )}
-        </ScrollHighlightObserver>
-      ) : isArray ? (
-        <>
-        <div className="ps-header">
-          <h2>{section.heading}</h2>
-          {section.summary && <p className="section-summary">{section.summary}</p>}
-        </div>
-        <div className="problem-grid">
-          <div className="problem-narrative">
-            {content.map((part, i) => (
-              <div key={i} className="problem-part">
-                <span className="problem-part-label">{part.label}</span>
-                <p>{part.text}</p>
-              </div>
-            ))}
-          </div>
-          <div className="problem-sidebar">
-            {research && <ResearchStats stats={research.stats} />}
-          </div>
-        </div>
-        </>
-      ) : null}
-    </section>
-  );
-}
-
-function DesignIterationSection({ section }) {
-  const { content } = section;
-
-  if (content.paragraphs) return <ProblemSection section={section} />;
-
-  return (
-    <section id={section.id} className="project-section">
-      <div className="ps-header">
-        <h2>{section.heading}</h2>
-        {section.summary && <p className="section-summary">{section.summary}</p>}
-      </div>
-      {content.challenge && (
-        <div className="iteration-block">
-          <h3 className="iteration-subhead">The Challenge</h3>
-          <p>{content.challenge}</p>
-        </div>
-      )}
-      {content.iteration && (
-        <div className="iteration-block">
-          <h3 className="iteration-subhead">The Iteration</h3>
-          <p>{content.iteration}</p>
-        </div>
-      )}
-      {content.decisions && content.decisions.length > 0 && (
-        <div className="decisions-grid">
-          {content.decisions.map((d, i) => (
-            <DecisionCard key={i} {...d} />
-          ))}
-        </div>
-      )}
-    </section>
-  );
-}
-
 function OutcomeSection({ section, metrics }) {
   const { content, productVisuals } = section;
   const isArray = Array.isArray(content);
 
   return (
     <section id={section.id} className="project-section">
-      <div className="ps-header">
-        <h2>{section.heading}</h2>
-        {section.summary && <p className="section-summary">{section.summary}</p>}
-      </div>
+      <h2 style={section.headingAlign ? { textAlign: section.headingAlign } : undefined}>{section.heading}</h2>
+      {section.summary && <p style={section.headingAlign ? { textAlign: section.headingAlign } : undefined}>{section.summary}</p>}
 
       {isArray ? (
         <>
           <MetricsCounter metrics={metrics} />
           {content.map((block, i) => (
             <div key={i} className="outcome-block">
-              <h3 className="iteration-subhead">{block.subheading}</h3>
+              <h3>{block.subheading}</h3>
               <p className="outcome-summary">{block.text}</p>
               {block.productVisuals && block.productVisuals.length > 0 && (
                 <div className="outcome-visuals">
@@ -218,7 +119,7 @@ function OutcomeSection({ section, metrics }) {
           {content.summary && <p className="outcome-summary">{content.summary}</p>}
           {content.reflection && (
             <div className="outcome-reflection">
-              <span className="micro-label">Reflection</span>
+              <p>Reflection</p>
               <p>{content.reflection}</p>
             </div>
           )}
@@ -248,21 +149,19 @@ function WhatsNextSection({ section }) {
   const { content } = section;
   return (
     <section id={section.id} className="project-section">
-      <div className="ps-header">
-        <h2>{section.heading}</h2>
-        {section.summary && <p className="section-summary">{section.summary}</p>}
-      </div>
+      <h2 style={section.headingAlign ? { textAlign: section.headingAlign } : undefined}>{section.heading}</h2>
+      {section.summary && <p style={section.headingAlign ? { textAlign: section.headingAlign } : undefined}>{section.summary}</p>}
 
       {content.reflection && (
         <div className="outcome-reflection">
-          <span className="micro-label">Reflection</span>
+          <p>Reflection</p>
           <p>{content.reflection}</p>
         </div>
       )}
 
       {content.futureImprovements && content.futureImprovements.length > 0 && (
         <div className="future-improvements">
-          <span className="micro-label">Future Improvements</span>
+          <p>Future Improvements</p>
           <div className="improvements-list">
             {content.futureImprovements.map((item, i) => (
               <div key={i} className="improvement-item">
@@ -290,10 +189,7 @@ const HEADING_COLS = { left: "1 / 5", center: "3 / 7", right: "5 / 9" };
 
 function BlockSection({ section }) {
   const { content } = section;
-  if (!content.blocks) {
-    if (content.challenge || content.decisions) return <DesignIterationSection section={section} />;
-    return <ProblemSection section={section} />;
-  }
+  if (!content.blocks) return null;
 
   const headingCol = HEADING_COLS[section.headingAlign] || "1 / 5";
 
@@ -306,7 +202,7 @@ function BlockSection({ section }) {
           </h2>
           {content.blocks.map((block, i) =>
             block.type === "text" ? (
-              <p key={i} className="block-text" style={{ gridColumn: block.cols }}>
+              <p key={i} style={{ gridColumn: block.cols }}>
                 <HighlightText text={block.text} />
               </p>
             ) : block.type === "image" ? (
@@ -333,39 +229,63 @@ export default function ProjectDetailClient({ project }) {
   const nextProject = project.nextProject
     ? projects[project.nextProject]
     : null;
-  const heroRef = useRef(null);
-  const metricsRef = useRef(null);
+  const imageRef = useRef(null);
 
   useEffect(() => {
-    const hero = heroRef.current;
-    const metrics = metricsRef.current;
-    if (!hero || !metrics) return;
+    const image = imageRef.current;
+    if (!image) return;
     const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (prefersReduced) {
-      metrics.style.transform = "translateY(0)";
+      image.style.clipPath = "inset(0)";
       return;
     }
+
+    function calcInitial() {
+      const rem = parseFloat(getComputedStyle(document.documentElement).fontSize);
+      const gutter = 3.75 * rem;
+      const gap = 20;
+      const vw = window.innerWidth;
+      const colWidth = (vw - gutter * 2 - gap * 7) / 8;
+      const side = colWidth * 2.5 + gap * 1.5;
+      const imgH = image.offsetHeight;
+      return {
+        top: 0,
+        right: vw - gutter - side,
+        bottom: Math.max(0, imgH - side),
+        left: gutter,
+        scrollDist: window.innerHeight * 0.6,
+      };
+    }
+
+    let init = calcInitial();
 
     let ticking = false;
     function onScroll() {
       if (ticking) return;
       ticking = true;
       requestAnimationFrame(() => {
-        const scrollY = window.scrollY;
-        const heroHeight = hero.offsetHeight;
-        const progress = Math.max(0, Math.min(1, scrollY / heroHeight));
-        const metricsHeight = metrics.offsetHeight;
-        const travel = metricsHeight; // how far the metrics should travel up
-        const startOffset = metricsHeight * 0.6; // how far below to start
-        const y = startOffset - travel * progress;
-        metrics.style.transform = `translateY(${y}px)`;
+        const progress = Math.max(0, Math.min(1, window.scrollY / init.scrollDist));
+        const t = init.top * (1 - progress);
+        const r = init.right * (1 - progress);
+        const b = init.bottom * (1 - progress);
+        const l = init.left * (1 - progress);
+        image.style.clipPath = `inset(${t}px ${r}px ${b}px ${l}px)`;
         ticking = false;
       });
     }
 
+    function onResize() {
+      init = calcInitial();
+      onScroll();
+    }
+
     window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onResize, { passive: true });
     onScroll();
-    return () => window.removeEventListener("scroll", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onResize);
+    };
   }, []);
 
   return (
@@ -373,42 +293,17 @@ export default function ProjectDetailClient({ project }) {
       <Navigation title={project.navTitle || "Project"} />
 
       <article className="project-detail">
-        <header className="project-hero" ref={heroRef}>
-          <div className="project-hero-inner">
-            <div className="project-hero-heading">
-              <h1>{project.cardTitle.main}</h1>
-              {project.impact && (
-                <p className="project-hero-subtitle">{project.impact.hero}</p>
-              )}
-            </div>
-            <div className="project-hero-text">
-              {project.heroProblem && <p>{project.heroProblem}</p>}
-              {project.heroSolution && (
-                <p>
-                  {project.externalLink
-                    ? project.heroSolution.split("{externalLink}").map((part, i, arr) =>
-                        i < arr.length - 1 ? (
-                          <span key={i}>{part}<ExternalLink href={project.externalLink.url}><svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{display:"inline", verticalAlign:"middle"}}><path d="M4 1.5H12.5V10M12.5 1.5L1.5 12.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg></ExternalLink></span>
-                        ) : part
-                      )
-                    : project.heroSolution}
-                </p>
-              )}
-            </div>
-            <div className="hero-image-container">
-              <HeroVisual
-                src={project.heroImage}
-                alt={project.title}
-              />
-              {project.metrics && project.metrics.length > 0 && (
-                <div className="hero-metrics" ref={metricsRef}>
-                  {project.metrics.map((m, i) => (
-                    <MetricCard key={i} value={`${m.value}${m.suffix || ""}`} label={m.label} />
-                  ))}
-                </div>
-              )}
-            </div>
+        <header className="project-hero">
+          <div className="hero-image-expand" ref={imageRef}>
+            <HeroVisual
+              src={project.heroImage}
+              alt={project.title}
+            />
           </div>
+          <div className="hero-content">
+            <HeroBottomRow project={project} className="hero-bottom-row" />
+          </div>
+          <div className="hero-scroll-spacer" />
         </header>
 
         <SectionNav sections={project.sections} />
@@ -429,7 +324,7 @@ export default function ProjectDetailClient({ project }) {
 
         {nextProject && (
           <div className="next-project">
-            <span className="micro-label next-project-label">Next Project</span>
+            <p className="next-project-label">Next Project</p>
             <Link href={`/projects/${nextProject.slug}/`} className="next-project-link">
               {nextProject.title || nextProject.slug}
               <span className="next-project-arrow">→</span>

@@ -43,7 +43,7 @@
 }
 .link {
   font-family: var(--f);
-  font-size: var(--t-body);
+  font-size: var(--t-p);
   font-weight: 400;
   color: var(--muted);
   text-decoration: none;
@@ -82,7 +82,7 @@
   }
   .dropdownTrigger {
     font-family: var(--f);
-    font-size: var(--t-body);
+    font-size: var(--t-p);
     font-weight: 700;
     color: var(--ink);
     background: none;

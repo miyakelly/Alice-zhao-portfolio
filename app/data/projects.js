@@ -110,29 +110,28 @@ export const projects = {
     sections: [
       {
         id: "problem",
-        navLabel: "01 Problem",
-        heading: "01 Problem",
+        navLabel: "1_ Who and why",
+        heading: "1_ Who and why",
         headingAlign: "left",
         content: {
           blocks: [
-            { type: "text", text: "I used {{AI tools}} to synthesize 20+ customer interviews and revealed a pattern: {{customers}} at billion-dollar companies were burning millions storing tabular data in {{unstructured storage}} while maintaining {{custom infrastructure}}, struggling with basic operations like keeping data current, managing access, and integrating with query engines.", cols: "1 / 6" },
-            { type: "image", image: { alt: "Problem space diagram", placeholder: true }, cols: "1 / 6" },
-            { type: "text", text: "We decided to build a {{new product}} designed for analytics and AI/ML workloads: a streamlined experience where customers go from storing data to querying it without assembling anything in between.", cols: "5 / 9" },
+            { type: "text", text: "20+ customer interviews revealed that customers like {{data pro}} and {{strategic lead}} at billion-dollar companies are tired of burning millions {{storing tabular data in unstructured storage while maintaining custom infrastructure}}. They need a solution to {{streamline basic operations}} like keeping data up-to-date and integrating with query engines.", cols: "3 / 9" },
+            { type: "image", image: { alt: "Problem space diagram", placeholder: true }, cols: "5 / 9" },
+            { type: "text", text: "We decided to build a {{new product}} designed for analytics and AI/ML workloads: a streamlined experience where customers go from storing data to querying it without assembling anything in between.", cols: "1 / 5" },
             { type: "image", image: { alt: "Product shape visual", placeholder: true }, cols: "5 / 9" },
           ],
         },
       },
       {
         id: "scoping",
-        navLabel: "02 Scoping",
-        heading: "02 Scoping",
+        navLabel: "02 Product scoping",
+        heading: "02 Product scoping",
         headingAlign: "left",
         content: {
           blocks: [
-            { type: "text", text: "With dozens of possible user actions and an {{8-week timeline}}, the risk wasn't building the wrong thing, it was trying to build everything.", cols: "1 / 6" },
-            { type: "text", text: "To scope a brand new product with no existing UX precedent, I adapted a {{JTBD framework}} that categorized every user action into six groups (Create, List, View, Manage, Delete, Audit), each mapped to console steps, preconditions, and {{API dependencies}}. It gave a {{20-person team}} a shared language for making scope trade-offs under time pressure.", cols: "5 / 9" },
-            { type: "image", image: { alt: "JTBD framework diagram", placeholder: true }, cols: "5 / 9" },
-            { type: "text", text: "The framework produced a {{prioritized action plan}}: each user action with defined APIs, known limitations, and console impact, turning an ambiguous product space into a concrete roadmap for launch.", cols: "1 / 6" },
+            { type: "text", text: "To help the team focus on building the right thing within 8 weeks, I adapted a {{JTBD framework}} that categorized every user action into six groups (Create, List, View, Manage, Delete, Audit), each mapped to console steps, preconditions, and API dependencies. It gave a {{20-person team}} a shared language for making scope trade-offs under time pressure.", cols: "1 / 9" },
+            { type: "text", text: "The framework produced a {{prioritized action plan}}: each user action with defined APIs, known limitations, and console impact, turning an ambiguous product space into a concrete roadmap for launch.", cols: "1 / 9" },
+            { type: "image", image: { alt: "JTBD framework diagram", placeholder: true }, cols: "1 / 9" }
           ],
         },
       },
@@ -154,6 +153,7 @@ export const projects = {
         id: "outcome",
         navLabel: "04 Outcome",
         heading: "04 Outcome",
+        headingAlign: "center",
         summary: "Launched at AWS re:Invent 2024 as the top announcement in the CEO keynote, with 500+ TB stored and 97% integration opt-in within 6 months",
         content: [
           {
@@ -251,7 +251,6 @@ export const projects = {
 };
 
 export const projectOrder = [
-  "simplifying-data-access",
   "s3-tables",
   "agent-opportunities",
 ];
