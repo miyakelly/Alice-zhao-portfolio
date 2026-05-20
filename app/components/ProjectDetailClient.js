@@ -9,6 +9,7 @@ import DeviceFrame from "./DeviceFrame";
 import MetricsCounter from "./MetricsCounter";
 import ExternalLink from "./ExternalLink";
 import HeroVisual from "./HeroVisual";
+import MetricCard from "./MetricCard";
 
 function ResearchStats({ stats }) {
   if (!stats || stats.length === 0) return null;
@@ -99,7 +100,7 @@ function ProblemSection({ section }) {
       {hasParagraphs ? (
         <ScrollHighlightObserver>
           <div className="problem-paragraphs">
-            <h2 className="section-heading">{section.heading}</h2>
+            <h2>{section.heading}</h2>
             {content.paragraphs.map((para, i) => (
               <p key={i} className="section-summary">
                 <HighlightText text={para} />
@@ -120,7 +121,7 @@ function ProblemSection({ section }) {
       ) : isArray ? (
         <>
         <div className="ps-header">
-          <h2 className="section-heading">{section.heading}</h2>
+          <h2>{section.heading}</h2>
           {section.summary && <p className="section-summary">{section.summary}</p>}
         </div>
         <div className="problem-grid">
@@ -150,7 +151,7 @@ function DesignIterationSection({ section }) {
   return (
     <section id={section.id} className="project-section">
       <div className="ps-header">
-        <h2 className="section-heading">{section.heading}</h2>
+        <h2>{section.heading}</h2>
         {section.summary && <p className="section-summary">{section.summary}</p>}
       </div>
       {content.challenge && (
@@ -183,7 +184,7 @@ function OutcomeSection({ section, metrics }) {
   return (
     <section id={section.id} className="project-section">
       <div className="ps-header">
-        <h2 className="section-heading">{section.heading}</h2>
+        <h2>{section.heading}</h2>
         {section.summary && <p className="section-summary">{section.summary}</p>}
       </div>
 
@@ -248,7 +249,7 @@ function WhatsNextSection({ section }) {
   return (
     <section id={section.id} className="project-section">
       <div className="ps-header">
-        <h2 className="section-heading">{section.heading}</h2>
+        <h2>{section.heading}</h2>
         {section.summary && <p className="section-summary">{section.summary}</p>}
       </div>
 
@@ -285,10 +286,45 @@ function WhatsNextSection({ section }) {
   );
 }
 
+const HEADING_COLS = { left: "1 / 5", center: "3 / 7", right: "5 / 9" };
+
+function BlockSection({ section }) {
+  const { content } = section;
+  if (!content.blocks) {
+    if (content.challenge || content.decisions) return <DesignIterationSection section={section} />;
+    return <ProblemSection section={section} />;
+  }
+
+  const headingCol = HEADING_COLS[section.headingAlign] || "1 / 5";
+
+  return (
+    <section id={section.id} className="project-section">
+      <ScrollHighlightObserver>
+        <div className="block-grid">
+          <h2 style={{ gridColumn: headingCol }}>
+            {section.heading}
+          </h2>
+          {content.blocks.map((block, i) =>
+            block.type === "text" ? (
+              <p key={i} className="block-text" style={{ gridColumn: block.cols }}>
+                <HighlightText text={block.text} />
+              </p>
+            ) : block.type === "image" ? (
+              <div key={i} className="block-image" style={{ gridColumn: block.cols }}>
+                <DeviceFrame alt={block.image.alt} placeholder={block.image.placeholder} />
+              </div>
+            ) : null
+          )}
+        </div>
+      </ScrollHighlightObserver>
+    </section>
+  );
+}
+
 const SECTION_RENDERERS = {
-  problem: ProblemSection,
-  scoping: ProblemSection,
-  "design-iteration": DesignIterationSection,
+  problem: BlockSection,
+  scoping: BlockSection,
+  "design-iteration": BlockSection,
   outcome: OutcomeSection,
   "whats-next": WhatsNextSection,
 };
@@ -340,7 +376,7 @@ export default function ProjectDetailClient({ project }) {
         <header className="project-hero" ref={heroRef}>
           <div className="project-hero-inner">
             <div className="project-hero-heading">
-              <h1 className="project-hero-title">{project.cardTitle.main}</h1>
+              <h1>{project.cardTitle.main}</h1>
               {project.impact && (
                 <p className="project-hero-subtitle">{project.impact.hero}</p>
               )}
@@ -367,12 +403,7 @@ export default function ProjectDetailClient({ project }) {
               {project.metrics && project.metrics.length > 0 && (
                 <div className="hero-metrics" ref={metricsRef}>
                   {project.metrics.map((m, i) => (
-                    <div key={i} className="hero-metric-card">
-                      <span className="hero-metric-value">
-                        {m.value}{m.suffix || ""}
-                      </span>
-                      <span className="hero-metric-label">{m.label}</span>
-                    </div>
+                    <MetricCard key={i} value={`${m.value}${m.suffix || ""}`} label={m.label} />
                   ))}
                 </div>
               )}

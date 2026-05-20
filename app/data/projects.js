@@ -112,38 +112,42 @@ export const projects = {
         id: "problem",
         navLabel: "01 Problem",
         heading: "01 Problem",
+        headingAlign: "left",
         content: {
-          paragraphs: [
-            "I used {{AI tools}} to synthesize 20+ customer interviews and revealed a pattern: {{customers}} at billion-dollar companies were burning millions storing tabular data in {{unstructured storage}} while maintaining {{custom infrastructure}}, struggling with basic operations like keeping data current, managing access, and integrating with query engines.",
-            "We decided to build a {{new product}} designed for analytics and AI/ML workloads: a streamlined experience where customers go from storing data to querying it without assembling anything in between.",
+          blocks: [
+            { type: "text", text: "I used {{AI tools}} to synthesize 20+ customer interviews and revealed a pattern: {{customers}} at billion-dollar companies were burning millions storing tabular data in {{unstructured storage}} while maintaining {{custom infrastructure}}, struggling with basic operations like keeping data current, managing access, and integrating with query engines.", cols: "1 / 6" },
+            { type: "image", image: { alt: "Problem space diagram", placeholder: true }, cols: "1 / 6" },
+            { type: "text", text: "We decided to build a {{new product}} designed for analytics and AI/ML workloads: a streamlined experience where customers go from storing data to querying it without assembling anything in between.", cols: "5 / 9" },
+            { type: "image", image: { alt: "Product shape visual", placeholder: true }, cols: "5 / 9" },
           ],
-          image: { alt: "Problem space diagram", placeholder: true },
         },
       },
       {
         id: "scoping",
         navLabel: "02 Scoping",
         heading: "02 Scoping",
+        headingAlign: "left",
         content: {
-          paragraphs: [
-            "With dozens of possible user actions and an {{8-week timeline}}, the risk wasn't building the wrong thing, it was trying to build everything.",
-            "To scope a brand new product with no existing UX precedent, I adapted a {{JTBD framework}} that categorized every user action into six groups (Create, List, View, Manage, Delete, Audit), each mapped to console steps, preconditions, and {{API dependencies}}. It gave a {{20-person team}} a shared language for making scope trade-offs under time pressure.",
-            "The framework produced a {{prioritized action plan}}: each user action with defined APIs, known limitations, and console impact, turning an ambiguous product space into a concrete roadmap for launch.",
+          blocks: [
+            { type: "text", text: "With dozens of possible user actions and an {{8-week timeline}}, the risk wasn't building the wrong thing, it was trying to build everything.", cols: "1 / 6" },
+            { type: "text", text: "To scope a brand new product with no existing UX precedent, I adapted a {{JTBD framework}} that categorized every user action into six groups (Create, List, View, Manage, Delete, Audit), each mapped to console steps, preconditions, and {{API dependencies}}. It gave a {{20-person team}} a shared language for making scope trade-offs under time pressure.", cols: "5 / 9" },
+            { type: "image", image: { alt: "JTBD framework diagram", placeholder: true }, cols: "5 / 9" },
+            { type: "text", text: "The framework produced a {{prioritized action plan}}: each user action with defined APIs, known limitations, and console impact, turning an ambiguous product space into a concrete roadmap for launch.", cols: "1 / 6" },
           ],
-          image: { alt: "JTBD framework diagram", placeholder: true },
         },
       },
       {
         id: "design-iteration",
         navLabel: "03 Design Iteration",
         heading: "03 Design Iteration",
+        headingAlign: "left",
         content: {
-          paragraphs: [
-            "S3 Tables is a {{storage}} product, but the value for customers is {{querying}} their data. That requires connecting {{four services}}: S3 for storage, Lake Formation for permissions, Glue Catalog for integration, and Athena for querying. The question was how to make four services feel like one.",
-            "I explored {{three approaches}}, each with different trade-offs between customer effort and flexibility. The team aligned on a {{default-on option}} within the create flow, preserving choice while removing friction. I also pushed back on the standard full-page pattern for namespace creation, proposing a {{multi-step modal}} and extending the design system to support it.",
-            "The final design reduced a multi-service integration to a {{single checkbox}}, eliminating the infrastructure complexity that drove this project from the start. Customers create a table bucket and go straight to querying their data.",
+          blocks: [
+            { type: "text", text: "S3 Tables is a {{storage}} product, but the value for customers is {{querying}} their data. That requires connecting {{four services}}: S3 for storage, Lake Formation for permissions, Glue Catalog for integration, and Athena for querying. The question was how to make four services feel like one.", cols: "1 / 6" },
+            { type: "text", text: "I explored {{three approaches}}, each with different trade-offs between customer effort and flexibility. The team aligned on a {{default-on option}} within the create flow, preserving choice while removing friction. I also pushed back on the standard full-page pattern for namespace creation, proposing a {{multi-step modal}} and extending the design system to support it.", cols: "5 / 9" },
+            { type: "image", image: { alt: "Integration design exploration", placeholder: true }, cols: "1 / 9" },
+            { type: "text", text: "The final design reduced a multi-service integration to a {{single checkbox}}, eliminating the infrastructure complexity that drove this project from the start. Customers create a table bucket and go straight to querying their data.", cols: "1 / 6" },
           ],
-          image: { alt: "Integration design exploration", placeholder: true },
         },
       },
       {

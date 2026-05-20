@@ -1,0 +1,28 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 4px;
+  padding: 24px;
+  aspect-ratio: 1;
+  background: var(--bg);
+  border: 1px solid var(--ink);
+  transition: background 0.2s, border-color 0.2s;
+}
+.value {
+  font-family: var(--f-display);
+  font-size: var(--t-metric);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+.suffix {
+  font-size: 0.7em;
+}
+.label {
+  font-family: var(--f);
+  font-size: var(--t-label);
+  color: var(--muted);
+  line-height: 1.4;
+  transition: color 0.2s;
+}

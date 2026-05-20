@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import s from "./MetricCard.module.css";
 
-function AnimatedNumber({ value, suffix = "", duration = 1200 }) {
+function AnimatedValue({ value, suffix, duration = 1200 }) {
   const [display, setDisplay] = useState(0);
   const ref = useRef(null);
   const hasAnimated = useRef(false);
@@ -10,6 +11,14 @@ function AnimatedNumber({ value, suffix = "", duration = 1200 }) {
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
+
+    const prefersReduced = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    if (prefersReduced) {
+      setDisplay(value);
+      return;
+    }
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -32,9 +41,9 @@ function AnimatedNumber({ value, suffix = "", duration = 1200 }) {
   }, [value, duration]);
 
   return (
-    <span ref={ref} className="metric-value">
+    <span ref={ref} className={s.value}>
       {display}
-      {suffix}
+      {suffix && <span className={s.suffix}>{suffix}</span>}
     </span>
   );
 }
@@ -45,9 +54,9 @@ export default function MetricsCounter({ metrics }) {
   return (
     <div className="metrics-strip">
       {metrics.map((m, i) => (
-        <div key={i} className="metric-item">
-          <AnimatedNumber value={m.value} suffix={m.suffix || ""} />
-          <span className="metric-label">{m.label}</span>
+        <div key={i} className={`${s.card} metric-item`}>
+          <AnimatedValue value={m.value} suffix={m.suffix || ""} />
+          <span className={s.label}>{m.label}</span>
         </div>
       ))}
     </div>

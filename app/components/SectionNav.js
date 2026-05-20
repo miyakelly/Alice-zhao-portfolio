@@ -1,14 +1,16 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import s from "./SectionNav.module.css";
 
 const NAV_H = 60;
+const MAX_LINE_GAP = 8;
 
 export default function SectionNav({ sections }) {
   const [activeId, setActiveId] = useState(sections[0]?.id || "");
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const sentinelRef = useRef(null);
-  const navRef = useRef(null);
+  const linesRef = useRef(null);
 
   useEffect(() => {
     const observers = [];
@@ -29,9 +31,10 @@ export default function SectionNav({ sections }) {
 
   useEffect(() => {
     let lastP = -1;
+    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     function onScroll() {
-      if (!sentinelRef.current || !navRef.current) return;
+      if (!sentinelRef.current || !linesRef.current) return;
       const sTop = sentinelRef.current.getBoundingClientRect().top;
 
       let p;
@@ -43,9 +46,9 @@ export default function SectionNav({ sections }) {
       if (rounded === lastP) return;
       lastP = rounded;
 
-      navRef.current.style.top = `${NAV_H * (1 - p)}px`;
-      navRef.current.style.opacity = p;
-      navRef.current.style.pointerEvents = p > 0.5 ? "auto" : "none";
+      const gap = prefersReduced ? 0 : MAX_LINE_GAP * (1 - p);
+      linesRef.current.style.gap = `${gap}px`;
+
       window.dispatchEvent(
         new CustomEvent("nav-visibility", { detail: { progress: p } })
       );
@@ -70,60 +73,60 @@ export default function SectionNav({ sections }) {
     if (el) el.scrollIntoView({ behavior: "smooth" });
   };
 
-  const activeSection = sections.find((s) => s.id === activeId);
+  const activeSection = sections.find((sec) => sec.id === activeId);
   const activeLabel = activeSection?.navLabel || sections[0]?.navLabel || "";
 
   return (
     <>
-      <div ref={sentinelRef} className="section-nav-sentinel" />
-      <nav
-        ref={navRef}
-        className="section-nav"
-        aria-label="Project sections"
-        style={{ top: `${NAV_H}px`, opacity: 0, pointerEvents: "none" }}
-      >
-        <div className="section-nav-track">
-          {sections.map(({ id, navLabel }) => (
-            <a
-              key={id}
-              href={`#${id}`}
-              className={`section-nav-link${activeId === id ? " active" : ""}`}
-              onClick={(e) => handleClick(e, id)}
-            >
-              {navLabel}
-            </a>
-          ))}
+      <div ref={sentinelRef} className={s.sentinel} />
+      <div className={s.wrapper}>
+        <div ref={linesRef} className={s.lines} style={{ gap: `${MAX_LINE_GAP}px` }}>
+          <div className={`${s.line} ${s.line1}`} />
+          <div className={`${s.line} ${s.line2}`} />
+          <div className={`${s.line} ${s.line3}`} />
         </div>
+        <nav className={s.nav} aria-label="Project sections">
+          <div className={s.track}>
+            {sections.map(({ id, navLabel }) => (
+              <a
+                key={id}
+                href={`#${id}`}
+                className={`${s.link}${activeId === id ? ` ${s.linkActive}` : ""}`}
+                onClick={(e) => handleClick(e, id)}
+              >
+                {navLabel}
+              </a>
+            ))}
+          </div>
 
-        <div className="section-nav-dropdown">
-          <button
-            className="section-nav-dropdown-trigger"
-            onClick={() => setDropdownOpen((o) => !o)}
-            aria-expanded={dropdownOpen}
-          >
-            {activeLabel}
-            <span
-              className={`section-nav-chevron${dropdownOpen ? " open" : ""}`}
+          <div className={s.dropdown}>
+            <button
+              className={s.dropdownTrigger}
+              onClick={() => setDropdownOpen((o) => !o)}
+              aria-expanded={dropdownOpen}
             >
-              ▾
-            </span>
-          </button>
-          {dropdownOpen && (
-            <div className="section-nav-dropdown-list">
-              {sections.map(({ id, navLabel }) => (
-                <a
-                  key={id}
-                  href={`#${id}`}
-                  className={`section-nav-dropdown-item${activeId === id ? " active" : ""}`}
-                  onClick={(e) => handleClick(e, id)}
-                >
-                  {navLabel}
-                </a>
-              ))}
-            </div>
-          )}
-        </div>
-      </nav>
+              {activeLabel}
+              <span className={`${s.chevron}${dropdownOpen ? ` ${s.chevronOpen}` : ""}`}>
+                ▾
+              </span>
+            </button>
+            {dropdownOpen && (
+              <div className={s.dropdownList}>
+                {sections.map(({ id, navLabel }) => (
+                  <a
+                    key={id}
+                    href={`#${id}`}
+                    className={`${s.dropdownItem}${activeId === id ? ` ${s.dropdownItemActive}` : ""}`}
+                    onClick={(e) => handleClick(e, id)}
+                  >
+                    {navLabel}
+                  </a>
+                ))}
+              </div>
+            )}
+          </div>
+        </nav>
+      </div>
     </>
   );
 }
