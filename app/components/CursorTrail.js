@@ -11,13 +11,16 @@ const IDLE_FADE_DURATION = 5;
 
 export default function CursorTrail() {
   const [trail, setTrail] = useState([]);
-  const [trailColor, setTrailColor] = useState("#0A0D10");
+  const [mounted, setMounted] = useState(false);
+  const trailColor = "#fff";
   const cursorPos = useRef({ x: -1000, y: -1000 });
   const lastCursorPos = useRef({ x: -1000, y: -1000 });
   const lastMoveTime = useRef(Date.now());
   const activityLevel = useRef(1);
   const animationFrameId = useRef(null);
   const prefersReducedMotion = useRef(false);
+
+  useEffect(() => { setMounted(true); }, []);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -29,25 +32,6 @@ export default function CursorTrail() {
     return () => mql.removeEventListener("change", onChange);
   }, []);
 
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-
-    const readColor = () => {
-      const ink = getComputedStyle(document.documentElement)
-        .getPropertyValue("--ink")
-        .trim();
-      if (ink) setTrailColor(ink);
-    };
-
-    readColor();
-
-    const observer = new MutationObserver(readColor);
-    observer.observe(document.body, {
-      attributes: true,
-      attributeFilter: ["data-dark"],
-    });
-    return () => observer.disconnect();
-  }, []);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -143,7 +127,7 @@ export default function CursorTrail() {
     };
   }, []);
 
-  if (typeof document === "undefined") return null;
+  if (!mounted) return null;
 
   const fade = activityLevel.current;
 
@@ -157,6 +141,7 @@ export default function CursorTrail() {
         height: "100vh",
         pointerEvents: "none",
         zIndex: 9999,
+        mixBlendMode: "difference",
       }}
     >
       {trail.map((point, i) => {

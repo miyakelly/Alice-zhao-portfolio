@@ -13,7 +13,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body>
         <PaperTexture />
-        {/* <CursorTrail /> */}
+        <CursorTrail />
         {children}
       </body>
     </html>
