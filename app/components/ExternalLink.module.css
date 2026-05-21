@@ -7,9 +7,9 @@
   transition: color 0.15s;
   white-space: nowrap;
 }
-.link:hover {
-  color: var(--accent);
-}
+/* .link:hover {
+  opacity: 0.6;
+} */
 .icon {
   display: inline-block;
   margin-left: 4px;

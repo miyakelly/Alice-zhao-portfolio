@@ -9,6 +9,7 @@ import DeviceFrame from "./DeviceFrame";
 import MetricsCounter from "./MetricsCounter";
 import ExternalLink from "./ExternalLink";
 import HeroVisual from "./HeroVisual";
+import InlineImageLoop from "./InlineImageLoop";
 
 function HeroBottomRow({ project, className }) {
   return (
@@ -23,13 +24,10 @@ function HeroBottomRow({ project, className }) {
         {project.heroProblem && <p>{project.heroProblem}</p>}
         {project.heroSolution && (
           <p>
-            {project.externalLink
-              ? project.heroSolution.split("{externalLink}").map((part, i, arr) =>
-                  i < arr.length - 1 ? (
-                    <span key={i}>{part}<ExternalLink href={project.externalLink.url}><svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{display:"inline", verticalAlign:"middle"}}><path d="M4 1.5H12.5V10M12.5 1.5L1.5 12.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg></ExternalLink></span>
-                  ) : part
-                )
-              : project.heroSolution}
+            <HeroSolutionText
+              text={project.heroSolution}
+              externalLink={project.externalLink}
+            />
           </p>
         )}
       </div>
@@ -38,47 +36,38 @@ function HeroBottomRow({ project, className }) {
 }
 
 function HighlightText({ text }) {
-  const parts = text.split(/\{\{(.+?)\}\}/g);
-  return parts.map((part, i) =>
-    i % 2 === 1 ? (
-      <mark key={i} className="scroll-highlight">{part}</mark>
-    ) : (
-      part
-    )
-  );
-}
-
-function ScrollHighlightObserver({ children }) {
-  const ref = useRef(null);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-    const marks = el.querySelectorAll(".scroll-highlight");
-    if (prefersReduced) {
-      marks.forEach((m) => m.classList.add("highlighted"));
-      return;
+  const parts = text.split(/(\{img(?::[^}]*)?\})/g);
+  return parts.map((part, i) => {
+    const imgMatch = part.match(/^\{img:([^}]+)\}$/);
+    if (imgMatch) {
+      return <InlineImageLoop key={i} srcs={imgMatch[1].split(",")} />;
     }
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("highlighted");
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.8 }
-    );
-    marks.forEach((m) => observer.observe(m));
-    return () => observer.disconnect();
-  }, []);
-
-  return <div ref={ref}>{children}</div>;
+    if (part === "{img}") {
+      return <span key={i} className="inline-img" />;
+    }
+    return part.replace(/\{\{(.+?)\}\}/g, "$1");
+  });
 }
+
+function HeroSolutionText({ text, externalLink }) {
+  const parts = text.split(/(\{img(?::[^}]*)?\}|\{link:[^}]+\})/g);
+  return parts.map((part, i) => {
+    const imgMatch = part.match(/^\{img:([^}]+)\}$/);
+    if (imgMatch) {
+      const loop = <InlineImageLoop key={i} srcs={imgMatch[1].split(",")} />;
+      if (externalLink) {
+        return <ExternalLink key={i} href={externalLink.url}>{loop}</ExternalLink>;
+      }
+      return loop;
+    }
+    const linkMatch = part.match(/^\{link:([^}]+)\}$/);
+    if (linkMatch && externalLink) {
+      return <ExternalLink key={i} href={externalLink.url}>{linkMatch[1]}</ExternalLink>;
+    }
+    return part;
+  });
+}
+
 
 function OutcomeSection({ section, metrics }) {
   const { content, productVisuals } = section;
@@ -86,7 +75,7 @@ function OutcomeSection({ section, metrics }) {
 
   return (
     <section id={section.id} className="project-section">
-      <h2 style={section.headingAlign ? { textAlign: section.headingAlign } : undefined}>{section.heading}</h2>
+      <SectionHeading heading={section.heading} />
       {section.summary && <p style={section.headingAlign ? { textAlign: section.headingAlign } : undefined}>{section.summary}</p>}
 
       {isArray ? (
@@ -149,7 +138,7 @@ function WhatsNextSection({ section }) {
   const { content } = section;
   return (
     <section id={section.id} className="project-section">
-      <h2 style={section.headingAlign ? { textAlign: section.headingAlign } : undefined}>{section.heading}</h2>
+      <SectionHeading heading={section.heading} />
       {section.summary && <p style={section.headingAlign ? { textAlign: section.headingAlign } : undefined}>{section.summary}</p>}
 
       {content.reflection && (
@@ -185,34 +174,57 @@ function WhatsNextSection({ section }) {
   );
 }
 
-const HEADING_COLS = { left: "1 / 5", center: "3 / 7", right: "5 / 9" };
+function SectionHeading({ heading }) {
+  const match = heading.match(/^(\d+[_.]?\s*)/);
+  if (!match) return <h2>{heading}</h2>;
+  const num = match[1];
+  const text = heading.slice(num.length);
+  return (
+    <h2>
+      <span className="h2-number">{num}</span>{text}
+    </h2>
+  );
+}
+
+function SectionHeadingInline({ heading }) {
+  const match = heading.match(/^(\d+[_.]?\s*)/);
+  if (!match) return <>{heading}</>;
+  const num = match[1];
+  const text = heading.slice(num.length);
+  return (
+    <>
+      <span className="h2-number">{num}</span>{text}
+    </>
+  );
+}
 
 function BlockSection({ section }) {
   const { content } = section;
-  if (!content.blocks) return null;
-
-  const headingCol = HEADING_COLS[section.headingAlign] || "1 / 5";
+  if (!content.lead) return null;
 
   return (
     <section id={section.id} className="project-section">
-      <ScrollHighlightObserver>
-        <div className="block-grid">
-          <h2 style={{ gridColumn: headingCol }}>
-            {section.heading}
-          </h2>
-          {content.blocks.map((block, i) =>
-            block.type === "text" ? (
-              <p key={i} style={{ gridColumn: block.cols }}>
-                <HighlightText text={block.text} />
-              </p>
-            ) : block.type === "image" ? (
-              <div key={i} className="block-image" style={{ gridColumn: block.cols }}>
-                <DeviceFrame alt={block.image.alt} placeholder={block.image.placeholder} />
-              </div>
-            ) : null
-          )}
+      <h2>
+        <span className="h2-title"><SectionHeadingInline heading={section.heading} /></span>
+        {" "}<span className="h2-lead-content"><HighlightText text={content.lead} /></span>
+      </h2>
+      {content.subsections && content.subsections.length > 0 && (
+        <div className="subsections-grid">
+          {content.subsections.map((sub, i) => (
+            <div key={i} className="subsection-item">
+              <p className="subsection-label">{sub.label}</p>
+              <p className="subsection-text">{sub.text}</p>
+            </div>
+          ))}
         </div>
-      </ScrollHighlightObserver>
+      )}
+      {content.sectionImage && (
+        <img
+          className="section-image"
+          src={content.sectionImage.src}
+          alt={content.sectionImage.alt}
+        />
+      )}
     </section>
   );
 }
