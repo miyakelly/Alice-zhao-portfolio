@@ -103,11 +103,11 @@ export const projects = {
         navLabel: "01  Who and why",
         heading: "01  Who and why.",
         content: {
-          lead: "Customers {img:/img/s3tables/customers-inline-img/Rectangle 101.jpg,/img/s3tables/customers-inline-img/Rectangle 102.jpg,/img/s3tables/customers-inline-img/Rectangle 104.jpg} don't want to burn millions storing tabular data in unstructured storage while spending months maintaining custom infrastructure. They need a solution to streamline basic operations so the team can focus on data querying.",
+          lead: "Customers {img:/img/s3tables/customers-inline-img/Rectangle 101.jpg,/img/s3tables/customers-inline-img/Rectangle 102.jpg,/img/s3tables/customers-inline-img/Rectangle 104.jpg} don't want to store tabular data in unstructured storage while maintaining custom infrastructure. They need a solution to streamline basic operations so the team can focus on data querying.",
           subsections: [
-            { label: "Research", text: "20+ customer interviews, 3 sales conversations, and 30+ survey responses across enterprise storage customers." },
-            { label: "Target personas", text: "Data pros managing petabyte-scale pipelines and strategic leads evaluating infrastructure costs at billion-dollar companies." },
-            { label: "Pain points", text: "Millions wasted on custom infrastructure for tabular data, manual maintenance of query engine integrations, and no native way to keep data up-to-date." },
+            { label: "Research", text: "I used internal AI tools to synthesize transcripts from 20+ enterprise customer interviews. The outcome revealed the target customers and their respective pain points." },
+            { label: "Target personas", text: "Data pros manage storage systems and strategic leads evaluate infrastructure costs at billion-dollar companies." },
+            { label: "Pain points", text: "Millions wasted on custom infrastructure, manual maintenance of query engine integrations, and no native way to keep structured data up-to-date." },
           ],
           sectionImage: { src: "/img/s3tables/problem/painpoint-graph.jpg", alt: "Customer pain point analysis" },
         },
@@ -119,8 +119,8 @@ export const projects = {
         content: {
           lead: "By adapting the AWS JTBD framework, I gave the team a shared language to make adj scope trade-offs. We categorized every user action into 6 workflows, with detailed user steps, preconditions, API dependencies, and priorities. The team aligned on a feasible action plan in one week.",
           subsections: [
-            { label: "Framework", text: "Each user action mapped to console steps, preconditions, and API dependencies across six groups: Create, List, View, Manage, Delete, and Audit." },
-            { label: "Output", text: "A prioritized action plan with defined APIs, known limitations, and console impact, turning an ambiguous product space into a concrete roadmap for launch." },
+            { label: "JTBD Framework", text: "Each user action mapped to console steps, preconditions, and API dependencies across six groups: Create, List, View, Manage, Audit, and Delete." },
+            { label: "Action plan", text: "A prioritized action plan with defined APIs, known limitations, and console impact, turning an ambiguous product space into a concrete roadmap for launch." },
           ],
           sectionImage: { src: "/img/s3tables/scoping/scoping-graph.jpg", alt: "Product scoping" },
         },

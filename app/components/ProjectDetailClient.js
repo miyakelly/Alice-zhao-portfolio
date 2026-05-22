@@ -10,6 +10,7 @@ import MetricsCounter from "./MetricsCounter";
 import ExternalLink from "./ExternalLink";
 import HeroVisual from "./HeroVisual";
 import InlineImageLoop from "./InlineImageLoop";
+import LetterReveal from "./LetterReveal";
 
 function HeroBottomRow({ project, className }) {
   return (
@@ -46,6 +47,24 @@ function HighlightText({ text }) {
       return <span key={i} className="inline-img" />;
     }
     return part.replace(/\{\{(.+?)\}\}/g, "$1");
+  });
+}
+
+function HighlightTextReveal({ text, delayOffset = 0 }) {
+  const parts = text.split(/(\{img(?::[^}]*)?\})/g);
+  let charCount = delayOffset;
+  return parts.map((part, i) => {
+    const imgMatch = part.match(/^\{img:([^}]+)\}$/);
+    if (imgMatch) {
+      return <InlineImageLoop key={i} srcs={imgMatch[1].split(",")} />;
+    }
+    if (part === "{img}") {
+      return <span key={i} className="inline-img" />;
+    }
+    const cleaned = part.replace(/\{\{(.+?)\}\}/g, "$1");
+    const el = <LetterReveal key={i} text={cleaned} delayOffset={charCount} />;
+    charCount += cleaned.length;
+    return el;
   });
 }
 
@@ -254,26 +273,58 @@ function WhatsNextSection({ section }) {
   );
 }
 
+
 function SectionHeading({ heading, align }) {
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReduced) {
+      el.classList.add("revealed");
+      return;
+    }
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          el.classList.add("revealed");
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.1 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   const match = heading.match(/^(\d+[_.]?\s*)/);
-  if (!match) return <h2 style={align ? { textAlign: align } : undefined}>{heading}</h2>;
+  if (!match) {
+    return (
+      <h2 ref={ref} className="section-heading-reveal" style={align ? { textAlign: align } : undefined}>
+        <LetterReveal text={heading} />
+      </h2>
+    );
+  }
   const num = match[1];
   const text = heading.slice(num.length);
   return (
-    <h2 style={align ? { textAlign: align } : undefined}>
-      <span className="h2-number">{num}</span>{text}
+    <h2 ref={ref} className="section-heading-reveal" style={align ? { textAlign: align } : undefined}>
+      <span className="h2-number"><LetterReveal text={num} /></span>
+      <LetterReveal text={text} delayOffset={num.length} />
     </h2>
   );
 }
 
 function SectionHeadingInline({ heading }) {
   const match = heading.match(/^(\d+[_.]?\s*)/);
-  if (!match) return <>{heading}</>;
+  if (!match) return <LetterReveal text={heading} />;
   const num = match[1];
   const text = heading.slice(num.length);
   return (
     <>
-      <span className="h2-number">{num}</span>{text}
+      <span className="h2-number"><LetterReveal text={num} /></span>
+      <LetterReveal text={text} delayOffset={num.length} />
     </>
   );
 }
@@ -281,12 +332,36 @@ function SectionHeadingInline({ heading }) {
 function BlockSection({ section }) {
   const { content } = section;
   if (!content.lead) return null;
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReduced) {
+      el.classList.add("revealed");
+      return;
+    }
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          el.classList.add("revealed");
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.1 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  const headingLen = section.heading.length;
 
   return (
     <section id={section.id} className="project-section">
-      <h2>
+      <h2 ref={ref} className="section-heading-reveal">
         <span className="h2-title"><SectionHeadingInline heading={section.heading} /></span>
-        {" "}<span className="h2-lead-content"><HighlightText text={content.lead} /></span>
+        {" "}<span className="h2-lead-content"><HighlightTextReveal text={content.lead} delayOffset={headingLen} /></span>
       </h2>
       {content.subsections && content.subsections.length > 0 && (
         <div className="subsections-grid">
@@ -345,7 +420,7 @@ export default function ProjectDetailClient({ project }) {
         right: vw - gutter - side,
         bottom: Math.max(0, imgH - side),
         left: gutter,
-        scrollDist: window.innerHeight * 0.1,
+        scrollDist: window.innerHeight * 0.3,
       };
     }
 
