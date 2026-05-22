@@ -92,7 +92,6 @@ export const projects = {
       url: "https://www.youtube.com/watch?v=eztA5VYH2nM",
     },
     metrics: [
-      { value: 8, suffix: "weeks", label: "From concept to launch" },
       { value: 500, suffix: "+ TB", label: "Data stored in 6 months" },
       { value: 20, suffix: "%", label: "Adoption rate WoW growth" },
       { value: 97, suffix: "%", label: "Integration opt-in rate" },
@@ -110,7 +109,7 @@ export const projects = {
             { label: "Target personas", text: "Data pros managing petabyte-scale pipelines and strategic leads evaluating infrastructure costs at billion-dollar companies." },
             { label: "Pain points", text: "Millions wasted on custom infrastructure for tabular data, manual maintenance of query engine integrations, and no native way to keep data up-to-date." },
           ],
-          sectionImage: { src: "/img/s3tables/painpoint-graph.jpg", alt: "Customer pain point analysis" },
+          sectionImage: { src: "/img/s3tables/problem/painpoint-graph.jpg", alt: "Customer pain point analysis" },
         },
       },
       {
@@ -118,11 +117,12 @@ export const projects = {
         navLabel: "02 Product scoping",
         heading: "02 Product scoping.",
         content: {
-          lead: "To help the team focus on building the right thing within 8 weeks, I adapted a JTBD framework {img} that categorized every user action into six groups (Create, List, View, Manage, Delete, Audit), each mapped to console steps, preconditions, and API dependencies. It gave a 20-person team a shared language for making scope trade-offs under time pressure.",
+          lead: "By adapting the AWS JTBD framework, I gave the team a shared language to make adj scope trade-offs. We categorized every user action into 6 workflows, with detailed user steps, preconditions, API dependencies, and priorities. The team aligned on a feasible action plan in one week.",
           subsections: [
             { label: "Framework", text: "Each user action mapped to console steps, preconditions, and API dependencies across six groups: Create, List, View, Manage, Delete, and Audit." },
             { label: "Output", text: "A prioritized action plan with defined APIs, known limitations, and console impact, turning an ambiguous product space into a concrete roadmap for launch." },
           ],
+          sectionImage: { src: "/img/s3tables/scoping/scoping-graph.jpg", alt: "Product scoping" },
         },
       },
       {
@@ -130,11 +130,11 @@ export const projects = {
         navLabel: "03 Design Iteration",
         heading: "03 Design Iteration.",
         content: {
-          lead: "S3 Tables is a storage product, but the value for customers is querying their data. That requires connecting four services {img}: S3 for storage, Lake Formation for permissions, Glue Catalog for integration, and Athena for querying. The question was how to make four services feel like one.",
+          lead: "Integration across multiple services needs to be seamless. After testing three options, I persuaded the team to combine integration with table bucket creation as a default-on setting. 97% of customers never turned it off.",
           subsections: [
-            { label: "Exploration", text: "Three approaches with different trade-offs between customer effort and flexibility. The team aligned on a default-on option within the create flow, preserving choice while removing friction." },
-            { label: "System extension", text: "Pushed back on the standard full-page pattern for namespace creation, proposing a multi-step modal and extending the design system to support it." },
-            { label: "Result", text: "Reduced a multi-service integration to a single checkbox {img}, eliminating the infrastructure complexity that drove this project from the start." },
+            { label: "Exploration", text: "I tested three integration models: a multi-step wizard that walked through each service, a fragmented approach with separate configuration pages, and a single-page create flow with integration built in." },
+            { label: "Trade-offs", text: "The wizard added friction to what should feel instant. The fragmented model scattered a single decision across multiple pages. Customer research showed most users' end goal was querying, so bundling integration into table bucket creation matched their mental model." },
+            { label: "Decision", text: "I proposed combining integration into the create flow as a default-on checkbox. One click replaces what used to require configuring multiple services independently. The team aligned quickly once the customer data backed it up." },
           ],
         },
       },
@@ -143,52 +143,41 @@ export const projects = {
         navLabel: "04 Outcome",
         heading: "04 Outcome",
         headingAlign: "center",
-        summary: "Launched at AWS re:Invent 2024 as the top announcement in the CEO keynote, with 500+ TB stored and 97% integration opt-in within 6 months",
+        summary: "S3 Tables gives customers structural data storage with built-in query support, eliminating the custom infrastructure that used to cost millions to build and maintain.",
         content: [
           {
-            subheading: "Overall Summary",
-            text: "S3 Tables launched at AWS re:Invent 2024, featured as the top announcement in CEO Matt Garman's keynote. It introduced native table capabilities to S3, enabling customers to store, manage, and query structured data for analytics and AI/ML workloads without custom infrastructure.",
-            productVisuals: [
-              { alt: "S3 Tables console overview", placeholder: true },
+            subheading: "Unified data storage for AI/ML workloads",
+            text: "S3 Tables introduced native table capabilities to S3, enabling customers to store, manage, and query structured data for analytics and AI/ML workloads without custom infrastructure.",
+            images: [
+              { src: "/img/s3tables/problem/painpoint-graph.jpg", alt: "S3 Tables console overview" },
+              { src: "/img/s3tables/problem/painpoint-graph.jpg", alt: "Table bucket creation flow" },
             ],
           },
           {
             subheading: "Seamless Integration",
-            text: "What previously required custom-built infrastructure is now handled automatically. And the integration that originally required customers to configure across multiple AWS services is reduced to a single click during table bucket creation.",
-            productVisuals: [
-              { alt: "Integration flow with single-click setup", placeholder: true },
+            text: "What previously required custom-built infrastructure is now handled automatically. Integration across multiple AWS services is reduced to a single click during table bucket creation.",
+            images: [
+              { src: "/img/s3tables/problem/painpoint-graph.jpg", alt: "Integration configuration" },
+              { src: "/img/s3tables/problem/painpoint-graph.jpg", alt: "Single-click integration" },
             ],
           },
           {
-            subheading: "View and Manage Tabular Data",
+            subheading: "One click from data to insights",
             text: "Once created, customers manage their tables from a single console. Table bucket details, permission controls, and storage settings are all accessible without switching between services.",
-            productVisuals: [
-              { alt: "Table management console", placeholder: true },
+            images: [
+              { src: "/img/s3tables/problem/painpoint-graph.jpg", alt: "Table management console" },
+              { src: "/img/s3tables/problem/painpoint-graph.jpg", alt: "Query results view" },
+            ],
+          },
+          {
+            subheading: "Biggest launch for S3",
+            text: "S3 Tables launched at AWS re:Invent 2024, featured as the top announcement in AWS CEO's keynote.",
+            images: [
+              { src: "/img/s3tables/problem/painpoint-graph.jpg", alt: "re:Invent 2024 keynote" },
+              { src: "/img/s3tables/problem/painpoint-graph.jpg", alt: "S3 Tables announcement" },
             ],
           },
         ],
-      },
-      {
-        id: "whats-next",
-        navLabel: "05 What's Next",
-        heading: "05 What's Next",
-        summary: "The JTBD framework became the highest-leverage contribution, giving a 50-person team a shared language for trade-offs under time pressure",
-        content: {
-          reflection: "The biggest lesson was that the hardest design problem wasn't any single screen, it was creating the framework that let a 50-person team move fast on a brand new product category. The JTBD framework turned out to be my highest-leverage contribution: it didn't just define what we'd build, it gave everyone a shared language for making trade-offs under extreme time pressure.",
-          futureImprovements: [
-            {
-              title: "Further streamline integration",
-              description: "Based on customer feedback, we simplified the multi-service integration flow even further, reducing configuration steps and improving the default setup experience.",
-              status: "launched",
-            },
-            {
-              title: "redacted",
-              description: "redacted",
-              status: "launching-reinvent-2025",
-              redacted: true,
-            },
-          ],
-        },
       },
     ],
     nextProject: "agent-opportunities",

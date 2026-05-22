@@ -69,31 +69,111 @@ function HeroSolutionText({ text, externalLink }) {
 }
 
 
+function OutcomeZigzag({ content }) {
+  const expandRef = useRef(null);
+
+  useEffect(() => {
+    const img = expandRef.current;
+    if (!img) return;
+    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReduced) return;
+
+    function getOffset() {
+      const rect = img.getBoundingClientRect();
+      const vw = window.innerWidth;
+      const left = rect.left;
+      const right = vw - rect.right;
+      const top = 0;
+      const bottom = 0;
+      return { left, right, top, bottom };
+    }
+
+    let maxInset = getOffset();
+
+    let ticking = false;
+    function onScroll() {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        const rect = img.getBoundingClientRect();
+        const vh = window.innerHeight;
+        const imgCenter = rect.top + rect.height / 2;
+        const distFromCenter = imgCenter - vh / 2;
+        const scrollRange = vh * 0.6;
+        const progress = Math.max(0, Math.min(1, 1 - distFromCenter / scrollRange));
+
+        const l = maxInset.left * (1 - progress);
+        const r = maxInset.right * (1 - progress);
+        img.style.clipPath = `inset(0px ${r}px 0px ${l}px)`;
+        ticking = false;
+      });
+    }
+
+    function onResize() {
+      img.style.clipPath = "none";
+      maxInset = getOffset();
+      onScroll();
+    }
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onResize, { passive: true });
+    onScroll();
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onResize);
+    };
+  }, []);
+
+  const lastBlockIdx = content.length - 1;
+
+  return (
+    <div className="outcome-zigzag">
+      {content.map((block, i) => {
+        const isLeft = i % 2 === 0;
+        const isLastBlock = i === lastBlockIdx;
+        const images = block.images || [];
+        const regularImages = isLastBlock ? images.slice(0, -1) : images;
+        const expandImage = isLastBlock && images.length > 0 ? images[images.length - 1] : null;
+
+        return (
+          <div key={i} className={`zigzag-row ${isLeft ? "zigzag-left" : "zigzag-right"}`}>
+            <div className="zigzag-text">
+              <p className="subsection-label">{block.subheading}</p>
+              <p className="subsection-text">{block.text}</p>
+            </div>
+            <div className="zigzag-images">
+              {regularImages.map((img, j) => (
+                <img key={j} src={img.src} alt={img.alt} className="zigzag-img" />
+              ))}
+            </div>
+            {expandImage && (
+              <img
+                ref={expandRef}
+                src={expandImage.src}
+                alt={expandImage.alt}
+                className="zigzag-expand-img"
+              />
+            )}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
 function OutcomeSection({ section, metrics }) {
   const { content, productVisuals } = section;
   const isArray = Array.isArray(content);
 
   return (
     <section id={section.id} className="project-section">
-      <SectionHeading heading={section.heading} />
-      {section.summary && <p style={section.headingAlign ? { textAlign: section.headingAlign } : undefined}>{section.summary}</p>}
+      <SectionHeading heading={section.heading} align={section.headingAlign} />
+      {section.summary && <p>{section.summary}</p>}
 
       {isArray ? (
         <>
           <MetricsCounter metrics={metrics} />
-          {content.map((block, i) => (
-            <div key={i} className="outcome-block">
-              <h3>{block.subheading}</h3>
-              <p className="outcome-summary">{block.text}</p>
-              {block.productVisuals && block.productVisuals.length > 0 && (
-                <div className="outcome-visuals">
-                  {block.productVisuals.map((v, j) => (
-                    <DeviceFrame key={j} alt={v.alt} placeholder={v.placeholder} />
-                  ))}
-                </div>
-              )}
-            </div>
-          ))}
+          <OutcomeZigzag content={content} />
         </>
       ) : (
         <>
@@ -174,13 +254,13 @@ function WhatsNextSection({ section }) {
   );
 }
 
-function SectionHeading({ heading }) {
+function SectionHeading({ heading, align }) {
   const match = heading.match(/^(\d+[_.]?\s*)/);
-  if (!match) return <h2>{heading}</h2>;
+  if (!match) return <h2 style={align ? { textAlign: align } : undefined}>{heading}</h2>;
   const num = match[1];
   const text = heading.slice(num.length);
   return (
-    <h2>
+    <h2 style={align ? { textAlign: align } : undefined}>
       <span className="h2-number">{num}</span>{text}
     </h2>
   );
