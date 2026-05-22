@@ -1,0 +1,107 @@
+.section {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.sectionLink {
+  display: block;
+  text-decoration: none;
+  color: var(--ink);
+}
+
+/* ── Progress line ── */
+
+.lineWrap {
+  position: relative;
+  height: 1px;
+  margin-bottom: 48px;
+}
+
+.lineBg {
+  position: absolute;
+  inset: 0;
+  background: var(--ink);
+  opacity: 0.3;
+}
+
+.lineBar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 0%;
+  background: var(--ink);
+  will-change: width;
+}
+
+/* ── Label + title grid ── */
+
+.content {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  padding: 0 var(--page-gutter);
+  gap: 20px;
+  align-items: start;
+}
+
+.label {
+  grid-column: 1 / 4;
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  will-change: opacity;
+}
+
+.labelText {
+  font-family: var(--f-display);
+  font-size: var(--t-h1);
+  font-style: italic;
+  line-height: 1.1;
+  letter-spacing: var(--t-h1-letter-spacing);
+}
+
+.labelArrow {
+  font-family: var(--f-display);
+  font-size: var(--t-h1);
+  font-weight: 400;
+  line-height: 1.1;
+}
+
+.titleBlock {
+  grid-column: 5 / 9;
+  will-change: transform;
+}
+
+.title {
+  font-family: var(--f);
+  font-size: var(--t-h1);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: var(--t-h1-letter-spacing);
+  margin-bottom: 4px;
+}
+
+.subtitle {
+  display: block;
+  font-family: var(--f-display);
+  font-size: var(--t-hero-subtitle);
+  font-weight: 400;
+  line-height: 1.3;
+  color: var(--muted);
+  opacity: 0.8;
+}
+
+@media (max-width: 900px) {
+  .content {
+    grid-template-columns: 1fr;
+    min-height: auto;
+    padding: 48px 0;
+  }
+  .label {
+    grid-column: 1;
+  }
+  .titleBlock {
+    grid-column: 1;
+  }
+}

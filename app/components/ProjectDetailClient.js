@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
 import { projects } from "../data/projects";
 import Navigation from "./Navigation";
 // import SectionNav from "./SectionNav";
@@ -11,14 +10,15 @@ import ExternalLink from "./ExternalLink";
 import HeroVisual from "./HeroVisual";
 import InlineImageLoop from "./InlineImageLoop";
 import LetterReveal from "./LetterReveal";
+import NextProjectTransition from "./NextProjectTransition";
 
 function HeroBottomRow({ project, className }) {
   return (
     <div className={className}>
       <div className="project-hero-heading">
-        <h1>{project.cardTitle.main}</h1>
-        {project.impact && (
-          <span className="project-hero-subtitle">{project.impact.hero}</span>
+        <h1>{project.projectTitle.main}</h1>
+        {project.projectTitle.sub && (
+          <span className="project-hero-subtitle">{project.projectTitle.sub}</span>
         )}
       </div>
       <div className="project-hero-text">
@@ -373,13 +373,13 @@ function BlockSection({ section }) {
           ))}
         </div>
       )}
-      {content.sectionImage && (
-        <img
-          className="section-image"
-          src={content.sectionImage.src}
-          alt={content.sectionImage.alt}
-        />
-      )}
+      {content.sectionImages
+        ? content.sectionImages.map((img, i) => (
+            <img key={i} className="section-image" src={img.src} alt={img.alt} />
+          ))
+        : content.sectionImage && (
+            <img className="section-image" src={content.sectionImage.src} alt={content.sectionImage.alt} />
+          )}
     </section>
   );
 }
@@ -464,7 +464,7 @@ export default function ProjectDetailClient({ project }) {
           <div className="hero-image-expand" ref={imageRef}>
             <HeroVisual
               src={project.heroImage}
-              alt={project.title}
+              alt={project.projectTitle.main}
             />
           </div>
           <div className="hero-content">
@@ -490,13 +490,7 @@ export default function ProjectDetailClient({ project }) {
         </div>
 
         {nextProject && (
-          <div className="next-project">
-            <p className="next-project-label">Next Project</p>
-            <Link href={`/projects/${nextProject.slug}/`} className="next-project-link">
-              {nextProject.title || nextProject.slug}
-              <span className="next-project-arrow">→</span>
-            </Link>
-          </div>
+          <NextProjectTransition project={nextProject} />
         )}
       </article>
 

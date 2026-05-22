@@ -76,7 +76,7 @@ const CARD_DEFS = [
   const p = projects[def.slug];
   return {
     ...def,
-    title: typeof p.cardTitle === "object" ? `${p.cardTitle.main}${p.cardTitle.sub ? "\n" + p.cardTitle.sub : ""}` : p.cardTitle,
+    title: typeof p.projectTitle === "object" ? `${p.projectTitle.main}${p.projectTitle.sub ? ": " + p.projectTitle.sub : ""}` : p.projectTitle,
     year: p.year,
     type: p.type,
     impact: typeof p.impact === "object" ? p.impact.card : p.impact,

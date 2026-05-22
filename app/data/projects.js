@@ -1,13 +1,16 @@
 export const projects = {
   "simplifying-data-access": {
     slug: "simplifying-data-access",
-    heroImage: "/img/s3tables/heroimg-1.JPEG",
-    title: "I designed a unified console that cut multi-service data access from hours to minutes for AWS storage customers",
-    cardTitle: { main: "Streamlining data access", sub: "" },
-    navTitle: "Streamlining data access",
-    heroProblem: "Customers had no unified way to manage data access across AWS storage services. Each service had its own console, its own permission model, its own workflow.",
-    heroSolution: "A single console that unifies data access management across all storage services, letting customers configure, monitor, and troubleshoot from one place instead of four.",
-    impact: { hero: "A unified console for AWS storage customers", card: "Impact statement placeholder" },
+    heroImage: "/img/sda/sda-hero.jpg",
+    projectTitle: { main: "Simplifying data access", sub: "Unifying 3 endpoint products into 1" },
+    navTitle: "Simplifying data access: Unifying 3 endpoint products into 1",
+    heroProblem: "Customers were spending significant operational effort managing multiple storage services and endpoint products, with no unified way to set up infrastructure or access data. I led a 10-person cross-functional team to design one console that brought all services together.",
+    heroSolution: "The new console experience launched at {link:AWS re:Invent 2025}. It streamlines infrastructure setup and data access across 3 storage services, allowing customers to scale access for large datasets in seconds.",
+    externalLink: {
+      label: "[->]",
+      url: "https://www.youtube.com/watch?v=NVZV0gfV-jA",
+    },
+    impact: "A unified console experience for infrastructure setup and data access across 3 storage services",
     type: "AWS",
     year: "2024",
     role: "Lead UX Designer",
@@ -28,42 +31,72 @@ export const projects = {
     sections: [
       {
         id: "problem",
-        navLabel: "01 Problem",
-        heading: "01 Problem.",
+        navLabel: "01  Who and why",
+        heading: "01  Who and why.",
         content: {
-          lead: "Two personas, four separate consoles, and hours of context-switching revealed the need for a unified data access experience.",
+          lead: "Two personas, three separate consoles, and constant context-switching revealed the need for a unified data access experience.",
           subsections: [
-            { label: "Who", text: "Storage Admins managing infrastructure across S3, FSx, EFS, and on-prem systems, and Developers struggling with cumbersome multi-service data access and repetitive task execution." },
-            { label: "Why", text: "Each service had its own console, permission model, and workflow. That meant hours of context-switching, duplicated configuration, and integration failures." },
-            { label: "What", text: "A single console that unifies data access management across all storage services, letting customers configure, monitor, and troubleshoot from one place instead of four." },
+            { label: "Research", text: "Based on the insights from 6 customer calls, 3 sales calls, and 30+ offline survey responses, I led the team to identify 2 personas and their user journey, as well as the challenges they are facing." },
+            { label: "Target personas", text: "Storage admins spend too much on third-party integrations and duplicate data just to connect services. Developers repeat identical tasks across consoles because there is no unified way to access data." },
+            { label: "Pain points", text: "No unified view of access points across storage services, no easy way to create access points connecting to FSx from the console, and constant jumping between pages to view and manage them." },
+          ],
+          sectionImages: [
+            { src: "/img/sda/sda-placeholder.jpg", alt: "Prioritized user stories" },
+          ],
+        },
+      },
+      {
+        id: "scoping",
+        navLabel: "02 Product scoping",
+        heading: "02 Product scoping.",
+        content: {
+          lead: "Using the user journey as a starting point, I collaborated with the product team to assemble a prioritized list of user stories that gave the team a holistic understanding of project scope and focused the initial launch on the most critical flows.",
+          subsections: [
+            { label: "User stories", text: "I worked with the product team to map every user story from the journey. This gave us a shared view of the full scope and let us prioritize what mattered most for launch." },
+            { label: "User flows", text: "I created detailed user flows showing the steps to complete each task and how each flow fits into the overall experience." },
+          ],
+          sectionImages: [
+            { src: "/img/sda/sda-placeholder.jpg", alt: "Prioritized user stories" },
+            { src: "/img/sda/sda-placeholder.jpg", alt: "Detailed user flows" },
           ],
         },
       },
       {
         id: "design-iteration",
-        navLabel: "02 Design Iteration",
-        heading: "02 Design Iteration.",
+        navLabel: "03 Design Iteration",
+        heading: "03 Design Iteration.",
         content: {
-          lead: "Internal testing exposed that 40% of multi-step configurations failed midway, driving a fundamental rethink of the flow.",
+          lead: "Internal testing revealed that stringing together multiple APIs caused partial failures and left customers confused about how to recover. I pushed for a UX pattern that surfaces all required steps during creation, resolving both the usability and durability issues. Follow-up testing confirmed the pattern was clear and robust.",
           subsections: [
-            { label: "Challenge", text: "Sequential API calls caused loss of customer input and partial failures. When a multi-step configuration failed midway, customers lost all their progress with no way to recover." },
-            { label: "Iteration", text: "We implemented a pattern displaying all required steps upfront. The new flow showed customers the full scope of configuration before they started and preserved their input if any step failed." },
-            { label: "Decision", text: "Replaced sequential API calls with upfront step display. All required configuration visible before starting, input preserved on failure." },
+            { label: "Exploration", text: "Internal testing sessions on the creation flow exposed that chaining multiple API calls caused loss of customer input and partial successes. Customers didn't know what actions to take to fix failed operations." },
+            { label: "Trade-offs", text: "The original sequential flow was simpler to build but fragile. Surfacing all steps upfront added complexity to the UI, but gave customers a clear picture of what was required and let the service call one API at a time." },
+            { label: "Decision", text: "I pushed for a pattern that displays the full list of required steps during creation. Each API call runs independently, so a single failure doesn't cascade. Follow-up testing proved the pattern was clear and robust." },
           ],
         },
       },
       {
         id: "outcome",
-        navLabel: "03 Outcome",
-        heading: "03 Outcome",
-        summary: "Launched to GA with 34 customers in the first month, 90% satisfaction, and 194% month-over-month growth validating the unified approach",
-        content: {
-          summary: "The unified console launched to GA, onboarding 34 customers in the first month with a 90% satisfaction rate. Month-over-month growth hit 194% within two months, validating the bet on unified data access management.",
-          reflection: "This project taught me that the biggest design wins often come from simplifying the system model, not the UI. The interface was straightforward — the hard part was convincing stakeholders that four separate experiences should become one.",
-        },
-        productVisuals: [
-          { alt: "Unified console dashboard", placeholder: true },
-          { alt: "Multi-step configuration flow", placeholder: true },
+        navLabel: "04 Outcome",
+        heading: "04 Outcome",
+        headingAlign: "center",
+        summary: "A unified console to set up and manage your cloud infrastructure.",
+        content: [
+          {
+            subheading: "Streamlined infrastructure setup",
+            text: "Storage admins can now set up their infrastructure directly within the AWS console. No more third-party applications needed.",
+            images: [
+              { src: "/img/sda/sda-placeholder.jpg", alt: "Infrastructure setup console" },
+              { src: "/img/sda/sda-placeholder.jpg", alt: "Storage service configuration" },
+            ],
+          },
+          {
+            subheading: "Unified data operations",
+            text: "Developers can now view and manage all the data operations and security-related tasks in a single console. No more switching among storage services.",
+            images: [
+              { src: "/img/sda/sda-placeholder.jpg", alt: "Data operations dashboard" },
+              { src: "/img/sda/sda-placeholder.jpg", alt: "Security management console" },
+            ],
+          },
         ],
       },
     ],
@@ -73,12 +106,11 @@ export const projects = {
   "s3-tables": {
     slug: "s3-tables",
     heroImage: "/img/s3tables/s3table-heroimg.jpg",
-    title: "Designing AWS S3 Tables that eliminates complex infrastructure for AI/ML workload",
-    cardTitle: { main: "AWS S3 Tables", sub: "0→1 in 8 weeks" },
+    projectTitle: { main: "AWS S3 Tables", sub: "0→1 in 8 weeks" },
     navTitle: "AWS S3 Tables: 0 → 1 in 8 weeks",
     heroProblem: "Customers were wasting millions building and maintaining complex infrastructure for AI/ML workloads. I led a 20-person team to design S3 Tables — a new product to eliminate that complexity — from concept to launch in 8 weeks.",
     heroSolution: "S3 Tables, featured in {link:the 2024 AWS CEO keynote} {img:/img/s3tables/customers-inline-img/hero-text/000.jpg,/img/s3tables/customers-inline-img/hero-text/101.jpg,/img/s3tables/customers-inline-img/hero-text/102.jpg}, handles your infrastructure automatically, providing a seamless console experience that lets teams turn big data into insights in seconds.",
-    impact: { hero: "A seamless console experience", card: "A seamless console experience that turns big data into insights in seconds" },
+    impact: "A seamless console experience that turns big data into insights in seconds",
     type: "AWS",
     year: "2024",
     role: "UX Lead",
@@ -186,12 +218,11 @@ export const projects = {
   "agent-opportunities": {
     slug: "agent-opportunities",
     heroImage: "/img/s3tables/heroimg-1.JPEG",
-    title: "",
-    cardTitle: { main: "AWS agentic experience", sub: "Defining next phase" },
+    projectTitle: { main: "AWS agentic experience", sub: "Defining next phase" },
     navTitle: "AWS agentic experience",
     heroProblem: "",
     heroSolution: "",
-    impact: { hero: "", card: "Impact statement placeholder" },
+    impact: "Impact statement placeholder",
     type: "AWS",
     year: "2025 - present",
     role: "Lead UX Designer",
