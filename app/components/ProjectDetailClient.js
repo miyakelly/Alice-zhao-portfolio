@@ -11,6 +11,7 @@ import HeroVisual from "./HeroVisual";
 import InlineImageLoop from "./InlineImageLoop";
 import LetterReveal from "./LetterReveal";
 import NextProjectTransition from "./NextProjectTransition";
+import Footer from "./Footer";
 
 function HeroBottomRow({ project, className }) {
   return (
@@ -399,6 +400,10 @@ export default function ProjectDetailClient({ project }) {
   const imageRef = useRef(null);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
     const image = imageRef.current;
     if (!image) return;
     const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -494,10 +499,7 @@ export default function ProjectDetailClient({ project }) {
         )}
       </article>
 
-      <footer>
-        <span>Alice Zhao © 2026</span>
-        <span>Senior UX Designer + Builder · Seattle</span>
-      </footer>
+      <Footer />
     </>
   );
 }

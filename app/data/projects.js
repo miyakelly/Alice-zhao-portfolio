@@ -108,8 +108,8 @@ export const projects = {
     heroImage: "/img/s3tables/s3table-heroimg.jpg",
     projectTitle: { main: "AWS S3 Tables", sub: "0→1 in 8 weeks" },
     navTitle: "AWS S3 Tables: 0 → 1 in 8 weeks",
-    heroProblem: "Customers were wasting millions building and maintaining complex infrastructure for AI/ML workloads. I led a 20-person team to design S3 Tables — a new product to eliminate that complexity — from concept to launch in 8 weeks.",
-    heroSolution: "S3 Tables, featured in {link:the 2024 AWS CEO keynote} {img:/img/s3tables/customers-inline-img/hero-text/000.jpg,/img/s3tables/customers-inline-img/hero-text/101.jpg,/img/s3tables/customers-inline-img/hero-text/102.jpg}, handles your infrastructure automatically, providing a seamless console experience that lets teams turn big data into insights in seconds.",
+    heroProblem: "Customers were spending millions building and maintaining complex infrastructure for AI/ML workloads. I led a 20-person team to design S3 Tables, a new product to eliminate that complexity, from concept to launch in 8 weeks.",
+    heroSolution: "S3 Tables, featured in {link:the 2024 AWS CEO keynote} {img:/img/s3tables/customers-inline-img/hero-text/000.jpg,/img/s3tables/customers-inline-img/hero-text/101.jpg,/img/s3tables/customers-inline-img/hero-text/102.jpg}, handles infrastructure automatically, providing a seamless console experience that lets teams turn big data into insights in seconds.",
     impact: "A seamless console experience that turns big data into insights in seconds",
     type: "AWS",
     year: "2024",
@@ -135,10 +135,10 @@ export const projects = {
         navLabel: "01  Who and why",
         heading: "01  Who and why.",
         content: {
-          lead: "Customers {img:/img/s3tables/customers-inline-img/Rectangle 101.jpg,/img/s3tables/customers-inline-img/Rectangle 102.jpg,/img/s3tables/customers-inline-img/Rectangle 104.jpg} don't want to store tabular data in unstructured storage while maintaining custom infrastructure. They need a solution to streamline basic operations so the team can focus on data querying.",
+          lead: "Customers {img:/img/s3tables/customers-inline-img/Rectangle 101.jpg,/img/s3tables/customers-inline-img/Rectangle 102.jpg,/img/s3tables/customers-inline-img/Rectangle 104.jpg} don't want to store structured data in unstructured storage while maintaining custom infrastructure. They need a solution to streamline storage operations so teams can focus on data querying.",
           subsections: [
-            { label: "Research", text: "I used internal AI tools to synthesize transcripts from 20+ enterprise customer interviews. The outcome revealed the target customers and their respective pain points." },
-            { label: "Target personas", text: "Data pros manage storage systems and strategic leads evaluate infrastructure costs at billion-dollar companies." },
+            { label: "Research", text: "I used internal AI tools to synthesize transcripts from 20+ enterprise customer interviews. The synthesis surfaced two target personas and their core pain points." },
+            { label: "Target personas", text: "Data engineers maintain storage systems daily. Strategic leads evaluate infrastructure costs and reliability." },
             { label: "Pain points", text: "Millions wasted on custom infrastructure, manual maintenance of query engine integrations, and no native way to keep structured data up-to-date." },
           ],
           sectionImage: { src: "/img/s3tables/problem/painpoint-graph.jpg", alt: "Customer pain point analysis" },
@@ -149,7 +149,7 @@ export const projects = {
         navLabel: "02 Product scoping",
         heading: "02 Product scoping.",
         content: {
-          lead: "By adapting the AWS JTBD framework, I gave the team a shared language to make adj scope trade-offs. We categorized every user action into 6 workflows, with detailed user steps, preconditions, API dependencies, and priorities. The team aligned on a feasible action plan in one week.",
+          lead: "I adapted the AWS JTBD framework to give the team a shared language for strategic scope trade-offs. We categorized every user action and API details into 6 workflows and aligned on a launch plan in one week.",
           subsections: [
             { label: "JTBD Framework", text: "Each user action mapped to console steps, preconditions, and API dependencies across six groups: Create, List, View, Manage, Audit, and Delete." },
             { label: "Action plan", text: "A prioritized action plan with defined APIs, known limitations, and console impact, turning an ambiguous product space into a concrete roadmap for launch." },
@@ -175,11 +175,11 @@ export const projects = {
         navLabel: "04 Outcome",
         heading: "04 Outcome",
         headingAlign: "center",
-        summary: "S3 Tables gives customers structural data storage with built-in query support, eliminating the custom infrastructure that used to cost millions to build and maintain.",
+        summary: "S3 Tables, launched as the top announcement at AWS re:Invent 2024, gives customers structured data storage with built-in query support, eliminating the custom infrastructure that used to cost millions to build and maintain.",
         content: [
           {
             subheading: "Unified data storage for AI/ML workloads",
-            text: "S3 Tables introduced native table capabilities to S3, enabling customers to store, manage, and query structured data for analytics and AI/ML workloads without custom infrastructure.",
+            text: "The S3 Tables console enables customers to create, manage, and query structured data for analytics and AI/ML workloads in a few clicks, drastically simplifies the way customers manage their storage.",
             images: [
               { src: "/img/s3tables/problem/painpoint-graph.jpg", alt: "S3 Tables console overview" },
               { src: "/img/s3tables/problem/painpoint-graph.jpg", alt: "Table bucket creation flow" },
@@ -212,7 +212,7 @@ export const projects = {
         ],
       },
     ],
-    nextProject: "agent-opportunities",
+    nextProject: "simplifying-data-access",
   },
 
   "agent-opportunities": {
