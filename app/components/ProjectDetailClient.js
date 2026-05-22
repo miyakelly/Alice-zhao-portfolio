@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { projects } from "../data/projects";
 import Navigation from "./Navigation";
-import SectionNav from "./SectionNav";
+// import SectionNav from "./SectionNav";
 import DeviceFrame from "./DeviceFrame";
 import MetricsCounter from "./MetricsCounter";
 import ExternalLink from "./ExternalLink";
@@ -345,7 +345,7 @@ export default function ProjectDetailClient({ project }) {
         right: vw - gutter - side,
         bottom: Math.max(0, imgH - side),
         left: gutter,
-        scrollDist: window.innerHeight * 0.6,
+        scrollDist: window.innerHeight * 0.1,
       };
     }
 
@@ -398,7 +398,7 @@ export default function ProjectDetailClient({ project }) {
           <div className="hero-scroll-spacer" />
         </header>
 
-        <SectionNav sections={project.sections} />
+        {/* <SectionNav sections={project.sections} /> */}
 
         <div className="project-content">
           {project.sections.map((section) => {

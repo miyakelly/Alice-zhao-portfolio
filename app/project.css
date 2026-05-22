@@ -8,6 +8,13 @@
   background: color-mix(in oklch, var(--bg) 94%, var(--ink) 6%);
 }
 
+.project-section {
+  padding: 12rem 0;
+  border-bottom: 1px solid var(--border);
+  scroll-margin-top: var(--nav-height);
+  transition: border-color 0.2s;
+}
+
 .project-detail h1 {
   font-family: var(--f);
   font-size: var(--t-h1);
@@ -116,20 +123,13 @@
 
 /* Extra scroll distance — image stays sticky until all text exits viewport */
 .hero-scroll-spacer {
-  height: 100vh;
+  height: 70vh;
 }
 
 
 /* ══════════════════════════════════════
    SECTIONS (shared)
    ══════════════════════════════════════ */
-
-.project-section {
-  padding: 96px 0;
-  border-bottom: 1px solid var(--border);
-  scroll-margin-top: var(--nav-height);
-  transition: border-color 0.2s;
-}
 .project-section:last-child {
   border-bottom: none;
 }
