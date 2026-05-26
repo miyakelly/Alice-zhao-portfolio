@@ -181,9 +181,14 @@ export default function NextProjectTransition({ project }) {
     };
   }, [router, project.slug]);
 
+  function handleAreaClick(e) {
+    if (e.target.closest("a")) return;
+    router.push(`/projects/${project.slug}/`);
+  }
+
   return (
     <div className={styles.section} ref={sectionRef}>
-      <div className={styles.stickyWrap} ref={stickyRef}>
+      <div className={styles.stickyWrap} ref={stickyRef} onClick={handleAreaClick}>
         <Link href={`/projects/${project.slug}/`} className={styles.sectionLink}>
           <div className={styles.lineWrap} ref={lineRef}>
             <div className={styles.lineBg} />
