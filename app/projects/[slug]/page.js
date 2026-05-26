@@ -9,5 +9,5 @@ export default async function ProjectPage({ params }) {
   const { slug } = await params;
   const project = getProject(slug);
 
-  return <ProjectDetailClient project={project} />;
+  return <ProjectDetailClient key={slug} project={project} />;
 }

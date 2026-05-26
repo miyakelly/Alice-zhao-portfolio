@@ -1,28 +1,38 @@
 .section {
-  position: relative;
-  min-height: 60vh;
-  overflow: hidden;
+  height: 200vh;
 }
+
+.stickyWrap {
+  position: sticky;
+  top: 50vh;
+  min-height: 50vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  z-index: 10;
+}
+
+/* ── Progress line ── */
 
 .sectionLink {
   display: block;
   text-decoration: none;
   color: var(--ink);
+  transform: translateY(-50%);
 }
-
-/* ── Progress line ── */
 
 .lineWrap {
   position: relative;
   height: 1px;
   margin-bottom: 48px;
+  will-change: opacity;
 }
 
 .lineBg {
   position: absolute;
   inset: 0;
   background: var(--ink);
-  opacity: 0.3;
+  opacity: 0.1;
 }
 
 .lineBar {
@@ -40,8 +50,8 @@
 .content {
   display: grid;
   grid-template-columns: repeat(8, 1fr);
+  column-gap: var(--grid-gap);
   padding: 0 var(--page-gutter);
-  gap: 20px;
   align-items: start;
 }
 
@@ -92,11 +102,96 @@
   opacity: 0.8;
 }
 
+/* ── Phase 3: hero image reveal + hero text ── */
+
+.heroReveal {
+  position: fixed;
+  top: var(--nav-height);
+  left: 0;
+  right: 0;
+  height: calc(100vh - var(--nav-height));
+  z-index: 5;
+  clip-path: inset(0 0 100% 0);
+  background: var(--bg);
+  will-change: clip-path;
+  pointer-events: none;
+}
+
+.heroImageInner {
+  --_col: calc((100vw - var(--page-gutter) * 2 - var(--grid-gap) * 7) / 8);
+  --_side: calc(var(--_col) * 2.5 + var(--grid-gap) * 1.5);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  clip-path: inset(0 calc(100vw - var(--page-gutter) - var(--_side)) calc(100% - var(--_side)) var(--page-gutter));
+}
+
+.heroImageEl {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.heroText {
+  position: absolute;
+  bottom: 60px;
+  left: 0;
+  right: 0;
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  column-gap: var(--grid-gap);
+  padding: 0 var(--page-gutter);
+  align-items: end;
+  mix-blend-mode: difference;
+  opacity: 0;
+  will-change: opacity;
+}
+
+.heroText h1,
+.heroText p,
+.heroText span {
+  color: #fff;
+}
+
+.heroTextHeading {
+  grid-column: 1 / 4;
+  align-self: end;
+}
+
+.heroTextBody {
+  grid-column: 4 / 9;
+  align-self: end;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+.heroTextBody p {
+  font-size: var(--t-hero-text);
+  font-weight: var(--t-hero-text-font-weight);
+  line-height: 1.2;
+  font-family: var(--f-display);
+}
+
+/* ── Mobile ── */
+
 @media (max-width: 900px) {
+  .section {
+    height: auto;
+  }
+  .stickyWrap {
+    position: relative;
+    top: auto;
+    min-height: auto;
+  }
+  .lineWrap {
+    margin-bottom: 24px;
+  }
   .content {
     grid-template-columns: 1fr;
-    min-height: auto;
-    padding: 48px 0;
   }
   .label {
     grid-column: 1;

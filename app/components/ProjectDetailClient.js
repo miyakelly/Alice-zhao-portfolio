@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { projects } from "../data/projects";
 import Navigation from "./Navigation";
 // import SectionNav from "./SectionNav";
@@ -156,7 +156,7 @@ function OutcomeZigzag({ content }) {
         const expandImage = isLastBlock && images.length > 0 ? images[images.length - 1] : null;
 
         return (
-          <div key={i} className={`zigzag-row ${isLeft ? "zigzag-left" : "zigzag-right"}`}>
+          <div key={i} className={`zigzag-row col-grid ${isLeft ? "zigzag-left" : "zigzag-right"}`}>
             <div className="zigzag-text">
               <p className="subsection-label">{block.subheading}</p>
               <p className="subsection-text">{block.text}</p>
@@ -186,7 +186,7 @@ function OutcomeSection({ section, metrics }) {
   const isArray = Array.isArray(content);
 
   return (
-    <section id={section.id} className="project-section">
+    <section id={section.id} className="project-section col-grid">
       <SectionHeading heading={section.heading} align={section.headingAlign} />
       {section.summary && <p>{section.summary}</p>}
 
@@ -237,7 +237,7 @@ function RedactedBlock() {
 function WhatsNextSection({ section }) {
   const { content } = section;
   return (
-    <section id={section.id} className="project-section">
+    <section id={section.id} className="project-section col-grid">
       <SectionHeading heading={section.heading} />
       {section.summary && <p style={section.headingAlign ? { textAlign: section.headingAlign } : undefined}>{section.summary}</p>}
 
@@ -359,7 +359,7 @@ function BlockSection({ section }) {
   const headingLen = section.heading.length;
 
   return (
-    <section id={section.id} className="project-section">
+    <section id={section.id} className="project-section col-grid">
       <h2 ref={ref} className="section-heading-reveal">
         <span className="h2-title"><SectionHeadingInline heading={section.heading} /></span>
         {" "}<span className="h2-lead-content"><HighlightTextReveal text={content.lead} delayOffset={headingLen} /></span>
@@ -367,8 +367,17 @@ function BlockSection({ section }) {
       {content.subsections && content.subsections.length > 0 && (
         <div className="subsections-grid">
           {content.subsections.map((sub, i) => (
-            <div key={i} className="subsection-item">
+            <div key={i} className="subsection-item col-grid">
               <p className="subsection-label">{sub.label}</p>
+              {sub.images?.length === 1 && (
+                <img className="subsection-img subsection-img-full" src={sub.images[0].src} alt={sub.images[0].alt} />
+              )}
+              {sub.images?.length >= 2 && (
+                <>
+                  <img className="subsection-img subsection-img-left" src={sub.images[0].src} alt={sub.images[0].alt} />
+                  <img className="subsection-img subsection-img-right" src={sub.images[1].src} alt={sub.images[1].alt} />
+                </>
+              )}
               <p className="subsection-text">{sub.text}</p>
             </div>
           ))}
@@ -399,13 +408,19 @@ export default function ProjectDetailClient({ project }) {
     : null;
   const imageRef = useRef(null);
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
+  useLayoutEffect(() => {
+    window.scrollTo({ top: 0, behavior: "instant" });
   }, []);
 
   useEffect(() => {
     const image = imageRef.current;
     if (!image) return;
+
+    const fromTransition = sessionStorage.getItem("next-project-transition");
+    if (fromTransition) {
+      sessionStorage.removeItem("next-project-transition");
+    }
+
     const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (prefersReduced) {
       image.style.clipPath = "inset(0)";
@@ -473,7 +488,7 @@ export default function ProjectDetailClient({ project }) {
             />
           </div>
           <div className="hero-content">
-            <HeroBottomRow project={project} className="hero-bottom-row" />
+            <HeroBottomRow project={project} className="hero-bottom-row col-grid" />
           </div>
           <div className="hero-scroll-spacer" />
         </header>
@@ -499,7 +514,7 @@ export default function ProjectDetailClient({ project }) {
         )}
       </article>
 
-      <Footer />
+      {!nextProject && <Footer />}
     </>
   );
 }

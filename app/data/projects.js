@@ -36,12 +36,9 @@ export const projects = {
         content: {
           lead: "Two personas, three separate consoles, and constant context-switching revealed the need for a unified data access experience.",
           subsections: [
-            { label: "Research", text: "Based on the insights from 6 customer calls, 3 sales calls, and 30+ offline survey responses, I led the team to identify 2 personas and their user journey, as well as the challenges they are facing." },
-            { label: "Target personas", text: "Storage admins spend too much on third-party integrations and duplicate data just to connect services. Developers repeat identical tasks across consoles because there is no unified way to access data." },
-            { label: "Pain points", text: "No unified view of access points across storage services, no easy way to create access points connecting to FSx from the console, and constant jumping between pages to view and manage them." },
-          ],
-          sectionImages: [
-            { src: "/img/sda/sda-placeholder.jpg", alt: "Prioritized user stories" },
+            { label: "Research", text: "Based on the insights from 6 customer calls, 3 sales calls, and 30+ offline survey responses, I led the team to identify 2 personas and their user journey, as well as the challenges they are facing.", images: [{ src: "/img/sda/sda-placeholder.jpg", alt: "Research synthesis" }] },
+            { label: "Target personas", text: "Storage admins spend too much on third-party integrations and duplicate data just to connect services. Developers repeat identical tasks across consoles because there is no unified way to access data.", images: [{ src: "/img/sda/sda-placeholder.jpg", alt: "Target personas" }] },
+            { label: "Pain points", text: "No unified view of access points across storage services, no easy way to create access points connecting to FSx from the console, and constant jumping between pages to view and manage them.", images: [{ src: "/img/sda/sda-placeholder.jpg", alt: "Pain points analysis" }] },
           ],
         },
       },
@@ -52,25 +49,21 @@ export const projects = {
         content: {
           lead: "Using the user journey as a starting point, I collaborated with the product team to assemble a prioritized list of user stories that gave the team a holistic understanding of project scope and focused the initial launch on the most critical flows.",
           subsections: [
-            { label: "User stories", text: "I worked with the product team to map every user story from the journey. This gave us a shared view of the full scope and let us prioritize what mattered most for launch." },
-            { label: "User flows", text: "I created detailed user flows showing the steps to complete each task and how each flow fits into the overall experience." },
-          ],
-          sectionImages: [
-            { src: "/img/sda/sda-placeholder.jpg", alt: "Prioritized user stories" },
-            { src: "/img/sda/sda-placeholder.jpg", alt: "Detailed user flows" },
+            { label: "User stories", text: "I worked with the product team to map every user story from the journey. This gave us a shared view of the full scope and let us prioritize what mattered most for launch.", images: [{ src: "/img/sda/product-scoping/userstories.jpg", alt: "User stories" }] },
+            { label: "User flows", text: "I created detailed user flows showing the steps to complete each task and how each flow fits into the overall experience.", images: [{ src: "/img/sda/sda-placeholder.jpg", alt: "User flows" }] },
           ],
         },
       },
       {
         id: "design-iteration",
-        navLabel: "03 Design Iteration",
-        heading: "03 Design Iteration.",
+        navLabel: "03 Design iteration",
+        heading: "03 Design iteration.",
         content: {
           lead: "Internal testing revealed that stringing together multiple APIs caused partial failures and left customers confused about how to recover. I pushed for a UX pattern that surfaces all required steps during creation, resolving both the usability and durability issues. Follow-up testing confirmed the pattern was clear and robust.",
           subsections: [
-            { label: "Exploration", text: "Internal testing sessions on the creation flow exposed that chaining multiple API calls caused loss of customer input and partial successes. Customers didn't know what actions to take to fix failed operations." },
-            { label: "Trade-offs", text: "The original sequential flow was simpler to build but fragile. Surfacing all steps upfront added complexity to the UI, but gave customers a clear picture of what was required and let the service call one API at a time." },
-            { label: "Decision", text: "I pushed for a pattern that displays the full list of required steps during creation. Each API call runs independently, so a single failure doesn't cascade. Follow-up testing proved the pattern was clear and robust." },
+            { label: "Exploration", text: "Internal testing sessions on the creation flow exposed that chaining multiple API calls caused loss of customer input and partial successes. Customers didn't know what actions to take to fix failed operations.", images: [{ src: "/img/sda/sda-placeholder.jpg", alt: "Exploration" }] },
+            { label: "Trade-offs", text: "The original sequential flow was simpler to build but fragile. Surfacing all steps upfront added complexity to the UI, but gave customers a clear picture of what was required and let the service call one API at a time.", images: [{ src: "/img/sda/sda-placeholder.jpg", alt: "Trade-offs" }] },
+            { label: "Decision", text: "I pushed for a pattern that displays the full list of required steps during creation. Each API call runs independently, so a single failure doesn't cascade. Follow-up testing proved the pattern was clear and robust.", images: [{ src: "/img/sda/sda-placeholder.jpg", alt: "Decision" }] },
           ],
         },
       },
@@ -135,13 +128,12 @@ export const projects = {
         navLabel: "01  Who and why",
         heading: "01  Who and why.",
         content: {
-          lead: "Customers {img:/img/s3tables/customers-inline-img/Rectangle 101.jpg,/img/s3tables/customers-inline-img/Rectangle 102.jpg,/img/s3tables/customers-inline-img/Rectangle 104.jpg} don't want to store structured data in unstructured storage while maintaining custom infrastructure. They need a solution to streamline storage operations so teams can focus on data querying.",
+          lead: "Customers {img:/img/s3tables/customers-inline-img/netflix.jpg,/img/s3tables/customers-inline-img/bmw.jpg,/img/s3tables/customers-inline-img/mcdonlad.jpg,/img/s3tables/customers-inline-img/nasdaq.jpg,/img/s3tables/customers-inline-img/siemens.jpg,/img/s3tables/customers-inline-img/3m.jpg} don't want to store structured data in unstructured storage while maintaining custom infrastructure. They need a solution to streamline storage operations so teams can focus on data querying.",
           subsections: [
-            { label: "Research", text: "I used internal AI tools to synthesize transcripts from 20+ enterprise customer interviews. The synthesis surfaced two target personas and their core pain points." },
-            { label: "Target personas", text: "Data engineers maintain storage systems daily. Strategic leads evaluate infrastructure costs and reliability." },
-            { label: "Pain points", text: "Millions wasted on custom infrastructure, manual maintenance of query engine integrations, and no native way to keep structured data up-to-date." },
+            { label: "Research", text: "I used internal AI tools to synthesize transcripts from 20+ enterprise customer interviews. The synthesis surfaced two target personas and their core pain points.", images: [{ src: "/img/s3tables/problem/research.jpg", alt: "Customer research synthesis" }] },
+            { label: "Target personas", text: "Data engineers maintain storage systems daily. Strategic leads evaluate infrastructure costs and reliability.", images: [{ src: "/img/s3tables/problem/data-engineer.jpg", alt: "Data engineer persona" }, { src: "/img/s3tables/problem/strategic-lead.png", alt: "Strategic lead persona" }] },
+            { label: "Pain points", text: "Millions wasted on custom infrastructure and integration with query engines, while no native way to keep structured data up-to-date.", images: [{ src: "/img/s3tables/problem/painpoint-graph.jpg", alt: "Pain points analysis" }] },
           ],
-          sectionImage: { src: "/img/s3tables/problem/painpoint-graph.jpg", alt: "Customer pain point analysis" },
         },
       },
       {
@@ -151,10 +143,9 @@ export const projects = {
         content: {
           lead: "I adapted the AWS JTBD framework to give the team a shared language for strategic scope trade-offs. We categorized every user action and API details into 6 workflows and aligned on a launch plan in one week.",
           subsections: [
-            { label: "JTBD Framework", text: "Each user action mapped to console steps, preconditions, and API dependencies across six groups: Create, List, View, Manage, Audit, and Delete." },
-            { label: "Action plan", text: "A prioritized action plan with defined APIs, known limitations, and console impact, turning an ambiguous product space into a concrete roadmap for launch." },
+            { label: "JTBD Framework", text: "I first worked with the team to identify all user stories based on the JTBD framework, then mapped each story with its console steps, preconditions, and API dependencies to six groups: Create, List, View, Manage, Audit, and Delete.", images: [{ src: "/img/s3tables/scoping/JTBDframework.jpg", alt: "JTBD framework" }] },
+            { label: "Action plan", text: "The framework allowed the team to align on a prioritized action plan with defined APIs, known limitations, and console impact, turning an ambiguous product space into a concrete roadmap for launch.", images: [{ src: "/img/s3tables/scoping/scoping-graph.jpg", alt: "Action plan" }] },
           ],
-          sectionImage: { src: "/img/s3tables/scoping/scoping-graph.jpg", alt: "Product scoping" },
         },
       },
       {
@@ -164,9 +155,9 @@ export const projects = {
         content: {
           lead: "Integration across multiple services needs to be seamless. After testing three options, I persuaded the team to combine integration with table bucket creation as a default-on setting. 97% of customers never turned it off.",
           subsections: [
-            { label: "Exploration", text: "I tested three integration models: a multi-step wizard that walked through each service, a fragmented approach with separate configuration pages, and a single-page create flow with integration built in." },
-            { label: "Trade-offs", text: "The wizard added friction to what should feel instant. The fragmented model scattered a single decision across multiple pages. Customer research showed most users' end goal was querying, so bundling integration into table bucket creation matched their mental model." },
-            { label: "Decision", text: "I proposed combining integration into the create flow as a default-on checkbox. One click replaces what used to require configuring multiple services independently. The team aligned quickly once the customer data backed it up." },
+            { label: "Exploration", text: "I tested three integration models: a multi-step wizard that walked through each service, a fragmented approach with separate configuration pages, and a single-page create flow with integration built in.", images: [{ src: "/img/s3tables/problem/painpoint-graph.jpg", alt: "Exploration" }] },
+            { label: "Trade-offs", text: "The wizard added friction to what should feel instant. The fragmented model scattered a single decision across multiple pages. Customer research showed most users' end goal was querying, so bundling integration into table bucket creation matched their mental model.", images: [{ src: "/img/s3tables/problem/painpoint-graph.jpg", alt: "Trade-offs" }] },
+            { label: "Decision", text: "I proposed combining integration into the create flow as a default-on checkbox. One click replaces what used to require configuring multiple services independently. The team aligned quickly once the testing data backed it up.", images: [{ src: "/img/s3tables/design-iteration/create-bucket.jpg", alt: "Decision" }] },
           ],
         },
       },

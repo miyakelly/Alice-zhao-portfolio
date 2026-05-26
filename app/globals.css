@@ -38,6 +38,7 @@
 
   --nav-height: 3.75rem;
   --page-gutter: 3.75rem;
+  --grid-gap: 20px;
   --hero-top: 6.25rem;
 
   --t-h1: clamp(2rem, 4vw, 4rem);
@@ -47,7 +48,7 @@
 
   --t-h3: clamp(1.125rem, 2vw, 1.5rem);
 
-  --t-p: clamp(1rem, 2vw, 1.5rem);
+  --t-p: clamp(0.5rem, 2vw, 1.3rem);
 
   --t-hero-subtitle: clamp(0.875rem, 1.5vw, 1.5rem);
 
@@ -91,6 +92,11 @@
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+.col-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  column-gap: var(--grid-gap);
+}
 html { scroll-behavior: smooth; }
 body {
   background: var(--bg);
