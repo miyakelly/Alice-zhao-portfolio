@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef } from "react";
 import { projects } from "../data/projects";
 import Navigation from "./Navigation";
 // import SectionNav from "./SectionNav";
@@ -9,7 +9,7 @@ import MetricsCounter from "./MetricsCounter";
 import ExternalLink from "./ExternalLink";
 import HeroVisual from "./HeroVisual";
 import InlineImageLoop from "./InlineImageLoop";
-import LetterReveal from "./LetterReveal";
+import LineReveal from "./LineReveal";
 import NextProjectTransition from "./NextProjectTransition";
 import Footer from "./Footer";
 
@@ -37,37 +37,6 @@ function HeroBottomRow({ project, className }) {
   );
 }
 
-function HighlightText({ text }) {
-  const parts = text.split(/(\{img(?::[^}]*)?\})/g);
-  return parts.map((part, i) => {
-    const imgMatch = part.match(/^\{img:([^}]+)\}$/);
-    if (imgMatch) {
-      return <InlineImageLoop key={i} srcs={imgMatch[1].split(",")} />;
-    }
-    if (part === "{img}") {
-      return <span key={i} className="inline-img" />;
-    }
-    return part.replace(/\{\{(.+?)\}\}/g, "$1");
-  });
-}
-
-function HighlightTextReveal({ text, delayOffset = 0 }) {
-  const parts = text.split(/(\{img(?::[^}]*)?\})/g);
-  let charCount = delayOffset;
-  return parts.map((part, i) => {
-    const imgMatch = part.match(/^\{img:([^}]+)\}$/);
-    if (imgMatch) {
-      return <InlineImageLoop key={i} srcs={imgMatch[1].split(",")} />;
-    }
-    if (part === "{img}") {
-      return <span key={i} className="inline-img" />;
-    }
-    const cleaned = part.replace(/\{\{(.+?)\}\}/g, "$1");
-    const el = <LetterReveal key={i} text={cleaned} delayOffset={charCount} />;
-    charCount += cleaned.length;
-    return el;
-  });
-}
 
 function HeroSolutionText({ text, externalLink }) {
   const parts = text.split(/(\{img(?::[^}]*)?\}|\{link:[^}]+\})/g);
@@ -184,11 +153,34 @@ function OutcomeZigzag({ content }) {
 function OutcomeSection({ section, metrics }) {
   const { content, productVisuals } = section;
   const isArray = Array.isArray(content);
+  const headingRef = useRef(null);
+
+  useEffect(() => {
+    const el = headingRef.current;
+    if (!el) return;
+    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReduced) {
+      el.classList.add("revealed");
+      return;
+    }
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          el.classList.add("revealed");
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.1 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <section id={section.id} className="project-section col-grid">
-      <SectionHeading heading={section.heading} align={section.headingAlign} />
-      {section.summary && <p>{section.summary}</p>}
+      <h2 ref={headingRef} className="section-heading-reveal">
+        <LineReveal heading={section.heading} lead={section.summary || ""} align={section.headingAlign} />
+      </h2>
 
       {isArray ? (
         <>
@@ -218,117 +210,6 @@ function OutcomeSection({ section, metrics }) {
   );
 }
 
-function RedactedBlock() {
-  const [revealed, setRevealed] = useState(false);
-  return (
-    <span
-      className={`redacted-mark${revealed ? " revealed" : ""}`}
-      onClick={() => setRevealed(true)}
-      role="button"
-      tabIndex={0}
-      onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") setRevealed(true); }}
-      aria-label="Redacted content, click to reveal"
-    >
-      {revealed ? "[redacted]" : "                              "}
-    </span>
-  );
-}
-
-function WhatsNextSection({ section }) {
-  const { content } = section;
-  return (
-    <section id={section.id} className="project-section col-grid">
-      <SectionHeading heading={section.heading} />
-      {section.summary && <p style={section.headingAlign ? { textAlign: section.headingAlign } : undefined}>{section.summary}</p>}
-
-      {content.reflection && (
-        <div className="outcome-reflection">
-          <p>Reflection</p>
-          <p>{content.reflection}</p>
-        </div>
-      )}
-
-      {content.futureImprovements && content.futureImprovements.length > 0 && (
-        <div className="future-improvements">
-          <p>Future Improvements</p>
-          <div className="improvements-list">
-            {content.futureImprovements.map((item, i) => (
-              <div key={i} className="improvement-item">
-                <div className="improvement-header">
-                  <h3 className="improvement-title">
-                    {item.redacted ? <RedactedBlock /> : item.title}
-                  </h3>
-                  <span className={`improvement-status${item.redacted ? " status-redacted" : ""}`}>
-                    {item.redacted ? "Launching re:Invent 2025" : item.status === "launched" ? "Launched" : item.status}
-                  </span>
-                </div>
-                <p className="improvement-desc">
-                  {item.redacted ? <RedactedBlock /> : item.description}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-    </section>
-  );
-}
-
-
-function SectionHeading({ heading, align }) {
-  const ref = useRef(null);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (prefersReduced) {
-      el.classList.add("revealed");
-      return;
-    }
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          el.classList.add("revealed");
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.1 }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
-
-  const match = heading.match(/^(\d+[_.]?\s*)/);
-  if (!match) {
-    return (
-      <h2 ref={ref} className="section-heading-reveal" style={align ? { textAlign: align } : undefined}>
-        <LetterReveal text={heading} />
-      </h2>
-    );
-  }
-  const num = match[1];
-  const text = heading.slice(num.length);
-  return (
-    <h2 ref={ref} className="section-heading-reveal" style={align ? { textAlign: align } : undefined}>
-      <span className="h2-number"><LetterReveal text={num} /></span>
-      <LetterReveal text={text} delayOffset={num.length} />
-    </h2>
-  );
-}
-
-function SectionHeadingInline({ heading }) {
-  const match = heading.match(/^(\d+[_.]?\s*)/);
-  if (!match) return <LetterReveal text={heading} />;
-  const num = match[1];
-  const text = heading.slice(num.length);
-  return (
-    <>
-      <span className="h2-number"><LetterReveal text={num} /></span>
-      <LetterReveal text={text} delayOffset={num.length} />
-    </>
-  );
-}
 
 function BlockSection({ section }) {
   const { content } = section;
@@ -356,13 +237,10 @@ function BlockSection({ section }) {
     return () => observer.disconnect();
   }, []);
 
-  const headingLen = section.heading.length;
-
   return (
     <section id={section.id} className="project-section col-grid">
       <h2 ref={ref} className="section-heading-reveal">
-        <span className="h2-title"><SectionHeadingInline heading={section.heading} /></span>
-        {" "}<span className="h2-lead-content"><HighlightTextReveal text={content.lead} delayOffset={headingLen} /></span>
+        <LineReveal heading={section.heading} lead={content.lead} />
       </h2>
       {content.subsections && content.subsections.length > 0 && (
         <div className="subsections-grid">
@@ -399,7 +277,6 @@ const SECTION_RENDERERS = {
   scoping: BlockSection,
   "design-iteration": BlockSection,
   outcome: OutcomeSection,
-  "whats-next": WhatsNextSection,
 };
 
 export default function ProjectDetailClient({ project }) {

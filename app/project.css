@@ -128,17 +128,6 @@
 /* ══════════════════════════════════════
    h2 + SUBSECTIONS
    ══════════════════════════════════════ */
-.h2-number {
-  white-space: pre;
-}
-.h2-title {
-  opacity: 0.6;
-}
-.h2-lead-content {
-  font-weight: 400;
-  font-family: var(--f-display);
-  letter-spacing: normal;
-}
 .inline-img {
   display: inline-block;
   width: 2.5em;
@@ -308,56 +297,6 @@
   will-change: clip-path;
 }
 
-/* ══════════════════════════════════════
-   WHAT'S NEXT SECTION
-   ══════════════════════════════════════ */
-
-.future-improvements {
-  margin-top: 32px;
-}
-.improvements-list {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-  margin-top: 12px;
-}
-.improvement-item {
-  padding: 24px;
-  border: 1px solid var(--border);
-  transition: border-color 0.2s;
-}
-.improvement-item + .improvement-item {
-  border-top: none;
-}
-.improvement-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 8px;
-}
-.improvement-title {
-  letter-spacing: -0.01em;
-}
-.improvement-status {
-  font-family: var(--f-mono);
-  font-size: var(--t-badge);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  padding: 3px 8px;
-  border: 1px solid var(--accent);
-  color: var(--accent);
-  transition: color 0.2s, border-color 0.2s;
-}
-.improvement-status.status-redacted {
-  border-color: var(--muted);
-  color: var(--muted);
-}
-.improvement-desc {
-  font-size: var(--t-caption);
-  line-height: 1.6;
-  color: var(--muted);
-  transition: color 0.2s;
-}
 
 /* ══════════════════════════════════════
    NEXT PROJECT
@@ -505,38 +444,6 @@
   .hero-image-expand {
     clip-path: inset(0) !important;
   }
-}
-.redacted-mark {
-  display: inline-block;
-  position: relative;
-  cursor: pointer;
-  background: var(--ink);
-  color: transparent;
-  padding: 1px 4px;
-  border-radius: 1px;
-  min-width: 160px;
-  user-select: none;
-  transition: background 0.3s, color 0.3s;
-}
-.redacted-mark::before {
-  content: '';
-  position: absolute;
-  inset: -1px;
-  background: var(--ink);
-  border-radius: 1px;
-  opacity: 0.92;
-  transition: opacity 0.3s;
-}
-.redacted-mark.revealed {
-  background: transparent;
-  color: var(--muted);
-  font-family: 'SF Mono', 'Fira Code', monospace;
-  font-size: var(--t-label);
-  letter-spacing: 0.04em;
-  min-width: auto;
-}
-.redacted-mark.revealed::before {
-  opacity: 0;
 }
 
 /* removes the bottom border on the last section */

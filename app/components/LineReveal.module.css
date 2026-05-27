@@ -1,0 +1,39 @@
+.wrapper {
+  display: block;
+}
+
+.centered {
+  text-align: center;
+}
+
+.lineClip {
+  display: block;
+  overflow: hidden;
+}
+
+.lineInner {
+  display: block;
+  transform: translateY(112%);
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+:global(.section-heading-reveal.revealed) .lineInner {
+  transform: translateY(0);
+}
+
+.headingText {
+  opacity: 0.6;
+}
+
+.leadText {
+  font-family: var(--f-display);
+  font-weight: 400;
+  letter-spacing: -0.03em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lineInner {
+    transform: none !important;
+    transition: none !important;
+  }
+}
