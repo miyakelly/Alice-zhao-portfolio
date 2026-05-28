@@ -54,9 +54,9 @@
 
   --t-hero-text: clamp(1.5rem, 2.5vw, 4rem);
   --t-hero-text-font-weight: 400;
-  --t-metric: 3rem;
+  --t-metric: clamp(1.25rem, 3vw, 3rem);
   --t-caption: 0.875rem;
-  --t-label: 1rem;
+  --t-label: clamp(0.5rem, 3vw, 1rem);
   --t-badge: 0.5625rem;
 }
 
@@ -97,7 +97,7 @@
   grid-template-columns: repeat(8, 1fr);
   column-gap: var(--grid-gap);
 }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: auto; }
 body {
   background: var(--bg);
   color: var(--ink);

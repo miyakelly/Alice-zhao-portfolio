@@ -52,7 +52,7 @@ function buildTokens(heading, lead, insertBreak) {
   return tokens;
 }
 
-export default function LineReveal({ heading, lead, align, stagger = 130 }) {
+export default function LineReveal({ heading, lead, align, plain, stagger = 130 }) {
   const ref = useRef(null);
   const [lines, setLines] = useState(null);
   const centered = align === "center";
@@ -60,6 +60,8 @@ export default function LineReveal({ heading, lead, align, stagger = 130 }) {
     () => buildTokens(heading, lead, centered),
     [heading, lead, centered]
   );
+  const headingCls = plain ? undefined : styles.headingText;
+  const leadCls = plain ? styles.headingText : styles.leadText;
 
   useLayoutEffect(() => {
     if (lines !== null) return;
@@ -117,10 +119,10 @@ export default function LineReveal({ heading, lead, align, stagger = 130 }) {
           if (t.type === "space") return " ";
           if (t.type === "break") return <br key={i} />;
           if (t.type === "heading-num") return (
-            <span key={i} data-i={i} className={styles.headingText} style={{ whiteSpace: "pre" }}>{t.text}</span>
+            <span key={i} data-i={i} className={headingCls} style={{ whiteSpace: "pre" }}>{t.text}</span>
           );
           if (t.type === "heading") return (
-            <span key={i} data-i={i} className={styles.headingText}>{t.text}</span>
+            <span key={i} data-i={i} className={headingCls}>{t.text}</span>
           );
           if (t.type === "img") return (
             <span key={i} data-i={i} style={{ display: "inline" }}>
@@ -130,7 +132,7 @@ export default function LineReveal({ heading, lead, align, stagger = 130 }) {
           if (t.type === "placeholder") return (
             <span key={i} data-i={i} className="inline-img" />
           );
-          return <span key={i} data-i={i} className={styles.leadText}>{t.text}</span>;
+          return <span key={i} data-i={i} className={leadCls}>{t.text}</span>;
         })}
       </span>
     );
@@ -148,14 +150,14 @@ export default function LineReveal({ heading, lead, align, stagger = 130 }) {
               if (t.type === "space") return " ";
               if (t.type === "break") return null;
               if (t.type === "heading-num") return (
-                <span key={j} className={styles.headingText} style={{ whiteSpace: "pre" }}>{t.text}</span>
+                <span key={j} className={headingCls} style={{ whiteSpace: "pre" }}>{t.text}</span>
               );
               if (t.type === "heading") return (
-                <span key={j} className={styles.headingText}>{t.text}</span>
+                <span key={j} className={headingCls}>{t.text}</span>
               );
               if (t.type === "img") return <InlineImageLoop key={j} srcs={t.srcs} />;
               if (t.type === "placeholder") return <span key={j} className="inline-img" />;
-              return <span key={j} className={styles.leadText}>{t.text}</span>;
+              return <span key={j} className={leadCls}>{t.text}</span>;
             })}
           </span>
         </span>

@@ -9,7 +9,6 @@
 
 .project-section {
   padding: 12rem 0;
-  border-bottom: 1px solid var(--border);
   scroll-margin-top: var(--nav-height);
   transition: border-color 0.2s;
   & > * { grid-column: 1 / -1; }
@@ -24,15 +23,20 @@
   color: var(--ink);
 }
 
-.project-detail h2 {
+.project-detail h2,
+.about h2 {
   font-family: var(--f);
   font-size: var(--t-h2);
-  font-weight: 800;
-  letter-spacing: -0.05em;
   color: var(--ink);
   transition: color 0.2s;
   grid-column: 1 / 6;
 }
+
+.project-detail h2 {
+  font-weight: 800;
+  letter-spacing: -0.05em;
+}
+
 
 .project-detail h3 {
   font-family: var(--f);

@@ -1,0 +1,173 @@
+.about {
+  margin: 8rem 0;
+  padding: 0 var(--page-gutter);
+}
+
+.about-section {
+  padding: 6rem 0;
+  transition: border-color 0.2s;
+}
+
+.about h2 {
+  font-weight: 600;
+  grid-column: 1 / 7;
+  letter-spacing: -0.03em;
+}
+
+.about-personal {
+  opacity: 0.6;
+}
+
+.about-bio-image {
+  grid-column: 1 / -1;
+  width: 100vw;
+  margin-left: calc(-1 * var(--page-gutter));
+  padding-top: 8rem;
+  display: block;
+  object-fit: cover;
+}
+
+.about-resume-link {
+  grid-column: 7 / 9;
+  align-self: end;
+  text-align: right;
+}
+.about-resume-link a {
+  color: var(--ink);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.about-resume-link a:hover {
+  color: var(--accent);
+}
+
+.experience-list {
+  grid-column: 1 / -1;
+  margin-top: 2rem;
+}
+
+.experience-entry {
+  padding: 3rem 0;
+  position: relative;
+}
+
+.experience-entry::before {
+  content: '';
+  grid-column: 1 / -1;
+  grid-row: 1;
+  height: 1px;
+  background: var(--ink);
+  margin-right: calc(-1 * var(--page-gutter));
+  margin-bottom: 1rem;
+  transition: background 0.2s;
+}
+
+.experience-time {
+  grid-column: 1 / 2;
+  grid-row: 2;
+  align-self: start;
+  font-size: var(--t-label);
+  text-transform: uppercase;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.experience-main {
+  grid-column: 3 / 7;
+  grid-row: 2;
+  align-self: start;
+}
+
+.experience-title {
+  font-size: var(--t-h2);
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+}
+
+.experience-description {
+  margin-top: 1rem;
+  font-size: var(--t-p);
+  font-weight: 400;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+  color: var(--muted);
+  transition: color 0.2s;
+}
+
+.experience-work {
+  grid-column: 8 / 9;
+  grid-row: 2;
+  align-self: start;
+}
+
+.experience-work-label {
+  font-size: var(--t-label);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  margin-bottom: 0.5rem;
+}
+
+.experience-work-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.experience-work-list li {
+  font-size: var(--t-p);
+  line-height: 1.4;
+  letter-spacing: -0.015em;
+}
+
+.experience-work-list a {
+  color: var(--ink);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.experience-work-list a:hover {
+  color: var(--accent);
+}
+
+.tools-strip {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  margin-top: 2rem;
+}
+
+.tool-card {
+  justify-content: space-between;
+  margin-left: -1px;
+  margin-top: -1px;
+  overflow: hidden;
+}
+
+.tool-card-logo {
+  width: 48px;
+  height: 48px;
+}
+
+.tool-card-desc {
+  font-family: var(--f);
+  font-size: var(--t-caption);
+  color: var(--muted);
+  line-height: 1.4;
+  margin-top: 4px;
+  transition: color 0.2s;
+}
+
+@media (max-width: 1000px) {
+  .tools-strip {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 1200px) {
+    .tool-card-logo {
+    width: 32px;
+    height: 32px;
+  }
+}
