@@ -155,8 +155,8 @@ export const projects = {
         content: {
           lead: "Integration across multiple services needs to be seamless. After testing three options, I persuaded the team to combine integration with table bucket creation as a default-on setting. 97% of customers never turned it off.",
           subsections: [
-            { label: "Exploration", text: "I tested three integration models: a multi-step wizard that walked through each service, a fragmented approach with separate configuration pages, and a single-page create flow with integration built in.", images: [{ src: "/img/s3tables/problem/painpoint-graph.jpg", alt: "Exploration" }] },
-            { label: "Trade-offs", text: "The wizard added friction to what should feel instant. The fragmented model scattered a single decision across multiple pages. Customer research showed most users' end goal was querying, so bundling integration into table bucket creation matched their mental model.", images: [{ src: "/img/s3tables/problem/painpoint-graph.jpg", alt: "Trade-offs" }] },
+            { label: "Exploration", text: "I tested three integration models: a multi-step wizard that walked through each service, a fragmented approach with separate configuration pages, and a single-page create flow with integration built in.", images: [{ src: "/img/s3tables/design-iteration/s3table-iteration.jpg", alt: "Exploration" }] },
+            { label: "Trade-offs", text: "The wizard added friction to what should feel instant. The fragmented model scattered a single decision across multiple pages. Customer research showed most users' end goal was querying, so bundling integration into table bucket creation matched their mental model.", images: [{ src: "/img/s3tables/design-iteration/s3table-iteration-tradeoffs.jpg", alt: "Trade-offs" }] },
             { label: "Decision", text: "I proposed combining integration into the create flow as a default-on checkbox. One click replaces what used to require configuring multiple services independently. The team aligned quickly once the testing data backed it up.", images: [{ src: "/img/s3tables/design-iteration/create-bucket.jpg", alt: "Decision" }] },
           ],
         },
@@ -172,31 +172,30 @@ export const projects = {
             subheading: "Unified data storage for AI/ML workloads",
             text: "The S3 Tables console enables customers to create, manage, and query structured data for analytics and AI/ML workloads in a few clicks, drastically simplifies the way customers manage their storage.",
             images: [
-              { src: "/img/s3tables/problem/painpoint-graph.jpg", alt: "S3 Tables console overview" },
-              { src: "/img/s3tables/problem/painpoint-graph.jpg", alt: "Table bucket creation flow" },
+              { src: "/img/s3tables/final-visual/tablebucketlist.jpg", alt: "S3 Tables console overview" },
+              { src: "/img/s3tables/final-visual/tablebucketdetail.jpg", alt: "S3 Table bucket list page" },
             ],
           },
           {
             subheading: "Seamless Integration",
             text: "What previously required custom-built infrastructure is now handled automatically. Integration across multiple AWS services is reduced to a single click during table bucket creation.",
             images: [
-              { src: "/img/s3tables/problem/painpoint-graph.jpg", alt: "Integration configuration" },
-              { src: "/img/s3tables/problem/painpoint-graph.jpg", alt: "Single-click integration" },
+              { src: "/img/s3tables/final-visual/createtablebucket.jpg", alt: "Integration configuration" },
+              { src: "/img/s3tables/final-visual/integratepage.jpg", alt: "Single-click integration" },
             ],
           },
           {
             subheading: "One click from data to insights",
             text: "Once created, customers manage their tables from a single console. Table bucket details, permission controls, and storage settings are all accessible without switching between services.",
             images: [
-              { src: "/img/s3tables/problem/painpoint-graph.jpg", alt: "Table management console" },
-              { src: "/img/s3tables/problem/painpoint-graph.jpg", alt: "Query results view" },
+              { src: "/img/s3tables/final-visual/oneclick.jpg", alt: "Table management console" },
             ],
           },
           {
             subheading: "Biggest launch for S3",
             text: "S3 Tables launched at AWS re:Invent 2024, featured as the top announcement in AWS CEO's keynote.",
             images: [
-              { src: "/img/s3tables/problem/painpoint-graph.jpg", alt: "re:Invent 2024 keynote" },
+              { src: "/img/s3tables/final-visual/conference-photo.JPEG", alt: "re:Invent 2024 keynote" },
               { src: "/img/s3tables/problem/painpoint-graph.jpg", alt: "S3 Tables announcement" },
             ],
           },
