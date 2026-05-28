@@ -37,8 +37,8 @@ export const projects = {
           lead: "Two personas, three separate consoles, and constant context-switching revealed the need for a unified data access experience.",
           subsections: [
             { label: "Research", text: "I synthesized 6 customer calls, 3 sales calls, and 30+ survey responses to map two personas, their journeys, and their core pain points.", images: [{ src: "/img/sda/sda-placeholder.jpg", alt: "Research synthesis" }] },
-            { label: "Target personas", text: "Storage admins spend too much on third-party integrations and duplicate data just to connect services. Developers repeat identical tasks across consoles because there is no unified way to access data.", images: [{ src: "/img/sda/sda-placeholder.jpg", alt: "Target personas" }] },
-            { label: "Pain points", text: "No unified view of access points across storage services, no way to create access points connecting to file systems from the console, and constant page-hopping to view and manage resources.", images: [{ src: "/img/sda/sda-placeholder.jpg", alt: "Pain points analysis" }] },
+            { label: "Target personas", text: "Storage admins spend too much on third-party integrations and duplicate data just to connect services. Developers repeat identical tasks across consoles because there is no unified way to access data.", images: [{ src: "/img/sda/problem/userjourneymap.jpg", alt: "Target personas" }] },
+            { label: "Pain points", text: "No unified view of access points across storage services, no way to create access points connecting to file systems from the console, and constant page-hopping to view and manage resources.", images: [{ src: "/img/sda/problem/painpoint.jpg", alt: "Pain points analysis" }] },
           ],
         },
       },
@@ -50,7 +50,7 @@ export const projects = {
           lead: "I mapped the user journey into prioritized stories that drove a scope decision: what ships at launch vs. what waits. This aligned the team on the three flows that mattered most.",
           subsections: [
             { label: "User stories", text: "The full story map exposed 20+ user needs across three services. This gave the team a shared view of the full scope and allow us to draw launch boundary.", images: [{ src: "/img/sda/product-scoping/userstories.jpg", alt: "User stories" }] },
-            { label: "User flows", text: "I mapped each priority flow end-to-end, illustrating how each flow fits into the overall experience.", images: [{ src: "/img/sda/sda-placeholder.jpg", alt: "User flows" }] },
+            { label: "User flows", text: "I mapped each priority flow end-to-end, illustrating how each flow fits into the overall experience.", images: [{ src: "/img/sda/product-scoping/userflow.jpg", alt: "User flows" }] },
           ],
         },
       },
@@ -61,9 +61,9 @@ export const projects = {
         content: {
           lead: "Internal testing exposed a critical flaw: stringing multiple API calls caused partial failures with no clear recovery path. I advocated for a UX pattern that surfaces all required steps during creation, resolving both the usability and durability issues. Follow-up testing validated the pattern.",
           subsections: [
-            { label: "Exploration", text: "During internal testing, the creation flow broke mid-way when one API in the chain failed. Customers found it frustrating that they lost their input and had no way to tell what succeeded and what didn't.", images: [{ src: "/img/sda/sda-placeholder.jpg", alt: "Exploration" }] },
-            { label: "Trade-offs", text: "The original sequential flow was simpler to build but fragile. Surfacing all steps upfront added complexity to the UI, but gave customers a clear picture of what was required and let the service call one API at a time.", images: [{ src: "/img/sda/sda-placeholder.jpg", alt: "Trade-offs" }] },
-            { label: "Decision", text: "I pushed for a pattern that displays the full list of required steps during creation. Each API call runs independently, so a single failure doesn't cascade. Follow-up testing proved the pattern was clear and robust.", images: [{ src: "/img/sda/sda-placeholder.jpg", alt: "Decision" }] },
+            { label: "Exploration", text: "During internal testing, the creation flow broke mid-way when one API in the chain failed. Customers found it frustrating that they lost their input and had no way to tell what succeeded and what didn't.", images: [{ src: "/img/sda/design-iteration/exploration.jpg", alt: "Exploration" }] },
+            { label: "Trade-offs", text: "The original sequential flow was simpler to build but fragile. Surfacing all steps upfront added complexity to the UI, but gave customers a clear picture of what was required and let the service call one API at a time.", images: [{ src: "/img/sda/design-iteration/tradeoff.jpg", alt: "Trade-offs" }] },
+            { label: "Decision", text: "I pushed for a pattern that displays the full list of required steps during creation. Each API call runs independently, so a single failure doesn't cascade. Follow-up testing proved the pattern was clear and robust.", images: [{ src: "/img/sda/design-iteration/decision.jpg", alt: "Decision" }] },
           ],
         },
       },
