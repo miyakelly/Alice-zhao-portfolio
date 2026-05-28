@@ -8,7 +8,7 @@
 }
 
 .project-section {
-  padding: 6rem 0;
+  padding: 6rem 0 12rem;
   scroll-margin-top: var(--nav-height);
   transition: border-color 0.2s;
   & > * { grid-column: 1 / -1; }
@@ -95,6 +95,9 @@
    ══════════════════════════════════════ */
 
 .project-hero {
+  --hero-dim: 0%;
+  --hero-behind-y: 0vh;
+  position: relative;
   background: var(--bg);
   transition: background 0.2s, color 0.2s, border-color 0.2s;
 }
@@ -103,7 +106,6 @@
 .hero-image-expand {
   --_col: calc((100vw - var(--page-gutter) * 2 - var(--grid-gap) * 7) / 8);
   --_side: calc(var(--_col) * 2.5 + var(--grid-gap) * 1.5);
-  --hero-dim: 0%;
   position: sticky;
   top: var(--nav-height);
   width: 100vw;
@@ -369,6 +371,19 @@
    ══════════════════════════════════════ */
 
 @media (max-width: 900px) {
+  .project-hero {
+    transform: translateY(var(--hero-behind-y));
+    transition: transform 0.12s linear;
+    will-change: transform;
+  }
+  .project-hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    background: color-mix(in srgb, var(--ink) var(--hero-dim), transparent);
+    pointer-events: none;
+  }
   .hero-image-expand {
     position: relative;
     top: auto;
@@ -415,7 +430,7 @@
     grid-column: 1 / -1;
   }
   .project-section {
-    padding: 4rem 0;
+    padding: 4rem 0 8rem;
   }
   .outcome-visuals {
     grid-template-columns: 1fr;
@@ -510,6 +525,10 @@
     transition: none;
   }
   .project-section-handoff-panel.is-behind {
+    transform: none;
+    transition: none;
+  }
+  .project-hero {
     transform: none;
     transition: none;
   }

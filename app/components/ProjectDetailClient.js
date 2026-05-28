@@ -317,7 +317,17 @@ function ProjectSectionTransitionTrack({ sections, metrics, onHeroDimChange }) {
         }
         return nextHandoff;
       });
-      onHeroDimChange(nextHandoff.incomingIndex === 0 ? nextHandoff.progress : 0);
+      if (panels[0]) {
+        const isMobile = window.innerWidth <= 900;
+        const firstRect = panels[0].getBoundingClientRect();
+        const heroProgress = isMobile
+          ? Math.max(0, Math.min(1, (window.scrollY - 24) / (vh * 1.35)))
+          : Math.max(0, Math.min(1, 1 - firstRect.top / (vh * 1.25)));
+        const isHeroHandoff = isMobile
+          ? window.scrollY > 24 && firstRect.top > -vh * 0.2
+          : firstRect.top < vh * 1.25 && firstRect.top > -vh * 0.2;
+        onHeroDimChange(isHeroHandoff ? heroProgress : 0);
+      }
       ticking = false;
     }
 
@@ -460,12 +470,14 @@ export default function ProjectDetailClient({ project }) {
       <Navigation title={project.navTitle || "Project"} />
 
       <article className="project-detail">
-        <header className="project-hero">
-          <div
-            className="hero-image-expand"
-            ref={imageRef}
-            style={{ "--hero-dim": `${heroDim * 50}%` }}
-          >
+        <header
+          className="project-hero"
+          style={{
+            "--hero-dim": `${heroDim * 50}%`,
+            "--hero-behind-y": `${heroDim * 42}vh`,
+          }}
+        >
+          <div className="hero-image-expand" ref={imageRef}>
             <HeroVisual
               src={project.heroImage}
               alt={project.projectTitle.main}
