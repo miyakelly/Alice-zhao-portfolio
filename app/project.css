@@ -369,18 +369,6 @@
    ══════════════════════════════════════ */
 
 @media (max-width: 900px) {
-  .project-section-handoff-panel + .project-section-handoff-panel {
-    margin-top: 0;
-  }
-  .project-section-handoff-panel.is-behind::after {
-    display: none;
-  }
-  .project-section-handoff-panel.is-incoming {
-    transform: none;
-  }
-  .project-section-handoff-panel.is-behind {
-    transform: none;
-  }
   .hero-image-expand {
     position: relative;
     top: auto;
