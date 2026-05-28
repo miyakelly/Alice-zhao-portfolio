@@ -46,13 +46,13 @@
 
 .project-section-handoff-panel.is-behind {
   transform: translateY(var(--behind-y));
-  transition: transform 0.12s linear;
+  will-change: transform;
 }
 
 .project-section-handoff-panel.is-incoming {
   z-index: 3;
   transform: translateY(var(--incoming-y));
-  transition: transform 0.12s linear;
+  will-change: transform;
 }
 
 .project-detail h1 {
@@ -373,7 +373,6 @@
 @media (max-width: 900px) {
   .project-hero {
     transform: translateY(var(--hero-behind-y));
-    transition: transform 0.12s linear;
     will-change: transform;
   }
   .project-hero::after {

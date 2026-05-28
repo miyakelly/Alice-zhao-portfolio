@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef } from "react";
 import { projects } from "../data/projects";
 import Navigation from "./Navigation";
 // import SectionNav from "./SectionNav";
@@ -283,7 +283,6 @@ const TRANSITION_SECTION_IDS = ["problem", "scoping", "design-iteration", "outco
 
 function ProjectSectionTransitionTrack({ sections, metrics, onHeroDimChange }) {
   const trackRef = useRef(null);
-  const [handoff, setHandoff] = useState({ incomingIndex: null, progress: 0 });
 
   useEffect(() => {
     const track = trackRef.current;
@@ -308,15 +307,25 @@ function ProjectSectionTransitionTrack({ sections, metrics, onHeroDimChange }) {
         }
       }
 
-      setHandoff((current) => {
-        if (
-          current.incomingIndex === nextHandoff.incomingIndex &&
-          Math.abs(current.progress - nextHandoff.progress) < 0.01
-        ) {
-          return current;
+      panels.forEach((panel, index) => {
+        const isIncoming = nextHandoff.incomingIndex === index;
+        const isBehind = nextHandoff.incomingIndex === index + 1;
+        panel.classList.toggle("is-incoming", isIncoming);
+        panel.classList.toggle("is-behind", isBehind);
+        if (isIncoming) {
+          panel.style.setProperty("--incoming-y", `${(1 - nextHandoff.progress) * 10}vh`);
+        } else {
+          panel.style.removeProperty("--incoming-y");
         }
-        return nextHandoff;
+        if (isBehind) {
+          panel.style.setProperty("--panel-dim", `${nextHandoff.progress * 50}%`);
+          panel.style.setProperty("--behind-y", `${nextHandoff.progress * 48}vh`);
+        } else {
+          panel.style.removeProperty("--panel-dim");
+          panel.style.removeProperty("--behind-y");
+        }
       });
+
       if (panels[0]) {
         const isMobile = window.innerWidth <= 900;
         const firstRect = panels[0].getBoundingClientRect();
@@ -354,25 +363,10 @@ function ProjectSectionTransitionTrack({ sections, metrics, onHeroDimChange }) {
         const Renderer = SECTION_RENDERERS[section.id];
         if (!Renderer) return null;
 
-        const isIncoming = handoff.incomingIndex === index;
-        const isBehind = handoff.incomingIndex === index + 1;
-        const panelStyle = isIncoming
-          ? {
-              "--handoff-progress": handoff.progress,
-              "--incoming-y": `${(1 - handoff.progress) * 10}vh`,
-            }
-          : isBehind
-            ? {
-                "--panel-dim": `${handoff.progress * 50}%`,
-                "--behind-y": `${handoff.progress * 48}vh`,
-              }
-            : undefined;
-
         return (
           <div
             key={section.id}
-            className={`project-section-handoff-panel${isIncoming ? " is-incoming" : ""}${isBehind ? " is-behind" : ""}`}
-            style={panelStyle}
+            className="project-section-handoff-panel"
           >
             <Renderer
               section={section}
@@ -390,13 +384,20 @@ export default function ProjectDetailClient({ project }) {
     ? projects[project.nextProject]
     : null;
   const imageRef = useRef(null);
-  const [heroDim, setHeroDim] = useState(0);
+  const heroRef = useRef(null);
   const transitionSections = project.sections.filter((section) =>
     TRANSITION_SECTION_IDS.includes(section.id)
   );
   const normalSections = project.sections.filter((section) =>
     !TRANSITION_SECTION_IDS.includes(section.id)
   );
+
+  function updateHeroDim(progress) {
+    const hero = heroRef.current;
+    if (!hero) return;
+    hero.style.setProperty("--hero-dim", `${progress * 50}%`);
+    hero.style.setProperty("--hero-behind-y", `${progress * 42}vh`);
+  }
 
   useLayoutEffect(() => {
     window.scrollTo({ top: 0, behavior: "instant" });
@@ -471,11 +472,8 @@ export default function ProjectDetailClient({ project }) {
 
       <article className="project-detail">
         <header
+          ref={heroRef}
           className="project-hero"
-          style={{
-            "--hero-dim": `${heroDim * 50}%`,
-            "--hero-behind-y": `${heroDim * 42}vh`,
-          }}
         >
           <div className="hero-image-expand" ref={imageRef}>
             <HeroVisual
@@ -495,7 +493,7 @@ export default function ProjectDetailClient({ project }) {
           <ProjectSectionTransitionTrack
             sections={transitionSections}
             metrics={project.metrics}
-            onHeroDimChange={setHeroDim}
+            onHeroDimChange={updateHeroDim}
           />
           {normalSections.map((section) => {
             const Renderer = SECTION_RENDERERS[section.id];
