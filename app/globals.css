@@ -39,6 +39,7 @@
   --nav-height: 3.75rem;
   --nav-height-mobile: 2.5rem;
   --page-gutter: 3.75rem;
+  --page-gutter-mobile: 1.25rem;
   --grid-gap: 20px;
   --hero-top: 6.25rem;
 
@@ -114,6 +115,7 @@ body {
 @media (max-width: 900px) {
   :root {
     --nav-height: var(--nav-height-mobile);
+    --page-gutter: var(--page-gutter-mobile);
   }
 }
 
