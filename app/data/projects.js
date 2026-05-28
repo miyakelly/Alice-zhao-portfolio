@@ -36,7 +36,7 @@ export const projects = {
         content: {
           lead: "Two personas, three separate consoles, and constant context-switching revealed the need for a unified data access experience.",
           subsections: [
-            { label: "Research", text: "I synthesized 6 customer calls, 3 sales calls, and 30+ survey responses to map two personas, their journeys, and their core pain points.", images: [{ src: "/img/sda/sda-placeholder.jpg", alt: "Research synthesis" }] },
+            { label: "Research", text: "I synthesized 6 customer calls, 3 sales calls, and 30+ survey responses to map two personas, their journeys, and their core pain points.", images: [{ src: "/img/sda/problem/research.jpg", alt: "Research synthesis" }] },
             { label: "Target personas", text: "Storage admins spend too much on third-party integrations and duplicate data just to connect services. Developers repeat identical tasks across consoles because there is no unified way to access data.", images: [{ src: "/img/sda/problem/userjourneymap.jpg", alt: "Target personas" }] },
             { label: "Pain points", text: "No unified view of access points across storage services, no way to create access points connecting to file systems from the console, and constant page-hopping to view and manage resources.", images: [{ src: "/img/sda/problem/painpoint.jpg", alt: "Pain points analysis" }] },
           ],
@@ -78,8 +78,8 @@ export const projects = {
             subheading: "Streamlined infrastructure setup",
             text: "Storage admins can now set up their infrastructure directly within the AWS console. No more third-party applications needed.",
             images: [
-              { src: "/img/sda/sda-placeholder.jpg", alt: "Infrastructure setup console" },
-              { src: "/img/sda/sda-placeholder.jpg", alt: "Storage service configuration" },
+              { src: "/img/sda/final-visual/fsxlist.jpg", alt: "Infrastructure setup console" },
+              { src: "/img/sda/final-visual/fsxdetails.jpg", alt: "Storage service configuration" },
             ],
           },
           {
