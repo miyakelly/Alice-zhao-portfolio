@@ -1,13 +1,13 @@
 /* Fixed corner buttons — always visible */
 .fixedBtns {
   position: fixed; top: 0; left: 0; right: 0; z-index: 301;
-  height: 60px;
+  height: var(--nav-height);
   display: flex; align-items: center; justify-content: space-between;
   pointer-events: none;
 }
 
 .menuBtn {
-  width: 60px; height: 60px; flex-shrink: 0;
+  width: var(--nav-height); height: var(--nav-height); flex-shrink: 0;
   background: var(--card);
   border: none; cursor: pointer;
   display: flex; flex-direction: column;
@@ -27,7 +27,7 @@
 .menuBtn.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
 
 .modeBtn {
-  width: 60px; height: 60px; flex-shrink: 0;
+  width: var(--nav-height); height: var(--nav-height); flex-shrink: 0;
   background: var(--card);
   border: none; cursor: pointer;
   display: flex; align-items: center; justify-content: center;
@@ -50,8 +50,8 @@
 
 /* Nav bar — center content only, hides on scroll-up */
 .nav {
-  position: fixed; top: 0; left: 60px; right: 60px; z-index: 300;
-  height: 60px;
+  position: fixed; top: 0; left: var(--nav-height); right: var(--nav-height); z-index: 300;
+  height: var(--nav-height);
   display: flex; align-items: center;
   padding: 0;
   background: var(--bg);
@@ -88,8 +88,8 @@
 .overlay.open { display: block; }
 
 .drawer {
-  position: fixed; top: 60px; left: 0;
-  width: 280px; height: calc(100vh - 60px);
+  position: fixed; top: var(--nav-height); left: 0;
+  width: 280px; height: calc(100vh - var(--nav-height));
   background: var(--card);
   z-index: 303;
   display: flex; flex-direction: column;
@@ -126,9 +126,4 @@
 
 @media (max-width: 900px) {
   .title { display: none; }
-  .fixedBtns { height: var(--nav-height-mobile); }
-  .menuBtn { width: var(--nav-height-mobile); height: var(--nav-height-mobile); }
-  .modeBtn { width: var(--nav-height-mobile); height: var(--nav-height-mobile); }
-  .nav { height: var(--nav-height-mobile); left: var(--nav-height-mobile); right: var(--nav-height-mobile); }
-  .drawer { top: var(--nav-height-mobile); height: calc(100vh - var(--nav-height-mobile)); }
 }
