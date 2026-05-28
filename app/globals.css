@@ -37,6 +37,7 @@
   --f-mono: 'IBM Plex Mono', 'SF Mono', 'Fira Code', monospace;
 
   --nav-height: 3.75rem;
+  --nav-height-mobile: 2.5rem;
   --page-gutter: 3.75rem;
   --grid-gap: 20px;
   --hero-top: 6.25rem;

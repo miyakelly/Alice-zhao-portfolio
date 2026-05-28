@@ -126,4 +126,9 @@
 
 @media (max-width: 900px) {
   .title { display: none; }
+  .fixedBtns { height: var(--nav-height-mobile); }
+  .menuBtn { width: var(--nav-height-mobile); height: var(--nav-height-mobile); }
+  .modeBtn { width: var(--nav-height-mobile); height: var(--nav-height-mobile); }
+  .nav { height: var(--nav-height-mobile); left: var(--nav-height-mobile); right: var(--nav-height-mobile); }
+  .drawer { top: var(--nav-height-mobile); height: calc(100vh - var(--nav-height-mobile)); }
 }
