@@ -44,13 +44,20 @@
   pointer-events: none;
 }
 
-.project-section-handoff-panel.is-behind {
+.project-section-handoff-motion {
+  position: relative;
+}
+
+.project-section-handoff-panel.is-behind .project-section-handoff-motion {
   transform: translateY(var(--behind-y));
   will-change: transform;
 }
 
 .project-section-handoff-panel.is-incoming {
   z-index: 3;
+}
+
+.project-section-handoff-panel.is-incoming .project-section-handoff-motion {
   transform: translateY(var(--incoming-y));
   will-change: transform;
 }
@@ -519,11 +526,11 @@
   .project-section-handoff-panel.is-behind::after {
     display: none;
   }
-  .project-section-handoff-panel.is-incoming {
+  .project-section-handoff-panel.is-incoming .project-section-handoff-motion {
     transform: none;
     transition: none;
   }
-  .project-section-handoff-panel.is-behind {
+  .project-section-handoff-panel.is-behind .project-section-handoff-motion {
     transform: none;
     transition: none;
   }

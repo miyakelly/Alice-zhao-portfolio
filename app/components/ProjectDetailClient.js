@@ -368,10 +368,12 @@ function ProjectSectionTransitionTrack({ sections, metrics, onHeroDimChange }) {
             key={section.id}
             className="project-section-handoff-panel"
           >
-            <Renderer
-              section={section}
-              metrics={section.id === "outcome" ? metrics : undefined}
-            />
+            <div className="project-section-handoff-motion">
+              <Renderer
+                section={section}
+                metrics={section.id === "outcome" ? metrics : undefined}
+              />
+            </div>
           </div>
         );
       })}
