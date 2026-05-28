@@ -1,5 +1,9 @@
 .section {
+  position: relative;
+  z-index: 3;
   height: 200vh;
+  overflow: clip;
+  background: var(--bg);
 }
 
 .stickyWrap {
@@ -19,7 +23,6 @@
   display: block;
   text-decoration: none;
   color: var(--ink);
-  transform: translateY(-50%);
 }
 
 .lineWrap {

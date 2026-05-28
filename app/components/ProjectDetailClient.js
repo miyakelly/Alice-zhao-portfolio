@@ -59,57 +59,94 @@ function HeroSolutionText({ text, externalLink }) {
 
 
 function OutcomeZigzag({ content }) {
-  const expandRef = useRef(null);
+  const revealRef = useRef(null);
 
-  useEffect(() => {
-    const img = expandRef.current;
-    if (!img) return;
+  useLayoutEffect(() => {
+    const stage = revealRef.current;
+    if (!stage) return;
+    const pin = stage.querySelector(".zigzag-reveal-pin");
+    const frame = stage.querySelector(".zigzag-reveal-frame");
+    const img = stage.querySelector(".zigzag-reveal-img");
+    if (!pin || !frame || !img) return;
+
     const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (prefersReduced) return;
-
-    function getOffset() {
-      const rect = img.getBoundingClientRect();
-      const vw = window.innerWidth;
-      const left = rect.left;
-      const right = vw - rect.right;
-      const top = 0;
-      const bottom = 0;
-      return { left, right, top, bottom };
+    if (prefersReduced) {
+      return;
     }
 
-    let maxInset = getOffset();
+    function clamp(value, min = 0, max = 1) {
+      return Math.max(min, Math.min(max, value));
+    }
 
-    let ticking = false;
-    function onScroll() {
-      if (ticking) return;
-      ticking = true;
-      requestAnimationFrame(() => {
-        const rect = img.getBoundingClientRect();
-        const vh = window.innerHeight;
-        const imgCenter = rect.top + rect.height / 2;
-        const distFromCenter = imgCenter - vh / 2;
-        const scrollRange = vh * 0.6;
-        const progress = Math.max(0, Math.min(1, 1 - distFromCenter / scrollRange));
+    function smoothstep(value) {
+      return value * value * (3 - 2 * value);
+    }
 
-        const l = maxInset.left * (1 - progress);
-        const r = maxInset.right * (1 - progress);
-        img.style.clipPath = `inset(0px ${r}px 0px ${l}px)`;
-        ticking = false;
-      });
+    function measure() {
+      const baseWidth = stage.clientWidth;
+      const ratio =
+        img.naturalWidth && img.naturalHeight
+          ? img.naturalWidth / img.naturalHeight
+          : 16 / 9;
+      const baseHeight = baseWidth / ratio;
+      const viewportHeight = window.innerHeight;
+      const revealDistance = Math.max(viewportHeight * 1.05, 680);
+      const holdDistance = viewportHeight * 0.55;
+
+      stage.style.setProperty("--reveal-ratio", ratio);
+      stage.style.setProperty("--reveal-base-h", `${baseHeight}px`);
+      stage.style.setProperty("--reveal-distance", `${revealDistance}px`);
+      stage.style.setProperty("--reveal-extra", `${revealDistance + holdDistance}px`);
+      update();
+    }
+
+    function update() {
+      const rect = stage.getBoundingClientRect();
+      const baseWidth = stage.clientWidth;
+      const baseHeight = parseFloat(stage.style.getPropertyValue("--reveal-base-h")) || pin.offsetHeight;
+      const revealDistance = parseFloat(stage.style.getPropertyValue("--reveal-distance")) || window.innerHeight;
+      const vh = window.innerHeight;
+      const vw = window.innerWidth;
+      const stickyTop = Math.max(0, (vh - baseHeight) / 2);
+      const progress = clamp((stickyTop - rect.top) / revealDistance);
+      const eased = smoothstep(progress);
+
+      frame.style.setProperty("--reveal-frame-w", `${baseWidth + (vw - baseWidth) * eased}px`);
+      frame.style.setProperty("--reveal-frame-h", `${baseHeight + (vh - baseHeight) * eased}px`);
+      frame.style.setProperty("--reveal-frame-x", `${-rect.left * eased}px`);
+      frame.style.setProperty("--reveal-frame-y", `${-stickyTop * eased}px`);
+    }
+
+    let loopId = 0;
+    function startLoop() {
+      if (loopId) return;
+      function tick() {
+        update();
+        loopId = requestAnimationFrame(tick);
+      }
+      tick();
+    }
+
+    function stopLoop() {
+      if (!loopId) return;
+      cancelAnimationFrame(loopId);
+      loopId = 0;
     }
 
     function onResize() {
-      img.style.clipPath = "none";
-      maxInset = getOffset();
-      onScroll();
+      measure();
     }
 
-    window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onResize, { passive: true });
-    onScroll();
+    measure();
+    startLoop();
+    if (!img.complete) {
+      img.addEventListener("load", measure, { once: true });
+    }
     return () => {
-      window.removeEventListener("scroll", onScroll);
+      stopLoop();
       window.removeEventListener("resize", onResize);
+      img.removeEventListener("load", measure);
     };
   }, []);
 
@@ -134,15 +171,20 @@ function OutcomeZigzag({ content }) {
               {regularImages.map((img, j) => (
                 <img key={j} src={img.src} alt={img.alt} className="zigzag-img" />
               ))}
+              {expandImage && (
+                <div ref={revealRef} className="zigzag-reveal-stage">
+                  <div className="zigzag-reveal-pin">
+                    <div className="zigzag-reveal-frame">
+                      <img
+                        src={expandImage.src}
+                        alt={expandImage.alt}
+                        className="zigzag-reveal-img"
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
-            {expandImage && (
-              <img
-                ref={expandRef}
-                src={expandImage.src}
-                alt={expandImage.alt}
-                className="zigzag-expand-img"
-              />
-            )}
           </div>
         );
       })}
