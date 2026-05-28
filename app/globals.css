@@ -43,10 +43,10 @@
   --grid-gap: 20px;
   --hero-top: 6.25rem;
 
-  --t-h1: clamp(2rem, 4vw, 4rem);
+  --t-h1: clamp(2.5rem, 4vw, 4rem);
   --t-h1-letter-spacing: clamp(0.001rem, 0.2vw, 0.0025rem);
 
-  --t-h2: clamp(1.25rem, 3vw, 3rem);
+  --t-h2: clamp(1.5rem, 3vw, 3rem);
 
   --t-h3: clamp(1.125rem, 2vw, 1.5rem);
 
