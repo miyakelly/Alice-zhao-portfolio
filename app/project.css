@@ -349,11 +349,16 @@
     display: none;
   }
   .metrics-strip {
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .metric-item {
+    border: 1px solid var(--ink);
+    margin-top: -1px;
+    margin-left: -1px;
   }
   .metric-item + .metric-item {
-    border-left: none;
-    border-top: 1px solid var(--border);
+    border-left: 1px solid var(--ink);
   }
   .project-detail h2,
   .about h2 {

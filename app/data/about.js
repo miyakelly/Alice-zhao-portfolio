@@ -57,10 +57,10 @@ export const workExperience = [
 
 export const tools = [
   { name: "Claude Code", description: "I use Claude Code to build and iterate on production code, turning design decisions into working UI in real time." },
-  { name: "Codex", description: "I run Codex for async tasks like refactoring components, writing tests, and handling repetitive code changes in the background." },
+  { name: "Codex", description: "I use Codex to make targeted comments on the working prototype then fine tune the design details." },
   { name: "Github", description: "All my work lives in version-controlled repos. I use GitHub to manage branches, review code, and ship through CI/CD." },
-  { name: "Adobe", description: "I use Illustrator and Photoshop for visual asset creation, image editing, and detailed illustration work." },
-  { name: "Figma", description: "My primary design tool for wireframes, prototypes, and design systems. Where most of my thinking starts." },
+  { name: "Adobe", description: "I use Illustrator and After Effect for visual asset creation, motion editing, and detailed illustration work." },
+  { name: "Figma", description: "My primary design tool for user flows, wireframes, and design systems. Figjam is where most of my thinking starts." },
   { name: "OpenRouter", description: "A unified API I use to access multiple LLMs through one interface, making it easy to compare model outputs." },
   { name: "Bedrock", description: "I design for Bedrock-powered experiences at AWS, shaping how customers build and deploy generative AI applications." },
   { name: "ZenMux", description: "I don't use it, I just think the logo is cute, so why not put it here ;)" },
