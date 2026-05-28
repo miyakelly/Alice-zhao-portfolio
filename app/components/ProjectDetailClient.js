@@ -178,7 +178,7 @@ function OutcomeSection({ section, metrics }) {
 
   return (
     <section id={section.id} className="project-section col-grid">
-      <h2 ref={headingRef} className="section-heading-reveal">
+      <h2 ref={headingRef} className={`section-heading-reveal${section.headingAlign === "center" ? " heading-center" : ""}`}>
         <LineReveal heading={section.heading} lead={section.summary || ""} align={section.headingAlign} />
       </h2>
 
@@ -251,10 +251,10 @@ function BlockSection({ section }) {
                 <img className="subsection-img subsection-img-full" src={sub.images[0].src} alt={sub.images[0].alt} />
               )}
               {sub.images?.length >= 2 && (
-                <>
+                <div className="subsection-img-pair">
                   <img className="subsection-img subsection-img-left" src={sub.images[0].src} alt={sub.images[0].alt} />
                   <img className="subsection-img subsection-img-right" src={sub.images[1].src} alt={sub.images[1].alt} />
-                </>
+                </div>
               )}
               <p className="subsection-text">{sub.text}</p>
             </div>

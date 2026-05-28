@@ -58,10 +58,7 @@ export default function NextProjectTransition({ project }) {
       return;
     }
 
-    if (window.innerWidth <= 900) {
-      bar.style.width = "100%";
-      return;
-    }
+    if (window.innerWidth <= 900) return;
 
     let slideDistance = title.getBoundingClientRect().left - label.getBoundingClientRect().left;
     if (slideDistance <= 0) slideDistance = 0;
