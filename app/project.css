@@ -8,10 +8,51 @@
 }
 
 .project-section {
-  padding: 12rem 0;
+  padding: 6rem 0;
   scroll-margin-top: var(--nav-height);
   transition: border-color 0.2s;
   & > * { grid-column: 1 / -1; }
+}
+
+.project-section-transition-track {
+  position: relative;
+  isolation: isolate;
+}
+
+.project-section-handoff-panel {
+  --panel-dim: 0%;
+  --behind-y: 0vh;
+  --incoming-y: 0vh;
+  position: relative;
+  margin-right: calc(-1 * var(--page-gutter));
+  margin-left: calc(-1 * var(--page-gutter));
+  padding-right: var(--page-gutter);
+  padding-left: var(--page-gutter);
+  background: var(--bg);
+}
+
+.project-section-handoff-panel + .project-section-handoff-panel {
+  margin-top: 0;
+}
+
+.project-section-handoff-panel.is-behind::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: color-mix(in srgb, var(--ink) var(--panel-dim), transparent);
+  pointer-events: none;
+}
+
+.project-section-handoff-panel.is-behind {
+  transform: translateY(var(--behind-y));
+  transition: transform 0.12s linear;
+}
+
+.project-section-handoff-panel.is-incoming {
+  z-index: 3;
+  transform: translateY(var(--incoming-y));
+  transition: transform 0.12s linear;
 }
 
 .project-detail h1 {
@@ -62,6 +103,7 @@
 .hero-image-expand {
   --_col: calc((100vw - var(--page-gutter) * 2 - var(--grid-gap) * 7) / 8);
   --_side: calc(var(--_col) * 2.5 + var(--grid-gap) * 1.5);
+  --hero-dim: 0%;
   position: sticky;
   top: var(--nav-height);
   width: 100vw;
@@ -70,6 +112,14 @@
   overflow: hidden;
   clip-path: inset(0 calc(100vw - var(--page-gutter) - var(--_side)) calc(100% - var(--_side)) var(--page-gutter));
   will-change: clip-path;
+}
+
+.hero-image-expand::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: color-mix(in srgb, var(--ink) var(--hero-dim), transparent);
+  pointer-events: none;
 }
 
 /* Content overlay: pulled up over the sticky image, text at bottom */
@@ -319,6 +369,18 @@
    ══════════════════════════════════════ */
 
 @media (max-width: 900px) {
+  .project-section-handoff-panel + .project-section-handoff-panel {
+    margin-top: 0;
+  }
+  .project-section-handoff-panel.is-behind::after {
+    display: none;
+  }
+  .project-section-handoff-panel.is-incoming {
+    transform: none;
+  }
+  .project-section-handoff-panel.is-behind {
+    transform: none;
+  }
   .hero-image-expand {
     position: relative;
     top: auto;
@@ -448,6 +510,20 @@
   }
   .hero-image-expand {
     clip-path: inset(0) !important;
+  }
+  .project-section-handoff-panel + .project-section-handoff-panel {
+    margin-top: 0;
+  }
+  .project-section-handoff-panel.is-behind::after {
+    display: none;
+  }
+  .project-section-handoff-panel.is-incoming {
+    transform: none;
+    transition: none;
+  }
+  .project-section-handoff-panel.is-behind {
+    transform: none;
+    transition: none;
   }
 }
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { projects } from "../data/projects";
 import Navigation from "./Navigation";
 // import SectionNav from "./SectionNav";
@@ -279,11 +279,114 @@ const SECTION_RENDERERS = {
   outcome: OutcomeSection,
 };
 
+const TRANSITION_SECTION_IDS = ["problem", "scoping", "design-iteration", "outcome"];
+
+function ProjectSectionTransitionTrack({ sections, metrics, onHeroDimChange }) {
+  const trackRef = useRef(null);
+  const [handoff, setHandoff] = useState({ incomingIndex: null, progress: 0 });
+
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+
+    const panels = Array.from(track.querySelectorAll(".project-section-handoff-panel"));
+    if (panels.length <= 1) return;
+
+    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReduced) return;
+
+    let ticking = false;
+    function updateHandoff() {
+      const vh = window.innerHeight;
+      let nextHandoff = { incomingIndex: null, progress: 0 };
+
+      for (let i = 0; i < panels.length; i += 1) {
+        const rect = panels[i].getBoundingClientRect();
+        if (rect.top < vh * 1.25 && rect.top > -vh * 0.2) {
+          const progress = Math.max(0, Math.min(1, 1 - rect.top / (vh * 1.25)));
+          nextHandoff = { incomingIndex: i, progress };
+        }
+      }
+
+      setHandoff((current) => {
+        if (
+          current.incomingIndex === nextHandoff.incomingIndex &&
+          Math.abs(current.progress - nextHandoff.progress) < 0.01
+        ) {
+          return current;
+        }
+        return nextHandoff;
+      });
+      onHeroDimChange(nextHandoff.incomingIndex === 0 ? nextHandoff.progress : 0);
+      ticking = false;
+    }
+
+    function onScroll() {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(updateHandoff);
+    }
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll, { passive: true });
+    updateHandoff();
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, [sections, onHeroDimChange]);
+
+  if (sections.length === 0) return null;
+
+  return (
+    <div ref={trackRef} className="project-section-transition-track">
+      {sections.map((section, index) => {
+        const Renderer = SECTION_RENDERERS[section.id];
+        if (!Renderer) return null;
+
+        const isIncoming = handoff.incomingIndex === index;
+        const isBehind = handoff.incomingIndex === index + 1;
+        const panelStyle = isIncoming
+          ? {
+              "--handoff-progress": handoff.progress,
+              "--incoming-y": `${(1 - handoff.progress) * 10}vh`,
+            }
+          : isBehind
+            ? {
+                "--panel-dim": `${handoff.progress * 50}%`,
+                "--behind-y": `${handoff.progress * 48}vh`,
+              }
+            : undefined;
+
+        return (
+          <div
+            key={section.id}
+            className={`project-section-handoff-panel${isIncoming ? " is-incoming" : ""}${isBehind ? " is-behind" : ""}`}
+            style={panelStyle}
+          >
+            <Renderer
+              section={section}
+              metrics={section.id === "outcome" ? metrics : undefined}
+            />
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
 export default function ProjectDetailClient({ project }) {
   const nextProject = project.nextProject
     ? projects[project.nextProject]
     : null;
   const imageRef = useRef(null);
+  const [heroDim, setHeroDim] = useState(0);
+  const transitionSections = project.sections.filter((section) =>
+    TRANSITION_SECTION_IDS.includes(section.id)
+  );
+  const normalSections = project.sections.filter((section) =>
+    !TRANSITION_SECTION_IDS.includes(section.id)
+  );
 
   useLayoutEffect(() => {
     window.scrollTo({ top: 0, behavior: "instant" });
@@ -358,7 +461,11 @@ export default function ProjectDetailClient({ project }) {
 
       <article className="project-detail">
         <header className="project-hero">
-          <div className="hero-image-expand" ref={imageRef}>
+          <div
+            className="hero-image-expand"
+            ref={imageRef}
+            style={{ "--hero-dim": `${heroDim * 50}%` }}
+          >
             <HeroVisual
               src={project.heroImage}
               alt={project.projectTitle.main}
@@ -373,7 +480,12 @@ export default function ProjectDetailClient({ project }) {
         {/* <SectionNav sections={project.sections} /> */}
 
         <div className="project-content">
-          {project.sections.map((section) => {
+          <ProjectSectionTransitionTrack
+            sections={transitionSections}
+            metrics={project.metrics}
+            onHeroDimChange={setHeroDim}
+          />
+          {normalSections.map((section) => {
             const Renderer = SECTION_RENDERERS[section.id];
             if (!Renderer) return null;
             return (
