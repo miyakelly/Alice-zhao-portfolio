@@ -111,6 +111,12 @@ body {
   body { cursor: auto; }
 }
 
+@media (max-width: 900px) {
+  :root {
+    --nav-height: var(--nav-height-mobile);
+  }
+}
+
 p {
   font-family: var(--f);
   font-size: var(--t-p);
