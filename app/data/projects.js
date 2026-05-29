@@ -158,23 +158,23 @@ export const projects = {
             subheading: "Unified data storage for AI/ML workloads",
             text: "The S3 Tables console enables customers to create, manage, and query structured data for analytics and AI/ML workloads in a few clicks, drastically simplifies the way customers manage their storage.",
             images: [
-              { src: "/img/s3tables/final-visual/tablebucketlist.jpg", alt: "S3 Tables console overview" },
-              { src: "/img/s3tables/final-visual/tablebucketdetail.jpg", alt: "S3 Table bucket list page" },
+              { src: "/img/s3tables/final-visual/tablebucketlist.png", alt: "S3 Tables bucket overview" },
+              { src: "/img/s3tables/final-visual/tablebucketdetail.png", alt: "S3 Table bucket detail page" },
             ],
           },
           {
             subheading: "Seamless Integration",
             text: "What previously required custom-built infrastructure is now handled automatically. Integration across multiple AWS services is reduced to a single click during table bucket creation.",
             images: [
-              { src: "/img/s3tables/final-visual/createtablebucket.jpg", alt: "Integration configuration" },
-              { src: "/img/s3tables/final-visual/integratepage.jpg", alt: "Single-click integration" },
+              { src: "/img/s3tables/final-visual/createtablebucket.png", alt: "Integration configuration" },
+              { src: "/img/s3tables/final-visual/integratepage.png", alt: "Single-click integration" },
             ],
           },
           {
             subheading: "One click from data to insights",
             text: "Once created, customers manage their tables from a single console. Table bucket details, permission controls, and storage settings are all accessible without switching between services.",
             images: [
-              { src: "/img/s3tables/final-visual/oneclick.jpg", alt: "Table management console" },
+              { src: "/img/s3tables/final-visual/oneclick.png", alt: "Table management console" },
             ],
           },
           {

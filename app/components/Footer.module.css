@@ -1,6 +1,6 @@
 .footer {
   border-top: 1px solid var(--ink);
-  padding: 20px 48px;
+  padding: 12px var(--page-gutter);
   display: flex;
   justify-content: space-between;
   font-size: var(--t-label);

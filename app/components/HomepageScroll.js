@@ -72,9 +72,13 @@ const CARD_DEFS = [
     from: "right",
     layout: "center",
     href: "/about" },
-  { id: "links",     
-    label: "Links",             
-    pos: "side-br",   
+  { id: "links",
+    links: [
+      { label: "LinkedIn", href: "https://www.linkedin.com/in/liangzhaoux/" },
+      { label: "Resume", href: "https://drive.google.com/file/d/1mJRSpRVt-9k0j9rOz154nCsfPWPXsa4D/view" },
+      { label: "Email", href: "mailto:liangzhao0801@gmail.com" },
+    ],
+    pos: "side-br",
     from: "right" },
 ].map(def => {
   if (!def.slug) return { ...def, slides: [] };
@@ -275,7 +279,15 @@ function SecondaryCard({ def, style, hoverable }) {
             alt=""
           />
         )}
-        {def.title ? (
+        {def.links ? (
+          <div className={s.linksContent}>
+            {def.links.map((link, i) => (
+              <a key={i} className={s.linksItem} href={link.href} target="_blank" rel="noopener noreferrer">
+                {link.label}
+              </a>
+            ))}
+          </div>
+        ) : def.title ? (
           <div className={`${s.content} ${def.layout === "center" ? s.centerLayout : ""}`}>
             <div className={s.metaRow}>
               {def.year && <span className={s.year}>{def.year}</span>}
