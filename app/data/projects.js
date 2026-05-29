@@ -1,32 +1,23 @@
 export const projects = {
   "simplifying-data-access": {
     slug: "simplifying-data-access",
-    heroImage: "/img/sda/sda-hero.jpg",
+    heroImage: "/img/sda/hero2.jpg",
     projectTitle: { main: "Simplifying data access", sub: "Unifying 3 endpoint products into 1" },
     navTitle: "Simplifying data access: Unifying 3 endpoint products into 1",
     heroProblem: "Customers were managing storage infrastructure across three separate consoles by repeating the same setup tasks, with no unified way to access data stored in different storages. I led a cross-functional team of 10 to design a cohesive console experience that unified setup and access across all three services.",
     heroSolution: "Launched at {link:AWS re:Invent 2025}, the unified console experience cuts cross-service infrastructure setup to a single guided flow, allowing customers to scale access for large datasets in seconds.",
     externalLink: {
-      label: "[->]",
       url: "https://www.youtube.com/watch?v=NVZV0gfV-jA",
     },
     impact: "A unified console experience for infrastructure setup and data access across 3 storage services",
     type: "AWS",
     year: "2024",
-    role: "Lead UX Designer",
-    timeline: "Jan 2025 - Jun 2025",
-    team: [
-      "5 PMs",
-      "6 Managers",
-      "7 Engineers",
-      "3 Technical Writers",
-      "2 Marketing Coordinators",
-    ],
     tags: ["Cloud infrastructure", "0 → 1"],
     metrics: [
-      { value: 34, label: "Customers onboarded in first month" },
+      { value: 34, suffix: "%", label: "Customers adoption" },
       { value: 90, suffix: "%", label: "Customer satisfaction rate" },
-      { value: 194, suffix: "%", label: "Month-over-month growth in 2 months" },
+      { value: 194, suffix: "%", label: "MoM growth in 6 months" },
+      { value: 79, suffix: "%", label: "Success rate" },
     ],
     sections: [
       {
@@ -78,16 +69,17 @@ export const projects = {
             subheading: "Streamlined infrastructure setup",
             text: "Storage admins can now set up their infrastructure directly within the AWS console. No more third-party applications needed.",
             images: [
-              { src: "/img/sda/final-visual/fsxlist.jpg", alt: "Infrastructure setup console" },
-              { src: "/img/sda/final-visual/fsxdetails.jpg", alt: "Storage service configuration" },
+              { src: "/img/sda/final-visual/createap.png", alt: "Infrastructure setup console" },
+              { src: "/img/sda/final-visual/createreviewap.png", alt: "Storage service configuration" },
             ],
           },
           {
             subheading: "Unified data operations",
             text: "Developers can now view and manage all the data operations and security-related tasks in a single console. No more switching among storage services.",
             images: [
-              { src: "/img/sda/sda-placeholder.jpg", alt: "Data operations dashboard" },
-              { src: "/img/sda/sda-placeholder.jpg", alt: "Security management console" },
+              { src: "/img/sda/final-visual/fsxlist.png", alt: "Data operations dashboard" },
+              { src: "/img/sda/final-visual/fsxdetails.png", alt: "Security management console" },
+              { src: "/img/sda/final-visual/outcome2.png", alt: "Security management console" },
             ],
           },
         ],
@@ -101,19 +93,13 @@ export const projects = {
     heroImage: "/img/s3tables/s3table-heroimg.jpg",
     projectTitle: { main: "AWS S3 Tables", sub: "0→1 in 8 weeks" },
     navTitle: "AWS S3 Tables: 0 → 1 in 8 weeks",
-    heroProblem: "Customers were spending millions building and maintaining complex infrastructure for AI/ML workloads. I led a 20-person team to design S3 Tables, a new product to eliminate that complexity, from concept to launch in 8 weeks.",
-    heroSolution: "S3 Tables, featured in {link:the 2024 AWS CEO keynote} {img:/img/s3tables/customers-inline-img/hero-text/000.jpg,/img/s3tables/customers-inline-img/hero-text/101.jpg,/img/s3tables/customers-inline-img/hero-text/102.jpg}, handles infrastructure automatically, providing a seamless console experience that lets teams turn big data into insights in seconds.",
+    heroProblem: "Customers were spending millions building and maintaining complex infrastructure for AI/ML workloads. I led a 20-person team to design S3 Tables, a new product {img:/img/s3tables/customers-inline-img/hero-text/000.jpg,/img/s3tables/customers-inline-img/hero-text/101.jpg,/img/s3tables/customers-inline-img/hero-text/102.jpg} to eliminate that complexity, from concept to launch in 8 weeks.",
+    heroSolution: "S3 Tables, featured in {link:the 2024 AWS CEO keynote}, handles infrastructure automatically, providing a seamless console experience that lets teams turn big data into insights in seconds.",
     impact: "A seamless console experience that turns big data into insights in seconds",
     type: "AWS",
     year: "2024",
-    role: "UX Lead",
-    timeline: "Aug 2024 - Nov 2024",
-    team: [
-      "20+ people team",
-    ],
     tags: ["0 → 1", "Cloud infrastructure", "AI", "re:Invent keynote launch"],
     externalLink: {
-      label: "[->]",
       url: "https://www.youtube.com/watch?v=eztA5VYH2nM",
     },
     metrics: [
@@ -166,7 +152,7 @@ export const projects = {
         navLabel: "04 Outcome",
         heading: "04 Outcome",
         headingAlign: "center",
-        summary: "S3 Tables, launched as the top announcement at AWS re:Invent 2024, gives customers structured data storage with built-in query support, eliminating the custom infrastructure that used to cost millions to build and maintain.",
+        summary: "S3 Tables, launched as the top announcement at AWS re:Invent 2024, gives customers structured data storage with built-in query support, eliminating million-dollar custom infrastructure.",
         content: [
           {
             subheading: "Unified data storage for AI/ML workloads",
@@ -195,8 +181,8 @@ export const projects = {
             subheading: "Biggest launch for S3",
             text: "S3 Tables launched at AWS re:Invent 2024, featured as the top announcement in AWS CEO's keynote.",
             images: [
-              { src: "/img/s3tables/final-visual/conference-photo.JPEG", alt: "re:Invent 2024 keynote" },
-              { src: "/img/s3tables/problem/painpoint-graph.jpg", alt: "S3 Tables announcement" },
+              { src: "/img/s3tables/final-visual/ceo.png", alt: "re:Invent 2024 keynote" },
+              { src: "/img/s3tables/final-visual/reinvent-image.jpg", alt: "S3 Tables announcement" },
             ],
           },
         ],

@@ -16,7 +16,7 @@ function ParsedHeroText({ text, externalLink }) {
     if (imgMatch) {
       const loop = <InlineImageLoop key={i} srcs={imgMatch[1].split(",")} />;
       if (externalLink) {
-        return <ExternalLink key={i} href={externalLink.url}>{loop}</ExternalLink>;
+        return <ExternalLink key={i} href={externalLink.url} hideIcon>{loop}</ExternalLink>;
       }
       return loop;
     }
@@ -229,7 +229,14 @@ export default function NextProjectTransition({ project }) {
 
         <div className={styles.heroText} ref={heroTextRef}>
           <div className={styles.heroTextBody}>
-            {project.heroProblem && <p>{project.heroProblem}</p>}
+            {project.heroProblem && (
+              <p>
+                <ParsedHeroText
+                  text={project.heroProblem}
+                  externalLink={project.externalLink}
+                />
+              </p>
+            )}
             {project.heroSolution && (
               <p>
                 <ParsedHeroText

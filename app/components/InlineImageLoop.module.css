@@ -15,13 +15,11 @@
   height: 100%;
   object-fit: cover;
   opacity: 0;
-  animation: img-loop calc(var(--img-count) * 0.3s) step-end infinite;
+  transition: none;
 }
-@keyframes img-loop {
-  0% { opacity: 1; }
-  33.33% { opacity: 0; }
+.active {
+  opacity: 1;
 }
 @media (prefers-reduced-motion: reduce) {
-  .img { animation: none; opacity: 0; }
-  .img:first-child { opacity: 1; }
+  .img { transition: none; }
 }

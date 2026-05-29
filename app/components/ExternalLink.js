@@ -1,8 +1,9 @@
 "use client";
 
+import { ExternalLinkIcon } from "@radix-ui/react-icons";
 import s from "./ExternalLink.module.css";
 
-export default function ExternalLink({ href, children, className }) {
+export default function ExternalLink({ href, children, className, hideIcon }) {
   return (
     <a
       href={href}
@@ -11,6 +12,7 @@ export default function ExternalLink({ href, children, className }) {
       className={`${s.link}${className ? ` ${className}` : ""}`}
     >
       {children}
+      {!hideIcon && <ExternalLinkIcon className={s.icon} />}
     </a>
   );
 }
