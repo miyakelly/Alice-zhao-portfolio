@@ -10,18 +10,6 @@
   height: 100vh;
   overflow: hidden;
 }
-.progressDebug {
-  position: absolute;
-  top: 12px;
-  right: 16px;
-  z-index: 500;
-  font-family: 'SF Mono', 'Fira Code', monospace;
-  font-size: 11px;
-  color: var(--muted);
-  background: var(--bg2);
-  padding: 4px 8px;
-  opacity: 0.7;
-}
 
 .card {
   position: absolute;
@@ -44,7 +32,7 @@
   align-items: center;
   justify-content: center;
   font-family: monospace;
-  font-size: clamp(9px, 1.1vw, 11px);
+  font-size: clamp(0.5625rem, 1.1vw, 0.6875rem);
   color: var(--muted);
   text-align: center;
   overflow: hidden;
@@ -79,7 +67,6 @@
   text-align: left;
   padding: 20px;
   box-sizing: border-box;
-  /* border: 1px solid red; */
 }
 .centerLayout {
   justify-content: center;
@@ -107,26 +94,26 @@
 }
 .year {
   font-family: var(--f);
-  font-size: clamp(10px, 1.2vw, 12px);
+  font-size: clamp(0.625rem, 1.2vw, 0.75rem);
   color: var(--muted);
 }
 .type {
   font-family: var(--f);
-  font-size: clamp(10px, 1.2vw, 12px);
+  font-size: clamp(0.625rem, 1.2vw, 0.75rem);
   color: var(--muted);
 }
 .title {
   margin: 30px 0 10px 0;
-  font-family: var(--f);
-  font-size: clamp(18px, 4vw, 52px);
+  font-family: var(--f-display);
+  font-size: clamp(1.125rem, 4vw, 3.25rem);
   font-weight: 400;
-  line-height: 0.8;
+  line-height: 1;
   color: var(--ink);
 }
 .impact {
   margin: 12px 0 0;
   font-family: var(--f);
-  font-size: clamp(10px, 1.2vw, 16px);
+  font-size: clamp(0.625rem, 1.2vw, 1rem);
   line-height: 1.4;
   color: var(--ink);
 }
@@ -138,7 +125,7 @@
   gap: 1.3rem;
 }
 .tag {
-  font-size: clamp(9px, 1vw, 11px);
+  font-size: clamp(0.5625rem, 1vw, 0.6875rem);
   color: var(--muted);
 }
 .secCardFront.sliding .content {
@@ -213,7 +200,7 @@
   align-items: center;
   justify-content: center;
   font-family: monospace;
-  font-size: 10px;
+  font-size: 0.625rem;
   color: var(--muted);
   letter-spacing: 0.04em;
   flex-shrink: 0;
@@ -230,7 +217,7 @@
 }
 .heroTitle {
   font-family: var(--f-display);
-  font-size: clamp(20px, 2.5vw, 36px);
+  font-size: clamp(1.25rem, 2.5vw, 2.25rem);
   font-weight: 400;
   line-height: 1.2;
   color: var(--ink);
@@ -238,7 +225,7 @@
 }
 .heroIntro {
   font-family: var(--f);
-  font-size: 14px;
+  font-size: 0.875rem;
   line-height: 1.5;
   color: var(--muted);
   text-align: left;
@@ -249,6 +236,42 @@
   transition: color 0.2s;
 }
 
+@media (max-width: 767px) {
+  .content {
+    padding: 12px;
+  }
+  .centerLayout .metaRow {
+    inset: 12px 12px auto 12px;
+  }
+  .centerLayout .tags {
+    bottom: 12px;
+    left: 12px;
+    right: 12px;
+  }
+  .title {
+    margin: 16px 0 6px 0;
+    font-size: clamp(0.875rem, 5vw, 1.75rem);
+  }
+  .impact {
+    font-size: clamp(0.5625rem, 2.5vw, 0.8125rem);
+  }
+  .tags {
+    gap: 4px;
+  }
+  .tag {
+    font-size: clamp(0.5rem, 2vw, 0.625rem);
+  }
+  .card.hoverable:hover .secCardFront {
+    transform: translate(4px, -4px);
+  }
+  .heroWrap.hoverable:hover .heroCard {
+    transform: translate(4px, -4px);
+  }
+  .heroIntro {
+    font-size: 0.6875rem;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .runway {
     height: auto;
@@ -257,8 +280,5 @@
     position: relative;
     top: 0;
     height: auto;
-  }
-  .progressDebug {
-    display: none;
   }
 }

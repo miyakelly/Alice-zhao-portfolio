@@ -57,7 +57,7 @@ const CARD_DEFS = [
     pos: "center-tr", 
     from: "top-right" },
   { id: "hidn",
-    title: "My design philosophy and design process",
+    title: "My design process now vs 2024",
     year: "2014 - present",
     pos: "center-br",
     from: "bottom-right",
@@ -91,6 +91,8 @@ const CARD_DEFS = [
   };
 });
 
+const SCROLL_KEY = "homepage-visited";
+
 function useScrollProgress(containerRef) {
   const [progress, setProgress] = useState(0);
 
@@ -104,6 +106,15 @@ function useScrollProgress(containerRef) {
     if (prefersReduced) {
       setProgress(1);
       return;
+    }
+
+    const returning = sessionStorage.getItem(SCROLL_KEY) === "1";
+    if (returning) {
+      const scrollableDistance = container.scrollHeight - window.innerHeight;
+      const target = container.getBoundingClientRect().top + window.scrollY + scrollableDistance;
+      window.scrollTo(0, target);
+      setProgress(1);
+      container.style.setProperty("--scroll-progress", "1.0000");
     }
 
     let ticking = false;
@@ -126,9 +137,12 @@ function useScrollProgress(containerRef) {
     }
 
     window.addEventListener("scroll", onScroll, { passive: true });
-    update();
+    if (!returning) update();
 
-    return () => window.removeEventListener("scroll", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      sessionStorage.setItem(SCROLL_KEY, "1");
+    };
   }, [containerRef]);
 
   return progress;
@@ -229,7 +243,7 @@ function SecondaryCard({ def, style, hoverable }) {
 
   useEffect(() => {
     if (!hoverable && slideshow.active) slideshow.stop();
-    if (hoverable && !slideshow.active && cursorOverRef.current) slideshow.start();
+    if (hoverable && !slideshow.active && cursorOverRef.current && def.slides.length > 0) slideshow.start();
   }, [hoverable, slideshow.active, slideshow.start, slideshow.stop]);
 
   const onEnter = () => {
@@ -424,10 +438,6 @@ export default function HomepageScroll() {
   return (
     <div className={s.runway} ref={containerRef}>
       <div className={s.sticky}>
-        <div className={s.progressDebug}>
-          {progress.toFixed(3)}
-        </div>
-
         {CARD_DEFS.map((def) => {
           const bounds = getCardBounds(def.pos);
           if (bounds.width <= 0 || bounds.height <= 0) return null;
