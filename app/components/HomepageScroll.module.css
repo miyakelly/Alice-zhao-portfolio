@@ -103,7 +103,7 @@
   left: 20px;
   right: 20px;
   margin-top: 0;
-  text-align: center;
+  justify-content: center;
 }
 .year {
   font-family: var(--f);
@@ -133,6 +133,13 @@
 .tags {
   margin-top: auto;
   font-family: var(--f-mono);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.3rem;
+}
+.tag {
+  font-size: clamp(9px, 1vw, 11px);
+  color: var(--muted);
 }
 .secCardFront.sliding .content {
   color: #fff;

@@ -2,7 +2,7 @@ export const projects = {
   "simplifying-data-access": {
     slug: "simplifying-data-access",
     heroImage: "/img/sda/hero2.jpg",
-    projectTitle: { main: "Simplifying data access", sub: "Unifying 3 endpoint products into 1" },
+    projectTitle: { main: "Simplifying data access", sub: "Unifying 3 products into 1" },
     navTitle: "Simplifying data access: Unifying 3 endpoint products into 1",
     heroProblem: "Customers were managing storage infrastructure across three separate consoles by repeating the same setup tasks, with no unified way to access data stored in different storages. I led a cross-functional team of 10 to design a cohesive console experience that unified setup and access across all three services.",
     heroSolution: "Launched at {link:AWS re:Invent 2025}, the unified console experience cuts cross-service infrastructure setup to a single guided flow, allowing customers to scale access for large datasets in seconds.",
@@ -98,7 +98,7 @@ export const projects = {
     impact: "A seamless console experience that turns big data into insights in seconds",
     type: "AWS",
     year: "2024",
-    tags: ["0 → 1", "Cloud infrastructure", "AI", "re:Invent keynote launch"],
+    tags: ["0 → 1", "AI", "keynote launch"],
     externalLink: {
       url: "https://www.youtube.com/watch?v=eztA5VYH2nM",
     },
@@ -204,7 +204,7 @@ export const projects = {
     role: "Lead UX Designer",
     timeline: "",
     team: [],
-    tags: ["AI", "Featured"],
+    tags: ["AI", "0 → 1"],
     metrics: [],
     sections: [
       {

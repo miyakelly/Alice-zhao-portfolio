@@ -271,7 +271,13 @@ function SecondaryCard({ def, style, hoverable }) {
               {def.title}
             </h2>
             {def.impact && <p className={s.impact}>{def.impact}</p>}
-            {def.tags && <span className={s.tags}>{def.tags}</span>}
+            {def.tags && (
+              <span className={s.tags}>
+                {[].concat(def.tags).map((tag, i) => (
+                  <span key={i} className={s.tag}>{tag}</span>
+                ))}
+              </span>
+            )}
           </div>
         ) : (
           <span className={s.label}>{def.label}</span>
