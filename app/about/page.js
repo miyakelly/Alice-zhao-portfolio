@@ -5,21 +5,9 @@ import Link from "next/link";
 import Navigation from "../components/Navigation";
 import LineReveal from "../components/LineReveal";
 import Footer from "../components/Footer";
-import { bio, workExperience, tools } from "../data/about";
-import { ClaudeCode, Codex, Github, Adobe, Figma, ZenMux, Bedrock, OpenRouter } from "@lobehub/icons";
-import s from "../components/MetricCard.module.css";
+import { bio, workExperience } from "../data/about";
+import Tools from "../components/Tools";
 import "./about.css";
-
-const iconMap = {
-  "Claude Code": ClaudeCode,
-  "Codex": Codex,
-  "Github": Github,
-  "Adobe": Adobe,
-  "OpenRouter": OpenRouter,
-  "Figma": Figma,
-  "ZenMux": ZenMux,
-  "Bedrock": Bedrock
-};
 
 export default function About() {
   const bioRef = useRef(null);
@@ -92,21 +80,7 @@ export default function About() {
           </div>
         </section>
 
-        {/* ── Tools ── */}
-        <section className="about-section col-grid">
-          <h2>Tools</h2>
-          <div className="tools-strip">
-            {tools.map((tool, i) => (
-              <div key={i} className={`${s.card} tool-card`}>
-                {(() => { const Icon = iconMap[tool.name]; return Icon ? <div className="tool-card-logo"><Icon width="100%" height="100%" /></div> : null; })()}
-                <div>
-                  <span className={s.value}>{tool.name}</span>
-                  <p className={s.label}>{tool.description}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
+        <Tools />
       </div>
       <Footer />
     </>

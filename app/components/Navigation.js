@@ -64,14 +64,14 @@ export default function Navigation({ title, isHome }) {
         )}
       </nav>
 
-      <div className={`${styles.overlay}${drawerOpen ? ` ${styles.open}` : ""}`} onClick={closeDrawer} />
       <div className={`${styles.drawer}${drawerOpen ? ` ${styles.open}` : ""}`}>
         <nav className={styles.links}>
-          <LinkOrAnchor href={isHome ? "#" : "/"} onClick={closeDrawer}>Home</LinkOrAnchor>
-          <LinkOrAnchor href={isHome ? "#work" : "/#work"} onClick={closeDrawer}>Projects</LinkOrAnchor>
-          <LinkOrAnchor href={isHome ? "#about" : "/#about"} onClick={closeDrawer}>About</LinkOrAnchor>
-          <LinkOrAnchor href={isHome ? "#how-i-work" : "/#how-i-work"} onClick={closeDrawer}>How I Design</LinkOrAnchor>
-          <LinkOrAnchor href={isHome ? "#contact" : "/#contact"} onClick={closeDrawer}>Contact</LinkOrAnchor>
+          <Link href="/projects/s3-tables" onClick={closeDrawer}>AWS S3 Tables</Link>
+          <Link href="/projects/simplifying-data-access" onClick={closeDrawer}>Simplifying data access</Link>
+          <Link href="/projects/agent-opportunities" onClick={closeDrawer}>Designing next phase</Link>
+          <Link href="/about" onClick={closeDrawer}>About me</Link>
+          <Link href="/design-process" onClick={closeDrawer}>My design process</Link>
+          <Link href="/lab" onClick={closeDrawer}>My lab</Link>
         </nav>
         <div className={styles.bottom}>
           <a href="https://www.linkedin.com/in/liangzhaoux/" target="_blank" rel="noreferrer">LinkedIn ↗</a>

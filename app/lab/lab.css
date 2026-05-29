@@ -1,0 +1,91 @@
+.lab {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  cursor: grab;
+  user-select: none;
+  background: var(--bg);
+}
+.lab.dragging {
+  cursor: grabbing;
+}
+
+.lab-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  will-change: transform;
+}
+
+.lab-row {
+  display: flex;
+}
+
+.lab-set {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.lab-card {
+  position: absolute;
+  width: var(--w);
+  top: var(--y);
+  left: var(--x);
+}
+
+.lab-card img {
+  width: 100%;
+  display: block;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.lab-card-link {
+  text-decoration: none;
+  cursor: pointer;
+}
+.lab-card-link:hover .lab-card-title {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.lab-card-title {
+  font-size: 13px;
+  font-weight: 700;
+  margin-top: 8px;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  transition: color 0.2s;
+}
+
+.lab-card-desc {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--muted);
+  margin-top: 2px;
+  line-height: 1.4;
+  transition: color 0.2s;
+}
+
+.lab-hint {
+  position: fixed;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  pointer-events: none;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: opacity 0.4s;
+}
+
+@media (max-width: 768px) {
+  .lab-card-title { font-size: 11px; }
+  .lab-card-desc { font-size: 10px; }
+}
