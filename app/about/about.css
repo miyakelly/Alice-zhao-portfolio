@@ -14,6 +14,15 @@
   letter-spacing: -0.03em;
 }
 
+@media (max-width: 900px) {
+  .about h2 {
+    grid-column: 1 / 8;
+  }
+  .about-section {
+    padding: 3rem 0;
+  }
+}
+
 .about-personal {
   opacity: 0.6;
 }

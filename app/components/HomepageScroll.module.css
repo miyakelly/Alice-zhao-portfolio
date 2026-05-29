@@ -105,7 +105,7 @@
 .title {
   margin: 30px 0 10px 0;
   font-family: var(--f-display);
-  font-size: clamp(1.125rem, 4vw, 3.25rem);
+  font-size: clamp(1.125rem, 4vw, 3rem);
   font-weight: 400;
   line-height: 1;
   color: var(--ink);

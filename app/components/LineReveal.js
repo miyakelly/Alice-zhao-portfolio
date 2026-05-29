@@ -114,7 +114,7 @@ export default function LineReveal({ heading, lead, align, plain, stagger = 130 
 
   if (lines === null) {
     return (
-      <span ref={ref}>
+      <span ref={ref} className={styles.wrapper}>
         {tokens.map((t, i) => {
           if (t.type === "space") return " ";
           if (t.type === "break") return <br key={i} />;
