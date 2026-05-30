@@ -20,6 +20,13 @@
 # production
 /build
 /docs
+!/docs/
+/docs/*
+!/docs/README.md
+!/docs/research/
+!/docs/research/**
+!/docs/implementation/
+!/docs/implementation/**
 
 # misc
 .DS_Store
