@@ -194,7 +194,7 @@ export const projects = {
   "agent-opportunities": {
     slug: "agent-opportunities",
     heroImage: "/img/s3tables/heroimg-1.JPEG",
-    projectTitle: { main: "AWS agentic experience", sub: "how to talk to us" },
+    projectTitle: { main: "AWS agentic experience", sub: "Chat to build" },
     navTitle: "AWS agentic experience",
     heroProblem: "",
     heroSolution: "",

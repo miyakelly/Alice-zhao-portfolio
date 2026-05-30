@@ -6,27 +6,28 @@ import { projects } from "../data/projects";
 import s from "./HomepageScroll.module.css";
 
 const HERO_SLIDES = [
+  "/img/hero-card/me-4.jpg",
   "/img/hero-card/206311main_wright_brothers_full-1024x637-2214572863.jpg",
   "/img/hero-card/9933c0ab-5c4a-4283-bf19-debb4aeefb2c-EPA_SPACE_PHOTO_ESSAY_MOON_LANDING_ANNIVERSARY.5-3782150148.jpg",
   "/img/hero-card/Ada-1945299396.jpg",
   "/img/hero-card/How-ENIAC-Worked-min-1024x536-4207126977.png",
-  "/img/hero-card/IMG_2613-2533134824.jpg",
   "/img/hero-card/me-1.jpg",
+  "/img/hero-card/IMG_2613-2533134824.jpg",
   "/img/hero-card/Intel 4004 (1971).jpg",
   "/img/hero-card/MV5BOTU3NWJjNDktZGU5Zi00ZWYwLTg1MzQtYWNlN2Q4ZTNjNDU4XkEyXkFqcGc@._V1_-1615251397.jpg",
   "/img/hero-card/OIP-1311303196.jpg",
   "/img/hero-card/deep-blue-vs-garry-kasparov-chess-3360251239.jpg",
+  "/img/hero-card/me-3.jpg",
   "/img/hero-card/doAmESF84E3NVgu2mbEBAX-1312980986.jpg",
   "/img/hero-card/first-web-server_0451b7775b0ff60c530e897c31ea3ad1-3243532772.jpg",
-  "/img/hero-card/me-3.jpg",
   "/img/hero-card/hst_launch_hi-658738499.jpg",
   "/img/hero-card/sputnik-1-satellite-806590417.jpg",
   "/img/hero-card/steve-wozniak-working-in-garage-2-1562671878.jpg",
+  "/img/hero-card/me-2.jpg",
   "/img/hero-card/uUzyjQw1zPGuTy4XirHoCcr8odl0tEiupNpbCzp4-478125760.jpg",
   "/img/hero-card/arduino-uno-pinout-80294469.jpg",
   "/img/hero-card/hedy-lamarr-2000-908a22cd2d3c490ab20edfa189e95a72-643054585.jpg",
   "/img/hero-card/Perlman_Radia+CIC+judge-595700236.jpg",
-  "/img/hero-card/me-2.jpg",
 ];
 
 const CARD_DEFS = [
@@ -44,24 +45,28 @@ const CARD_DEFS = [
     from: "left",
     layout: "center",
     href: "/lab" },
-  { id: "s3-tables", 
-    slug: "s3-tables",          
-    pos: "center-tl", 
-    from: "top-left" },
-  { id: "agent-opp", 
-    slug: "agent-opportunities", 
-    pos: "center-bl", 
-    from: "bottom-left" },
-  { id: "sda",       
-    slug: "simplifying-data-access", 
-    pos: "center-tr", 
-    from: "top-right" },
+  { id: "s3-tables",
+    slug: "s3-tables",
+    pos: "center-tl",
+    from: "top-left",
+    vector: "/img/hero-card/vector-cube.svg" },
+  { id: "agent-opp",
+    slug: "agent-opportunities",
+    pos: "center-bl",
+    from: "bottom-left",
+    vector: "/img/hero-card/Vector3.svg" },
+  { id: "sda",
+    slug: "simplifying-data-access",
+    pos: "center-tr",
+    from: "top-right",
+    vector: "/img/hero-card/vector-tube.svg" },
   { id: "hidn",
-    title: "My design process now vs 2024",
+    title: "My design process\nnow vs 2024",
     year: "2014 - present",
     pos: "center-br",
     from: "bottom-right",
     layout: "center",
+    // vector: "/img/hero-card/square.svg",
     href: "/design-process" },
   { id: "about",
     title: "About me",
@@ -279,6 +284,13 @@ function SecondaryCard({ def, style, hoverable }) {
             alt=""
           />
         )}
+        {def.vector && (
+          <img
+            className={s.cardVector}
+            src={def.vector}
+            alt=""
+          />
+        )}
         {def.links ? (
           <div className={s.linksContent}>
             {def.links.map((link, i) => (
@@ -294,7 +306,9 @@ function SecondaryCard({ def, style, hoverable }) {
               {def.type && <span className={s.type}>{def.type}</span>}
             </div>
             <h2 className={s.title}>
-              {def.title}
+              {def.title.split("\n").map((line, i, arr) => (
+                <span key={i}>{line}{i < arr.length - 1 && <br />}</span>
+              ))}
             </h2>
             {def.impact && <p className={s.impact}>{def.impact}</p>}
             {def.tags && (

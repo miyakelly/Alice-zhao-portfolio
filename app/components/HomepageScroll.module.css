@@ -37,6 +37,7 @@
   text-align: center;
   overflow: hidden;
   transition: transform 0.3s cubic-bezier(0.25, 0, 0.3, 1);
+  container-type: size;
 }
 .card.hoverable:hover .secCardFront {
   transform: translate(8px, -8px);
@@ -151,6 +152,30 @@
   font-size: clamp(0.5625rem, 1vw, 0.6875rem);
   color: var(--muted);
 }
+.cardVector {
+  position: absolute;
+  bottom: -5%;
+  right: -5%;
+  width: 60cqw;
+  height: 60cqw;
+  object-fit: contain;
+  object-position: right bottom;
+  opacity: 0.7;
+  transition: transform 0.4s cubic-bezier(0.25, 0, 0.3, 1);
+  pointer-events: none;
+  z-index: 0;
+}
+@container (min-aspect-ratio: 1.2) {
+  .cardVector {
+    width: 80cqh;
+    height: 80cqh;
+  }
+}
+.card.hoverable:hover .cardVector {
+  transform: translate(-15px, -15px);
+  opacity: 1;
+}
+
 .secCardFront.sliding .content {
   color: #fff;
 }
@@ -286,6 +311,9 @@
   }
   .card.hoverable:hover .secCardFront {
     transform: translate(4px, -4px);
+  }
+  .card.hoverable:hover .cardVector {
+    transform: translate(-8px, -8px);
   }
   .heroWrap.hoverable:hover .heroCard {
     transform: translate(4px, -4px);
