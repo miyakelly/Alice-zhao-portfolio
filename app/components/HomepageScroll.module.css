@@ -241,6 +241,7 @@
   overflow: hidden;
 }
 .heroAvatar {
+  position: relative;
   border-radius: 0;
   background: var(--border);
   overflow: hidden;
@@ -254,10 +255,60 @@
   flex-shrink: 0;
   transition: background 0.2s;
 }
-.heroAvatar img {
+.avatarComposite {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #ffffff;
+  --left-eye-x: 33.8%;
+  --left-eye-y: 59.8%;
+  --left-eye-w: 3.6%;
+  --right-eye-x: 54.667%;
+  --right-eye-y: 64%;
+  --right-eye-w: 3.733%;
+  --left-eye-dx: 0px;
+  --left-eye-dy: 0px;
+  --right-eye-dx: 0px;
+  --right-eye-dy: 0px;
+}
+.avatarBase {
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+.avatarEye {
+  position: absolute;
+  top: var(--eye-y);
+  left: var(--eye-x);
+  width: var(--eye-w);
+  height: auto;
+  pointer-events: none;
+  transform: translate(
+    calc(-50% + var(--eye-dx, 0px)),
+    calc(-50% + var(--eye-dy, 0px))
+  );
+  will-change: transform;
+}
+.leftEye {
+  --eye-x: var(--left-eye-x);
+  --eye-y: var(--left-eye-y);
+  --eye-w: var(--left-eye-w);
+  --eye-dx: var(--left-eye-dx);
+  --eye-dy: var(--left-eye-dy);
+}
+.rightEye {
+  --eye-x: var(--right-eye-x);
+  --eye-y: var(--right-eye-y);
+  --eye-w: var(--right-eye-w);
+  --eye-dx: var(--right-eye-dx);
+  --eye-dy: var(--right-eye-dy);
+}
+@media (prefers-reduced-motion: reduce) {
+  .avatarEye {
+    transform: translate(-50%, -50%);
+    will-change: auto;
+  }
 }
 .heroText {
   display: flex;

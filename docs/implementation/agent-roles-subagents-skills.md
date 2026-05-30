@@ -6,6 +6,29 @@ Generated: 2026-05-30
 
 This document defines the targeted agent setup needed to handle UI and animation work on this portfolio, especially the dashboard-only avatar-eye effect. The site is a crafted brand portfolio, so the agents must protect design intent while respecting the Next.js 16 static-export architecture.
 
+## Implemented Project Artifacts
+
+The roles, sub-agents, and skills from this document now exist as project-local agent artifacts:
+
+- `.agents/manifest.json`
+- `.agents/roles/portfolio-ui-animation-lead.md`
+- `.agents/subagents/next-16-static-export-architect.md`
+- `.agents/subagents/homepage-motion-systems-engineer.md`
+- `.agents/subagents/avatar-asset-compositor.md`
+- `.agents/subagents/pointer-interaction-engineer.md`
+- `.agents/subagents/accessibility-reduced-motion-reviewer.md`
+- `.agents/subagents/visual-qa-browser-verification-agent.md`
+- `.agents/subagents/code-quality-release-readiness-reviewer.md`
+- `.agents/skills/next-16-static-export/SKILL.md`
+- `.agents/skills/homepage-scroll-motion/SKILL.md`
+- `.agents/skills/avatar-eye-compositing/SKILL.md`
+- `.agents/skills/pointer-motion-performance/SKILL.md`
+- `.agents/skills/accessibility-reduced-motion/SKILL.md`
+- `.agents/skills/visual-qa-portfolio/SKILL.md`
+- `.agents/skills/release-readiness-check/SKILL.md`
+
+These are repo-scoped artifacts. They are intended to guide future agents working in this project without installing global Codex skills.
+
 ## Primary Agent Role
 
 ### Portfolio UI Animation Lead
@@ -388,4 +411,3 @@ These are pre-existing and should not block a scoped avatar feature unless touch
 - Several links use `#`.
 - `resume.pdf` is referenced but not present.
 - Many images use raw `<img>` tags.
-
