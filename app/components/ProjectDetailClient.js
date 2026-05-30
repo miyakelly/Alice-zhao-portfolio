@@ -367,8 +367,9 @@ function ProjectSectionTransitionTrack({ sections, metrics, onHeroDimChange }) {
           panel.style.removeProperty("--incoming-y");
         }
         if (isBehind) {
-          panel.style.setProperty("--panel-dim", `${nextHandoff.progress * 50}%`);
-          panel.style.setProperty("--behind-y", `${nextHandoff.progress * 48}vh`);
+          const dimP = Math.max(0, (nextHandoff.progress - 0.2) / 0.8);
+          panel.style.setProperty("--panel-dim", `${dimP * 80}%`);
+          panel.style.setProperty("--behind-y", `${nextHandoff.progress * 80}vh`);
         } else {
           panel.style.removeProperty("--panel-dim");
           panel.style.removeProperty("--behind-y");
@@ -446,7 +447,8 @@ export default function ProjectDetailClient({ project }) {
   function updateHeroDim(progress) {
     const hero = heroRef.current;
     if (!hero) return;
-    hero.style.setProperty("--hero-dim", `${progress * 50}%`);
+    const dimP = Math.max(0, (progress - 0.2) / 0.8);
+    hero.style.setProperty("--hero-dim", `${dimP * 80}%`);
     hero.style.setProperty("--hero-behind-y", `${progress * 42}vh`);
   }
 
