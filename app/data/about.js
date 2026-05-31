@@ -55,6 +55,45 @@ export const workExperience = [
   },
 ];
 
+export const designPhilosophy = {
+  heading: "My design philosophy is rooted in simplifying complexity into intuitive and meaningful experiences. With 12 years of experience in UX and product design, I follow an iterative and prototype-driven process that balances user needs, business goals, and technical constraints. Since 2024, I've fully integrated AI into my workflow to rapidly explore, prototype, test, and validate ideas with exceptional speed and efficiency.",
+};
+
+export const processSteps = [
+  {
+    id: "01",
+    label: "Discover",
+    signal: "INPUT",
+    description: "Synthesize research data, surface market insights, and map pain points using AI-augmented analysis.",
+  },
+  {
+    id: "02",
+    label: "Define",
+    signal: "PROCESS",
+    description: "Frame the problem space, align stakeholders on scope, and establish success metrics.",
+  },
+  {
+    id: "03",
+    label: "Prototype",
+    signal: "BUILD",
+    description: "Rapidly build interactive prototypes with AI tools, test with real interactions, and iterate in hours.",
+  },
+  {
+    id: "04",
+    label: "Validate",
+    signal: "TEST",
+    description: "Run usability tests, measure against defined metrics, and feed learnings back into the next cycle.",
+  },
+  {
+    id: "05",
+    label: "Ship",
+    signal: "OUTPUT",
+    description: "Deliver production-ready designs with documented decisions, edge cases, and handoff specs.",
+  },
+];
+
+export const toolsHeading = "My AI toolkit";
+
 export const tools = [
   { name: "Claude Code", description: "I use Claude Code to build and iterate on production code, turning design decisions into working UI in real time." },
   { name: "Codex", description: "I use Codex to make targeted comments on the working prototype then fine tune the design details." },

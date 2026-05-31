@@ -139,3 +139,82 @@
 .experience-work-list a:hover {
   color: var(--accent);
 }
+
+#design-process,
+#ai-toolkit {
+  scroll-margin-top: 5rem;
+}
+
+/* ── Process steps ── */
+
+.process-steps {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  margin-top: 2rem;
+}
+
+.process-step {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1.5rem;
+  border: 1px solid var(--ink);
+  margin-left: -1px;
+  margin-top: -1px;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.process-step-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.process-step-id {
+  font-family: var(--f-mono);
+  font-size: var(--t-metric);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.process-step-signal {
+  font-family: var(--f-mono);
+  font-size: var(--t-badge);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+  border: 1px solid var(--muted);
+  padding: 0.2em 0.5em;
+  line-height: 1;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.process-step-label {
+  font-family: var(--f-display);
+  font-size: var(--t-h3);
+  font-weight: 400;
+  letter-spacing: -0.015em;
+  line-height: 1.2;
+}
+
+.process-step-desc {
+  font-size: var(--t-caption);
+  color: var(--muted);
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+  transition: color 0.2s;
+}
+
+@media (max-width: 1000px) {
+  .process-steps {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .process-steps {
+    grid-template-columns: 1fr;
+  }
+}

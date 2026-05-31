@@ -66,11 +66,11 @@ export default function Navigation({ title, isHome }) {
 
       <div className={`${styles.drawer}${drawerOpen ? ` ${styles.open}` : ""}`}>
         <nav className={styles.links}>
+          <Link href="/" onClick={closeDrawer}>Home</Link>
           <Link href="/projects/s3-tables" onClick={closeDrawer}>AWS S3 Tables</Link>
           <Link href="/projects/simplifying-data-access" onClick={closeDrawer}>Simplifying data access</Link>
           <Link href="/projects/agent-opportunities" onClick={closeDrawer}>Designing next phase</Link>
           <Link href="/about" onClick={closeDrawer}>About me</Link>
-          <Link href="/design-process" onClick={closeDrawer}>My design process</Link>
           <Link href="/lab" onClick={closeDrawer}>My lab</Link>
         </nav>
         <div className={styles.bottom}>

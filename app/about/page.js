@@ -5,32 +5,34 @@ import Link from "next/link";
 import Navigation from "../components/Navigation";
 import LineReveal from "../components/LineReveal";
 import Footer from "../components/Footer";
-import { bio, workExperience } from "../data/about";
 import Tools from "../components/Tools";
+import { bio, workExperience, designPhilosophy, processSteps, toolsHeading, tools } from "../data/about";
 import "./about.css";
 
 export default function About() {
   const bioRef = useRef(null);
+  const philRef = useRef(null);
 
   useEffect(() => {
-    const el = bioRef.current;
-    if (!el) return;
     const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (prefersReduced) {
-      el.classList.add("revealed");
-      return;
-    }
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          el.classList.add("revealed");
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.1 }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
+    [bioRef, philRef].forEach((ref) => {
+      const el = ref.current;
+      if (!el) return;
+      if (prefersReduced) {
+        el.classList.add("revealed");
+        return;
+      }
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            el.classList.add("revealed");
+            observer.disconnect();
+          }
+        },
+        { threshold: 0.1 }
+      );
+      observer.observe(el);
+    });
   }, []);
 
   return (
@@ -80,7 +82,34 @@ export default function About() {
           </div>
         </section>
 
-        <Tools />
+        {/* ── Design philosophy ── */}
+        <section className="about-section col-grid">
+          <h2 ref={philRef} className="section-heading-reveal">
+            <LineReveal heading={designPhilosophy.heading} lead="" plain />
+          </h2>
+        </section>
+
+        {/* ── AI-empowered design process ── */}
+        <section id="design-process" className="about-section col-grid">
+          <h2>My AI-empowered design process</h2>
+          <div className="process-steps">
+            {processSteps.map((step, i) => (
+              <div key={step.id} className="process-step" style={{ "--step-i": i }}>
+                <div className="process-step-header">
+                  <span className="process-step-id">{step.id}</span>
+                  <span className="process-step-signal">{step.signal}</span>
+                </div>
+                <p className="process-step-label">{step.label}</p>
+                <p className="process-step-desc">{step.description}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* ── AI toolkit ── */}
+        <div id="ai-toolkit">
+          <Tools heading={toolsHeading} items={tools} />
+        </div>
       </div>
       <Footer />
     </>
