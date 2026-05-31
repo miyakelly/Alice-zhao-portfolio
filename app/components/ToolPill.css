@@ -3,7 +3,7 @@
   align-items: center;
   gap: 0.4rem;
   font-family: var(--f);
-  font-size: var(--t-p);
+  font-size: 0.825rem;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--muted);

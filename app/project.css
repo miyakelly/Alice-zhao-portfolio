@@ -157,7 +157,7 @@
 .project-hero-subtitle {
   display: block;
   font-family: var(--f-display);
-  font-size: var(--t-hero-subtitle);
+  font-size: clamp(1.2rem, 3vw, 1.5rem);
   font-weight: 400;
   line-height: 1.3;
   color: var(--ink);

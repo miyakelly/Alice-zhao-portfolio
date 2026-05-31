@@ -10,21 +10,6 @@ import ToolPill from "../components/ToolPill";
 import { bio, workExperience, designPhilosophy, processSteps, toolsHeading, tools } from "../data/about";
 import "./about.css";
 
-function FlowArrows() {
-  return (
-    <div className="flow-arrows">
-      <svg className="flow-arrow flow-arrow--down" viewBox="0 0 400 40" preserveAspectRatio="none">
-        <line x1="200" y1="0" x2="200" y2="32" />
-        <polygon points="193,28 200,38 207,28" />
-      </svg>
-      <svg className="flow-arrow flow-arrow--up" viewBox="0 0 400 40" preserveAspectRatio="none">
-        <line x1="200" y1="8" x2="200" y2="40" />
-        <polygon points="193,12 200,2 207,12" />
-      </svg>
-    </div>
-  );
-}
-
 export default function About() {
   const bioRef = useRef(null);
   const philRef = useRef(null);
@@ -113,10 +98,7 @@ export default function About() {
               <div key={step.id}>
                 <div className="process-card">
                   <div className="process-card-content">
-                    <h3 className="process-card-title">
-                      <span className="process-card-id">{step.id}</span>
-                      {step.title}
-                    </h3>
+                    <h3 className="process-card-title">{step.id} {step.title}</h3>
                     <p className="process-card-desc">{step.description}</p>
                     <div className="process-card-divider" />
                     <p className="process-card-ai">{step.ai}</p>
@@ -127,14 +109,13 @@ export default function About() {
                     </div>
                   </div>
                   <div className="process-card-visual">
-                    <svg viewBox="0 0 200 200" className="process-card-svg">
-                      <polygon points="100,20 180,80 150,170 50,170 20,80" fill="none" stroke="var(--ink)" strokeWidth="0.5" opacity="0.15" />
-                      <polygon points="100,40 160,85 140,155 60,155 40,85" fill="none" stroke="var(--ink)" strokeWidth="0.5" opacity="0.1" />
-                      <circle cx="100" cy="100" r="60" fill="none" stroke="var(--ink)" strokeWidth="0.5" opacity="0.08" />
-                    </svg>
+                    <img
+                      src={`/img/aboutMe/design-process/${step.id}.svg`}
+                      alt={step.title}
+                      className="process-card-svg"
+                    />
                   </div>
                 </div>
-                {i < processSteps.length - 1 && <FlowArrows />}
               </div>
             ))}
           </div>
