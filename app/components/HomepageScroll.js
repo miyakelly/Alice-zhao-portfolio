@@ -341,10 +341,64 @@ function SecondaryCard({ def, style, hoverable }) {
   );
 }
 
+function HeroBorderDraw({ onComplete }) {
+  const svgRef = useRef(null);
+
+  useEffect(() => {
+    const svg = svgRef.current;
+    if (!svg) return;
+
+    const parent = svg.parentElement;
+    const w = parent.offsetWidth;
+    const h = parent.offsetHeight;
+    const perim = (w + h) * 2;
+
+    svg.setAttribute("viewBox", `0 0 ${w} ${h}`);
+    const rect = svg.querySelector("rect");
+    rect.setAttribute("width", w - 1);
+    rect.setAttribute("height", h - 1);
+    rect.setAttribute("stroke-dasharray", perim);
+    rect.setAttribute("stroke-dashoffset", perim);
+
+    requestAnimationFrame(() => {
+      rect.classList.add(s.heroBorderRect);
+      rect.style.setProperty("--perim", perim);
+    });
+
+    const handleEnd = () => onComplete();
+    rect.addEventListener("animationend", handleEnd);
+    return () => rect.removeEventListener("animationend", handleEnd);
+  }, [onComplete]);
+
+  return (
+    <svg ref={svgRef} className={s.heroBorderDraw}>
+      <rect
+        x="0.5"
+        y="0.5"
+        fill="none"
+        stroke="var(--ink)"
+        strokeWidth="1"
+      />
+    </svg>
+  );
+}
+
 export default function HomepageScroll() {
   const containerRef = useRef(null);
   const titleRef = useRef(null);
   const progress = useScrollProgress(containerRef);
+
+  const isReturning = useRef(false);
+  const [introReady, setIntroReady] = useState(false);
+
+  useEffect(() => {
+    const returning = sessionStorage.getItem(SCROLL_KEY) === "1";
+    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (returning || prefersReduced) {
+      isReturning.current = true;
+      setIntroReady(true);
+    }
+  }, []);
 
   const { vw, vh } = useViewportSize();
   const isMobile = vw < 768;
@@ -478,7 +532,7 @@ export default function HomepageScroll() {
   return (
     <div className={s.runway} ref={containerRef}>
       <div className={s.sticky}>
-        <WaveBackground />
+        <WaveBackground className={introReady ? s.introVisible : s.introHidden} />
         {CARD_DEFS.map((def) => {
           const bounds = getCardBounds(def.pos);
           if (bounds.width <= 0 || bounds.height <= 0) return null;
@@ -536,7 +590,10 @@ export default function HomepageScroll() {
           onMouseLeave={onLeave}
         >
           <div className={s.heroShadow} />
-          <div className={`${s.heroCard}${slideshow.active ? ` ${s.sliding}` : ""}`}>
+          {!isReturning.current && !introReady && (
+            <HeroBorderDraw onComplete={() => setIntroReady(true)} />
+          )}
+          <div className={`${s.heroCard}${slideshow.active ? ` ${s.sliding}` : ""}${!introReady ? ` ${s.heroHidden}` : ""}`}>
             {slideshow.active && (
               <img
                 className={s.heroSlideshow}
@@ -545,7 +602,7 @@ export default function HomepageScroll() {
               />
             )}
             <div
-              className={s.heroInner}
+              className={`${s.heroInner}${introReady && !isReturning.current ? ` ${s.introFadeIn}` : ""}`}
               style={{
                 padding,
                 alignItems: hasText ? 'flex-start' : 'center',

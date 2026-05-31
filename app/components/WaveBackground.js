@@ -31,7 +31,7 @@ function noise2(x, y) {
 const COL_SPACING = 10;
 const ROW_SPACING = 32;
 
-export default function WaveBackground() {
+export default function WaveBackground({ className }) {
   const svgRef = useRef(null);
   const stateRef = useRef(null);
   const animRef = useRef(null);
@@ -225,7 +225,7 @@ export default function WaveBackground() {
   return (
     <svg
       ref={svgRef}
-      className="wave-background"
+      className={`wave-background${className ? ` ${className}` : ""}`}
       aria-hidden="true"
     />
   );
