@@ -1,0 +1,89 @@
+{
+  "name": "alice-zhao-portfolio-ui-animation-agents",
+  "version": "1.0.0",
+  "created": "2026-05-30",
+  "purpose": "Project-local roles, subagents, and skills for expert UI and animation work on the Alice Zhao portfolio, especially the dashboard-only avatar eye tracking effect.",
+  "primaryRole": {
+    "name": "Portfolio UI Animation Lead",
+    "path": "roles/portfolio-ui-animation-lead.md"
+  },
+  "subagents": [
+    {
+      "name": "Next 16 Static Export Architect",
+      "path": "subagents/next-16-static-export-architect.md",
+      "skills": [
+        "skills/next-16-static-export/SKILL.md"
+      ]
+    },
+    {
+      "name": "Homepage Motion Systems Engineer",
+      "path": "subagents/homepage-motion-systems-engineer.md",
+      "skills": [
+        "skills/homepage-scroll-motion/SKILL.md",
+        "skills/pointer-motion-performance/SKILL.md"
+      ]
+    },
+    {
+      "name": "Avatar Asset Compositor",
+      "path": "subagents/avatar-asset-compositor.md",
+      "skills": [
+        "skills/avatar-eye-compositing/SKILL.md",
+        "skills/visual-qa-portfolio/SKILL.md"
+      ]
+    },
+    {
+      "name": "Pointer Interaction Engineer",
+      "path": "subagents/pointer-interaction-engineer.md",
+      "skills": [
+        "skills/pointer-motion-performance/SKILL.md",
+        "skills/accessibility-reduced-motion/SKILL.md"
+      ]
+    },
+    {
+      "name": "Accessibility And Reduced Motion Reviewer",
+      "path": "subagents/accessibility-reduced-motion-reviewer.md",
+      "skills": [
+        "skills/accessibility-reduced-motion/SKILL.md"
+      ]
+    },
+    {
+      "name": "Visual QA And Browser Verification Agent",
+      "path": "subagents/visual-qa-browser-verification-agent.md",
+      "skills": [
+        "skills/visual-qa-portfolio/SKILL.md"
+      ]
+    },
+    {
+      "name": "Code Quality And Release Readiness Reviewer",
+      "path": "subagents/code-quality-release-readiness-reviewer.md",
+      "skills": [
+        "skills/release-readiness-check/SKILL.md"
+      ]
+    }
+  ],
+  "defaultWorkflow": [
+    "Confirm Next.js 16 and static export boundaries.",
+    "Map the existing homepage scroll and dashboard activation state.",
+    "Composite and calibrate the new avatar eye assets.",
+    "Implement pointer tracking only after the dashboard is ready.",
+    "Review accessibility, reduced motion, touch, and keyboard impact.",
+    "Verify the rendered result in desktop and mobile browser states.",
+    "Run release checks and separate new issues from known baseline issues."
+  ],
+  "requiredReading": [
+    "AGENTS.md",
+    "DESIGN.md",
+    "PRODUCT.md",
+    "docs/research/technology-analysis.md",
+    "docs/research/avatar-eye-effect-research.md",
+    "docs/implementation/avatar-eye-effect-requirements.md",
+    "docs/implementation/agent-roles-subagents-skills.md"
+  ],
+  "baselineNotes": [
+    "This is a Next.js 16.2.4 static export App Router site.",
+    "The avatar eye effect belongs in the homepage Client Component layer.",
+    "The new assets are public/img/aboutMe/alice_transparent.png, alice_left_eye.png, and alice_right_eye.png.",
+    "The effect should activate only when the interactive dashboard area is present.",
+    "Reduced motion and coarse pointer users should receive a static avatar state."
+  ]
+}

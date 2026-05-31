@@ -241,6 +241,7 @@
   overflow: hidden;
 }
 .heroAvatar {
+  position: relative;
   border-radius: 0;
   background: var(--border);
   overflow: hidden;
@@ -254,10 +255,129 @@
   flex-shrink: 0;
   transition: background 0.2s;
 }
-.heroAvatar img {
+.avatarComposite {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #ffffff;
+  --camera-x: 50.333%;
+  --camera-y: 27.267%;
+  --camera-w: 82.533%;
+  --snail-x: 44.2%;
+  --snail-y: 91.067%;
+  --snail-w: 10.8%;
+  --left-eye-x: 33.733%;
+  --left-eye-y: 59.8%;
+  --left-eye-w: 3.2%;
+  --left-eye-left-limit: 0.65;
+  --left-eye-right-limit: 1;
+  --right-eye-x: 54.6%;
+  --right-eye-y: 63.933%;
+  --right-eye-w: 3.333%;
+  --right-eye-left-limit: 1;
+  --right-eye-right-limit: 1;
+  --left-eye-dx: 0px;
+  --left-eye-dy: 0px;
+  --right-eye-dx: 0px;
+  --right-eye-dy: 0px;
+  --camera-tick-tilt: 2deg;
+  --snail-tick-tilt: 7deg;
+}
+.avatarBase {
+  position: relative;
+  z-index: 0;
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+.avatarArtLayer {
+  position: absolute;
+  top: var(--layer-y);
+  left: var(--layer-x);
+  z-index: 1;
+  display: block;
+  width: var(--layer-w);
+  height: auto;
+  pointer-events: none;
+  transform: translate(-50%, -50%) rotate(0deg);
+  transform-origin: 50% 50%;
+  transition: transform 0.42s cubic-bezier(0.25, 0, 0.3, 1);
+  will-change: transform;
+}
+.avatarCamera {
+  --layer-x: var(--camera-x);
+  --layer-y: var(--camera-y);
+  --layer-w: var(--camera-w);
+  z-index: 2;
+}
+.avatarSnail {
+  --layer-x: var(--snail-x);
+  --layer-y: var(--snail-y);
+  --layer-w: var(--snail-w);
+  z-index: 3;
+}
+.avatarComposite[data-motion-active="true"] .avatarCamera {
+  animation: avatarCameraTickTock 1.4s steps(1, end) infinite;
+}
+.avatarComposite[data-motion-active="true"] .avatarSnail {
+  animation: avatarSnailTickTock 1.4s steps(1, end) infinite;
+}
+.avatarEye {
+  position: absolute;
+  top: var(--eye-y);
+  left: var(--eye-x);
+  z-index: 4;
+  width: var(--eye-w);
+  height: auto;
+  pointer-events: none;
+  transform: translate(
+    calc(-50% + var(--eye-dx, 0px)),
+    calc(-50% + var(--eye-dy, 0px))
+  );
+  will-change: transform;
+}
+.leftEye {
+  --eye-x: var(--left-eye-x);
+  --eye-y: var(--left-eye-y);
+  --eye-w: var(--left-eye-w);
+  --eye-dx: var(--left-eye-dx);
+  --eye-dy: var(--left-eye-dy);
+}
+.rightEye {
+  --eye-x: var(--right-eye-x);
+  --eye-y: var(--right-eye-y);
+  --eye-w: var(--right-eye-w);
+  --eye-dx: var(--right-eye-dx);
+  --eye-dy: var(--right-eye-dy);
+}
+@media (prefers-reduced-motion: reduce) {
+  .avatarComposite[data-motion-active="true"] .avatarCamera,
+  .avatarComposite[data-motion-active="true"] .avatarSnail {
+    animation: none;
+  }
+  .avatarEye {
+    transform: translate(-50%, -50%);
+    will-change: auto;
+  }
+}
+@keyframes avatarCameraTickTock {
+  0% {
+    transform: translate(-50%, -50%) rotate(calc(var(--camera-tick-tilt) * -1));
+  }
+  50%,
+  100% {
+    transform: translate(-50%, -50%) rotate(var(--camera-tick-tilt));
+  }
+}
+@keyframes avatarSnailTickTock {
+  0% {
+    transform: translate(-50%, -50%) rotate(var(--snail-tick-tilt));
+  }
+  50%,
+  100% {
+    transform: translate(-50%, -50%) rotate(calc(var(--snail-tick-tilt) * -1));
+  }
 }
 .heroText {
   display: flex;

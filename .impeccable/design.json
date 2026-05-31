@@ -1,0 +1,233 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-05-30T00:00:00-05:00",
+  "title": "Design System: Alice Zhao Portfolio",
+  "extensions": {
+    "colorMeta": {
+      "parchment": {
+        "role": "neutral",
+        "displayName": "Parchment",
+        "canonical": "#ffffff",
+        "tonalRamp": ["oklch(0.18 0.01 90)", "oklch(0.30 0.01 90)", "oklch(0.43 0.01 90)", "oklch(0.56 0.01 90)", "oklch(0.70 0.01 90)", "oklch(0.82 0.01 90)", "oklch(0.92 0.01 90)", "oklch(0.98 0.005 90)"]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Ink",
+        "canonical": "#0A0D10",
+        "tonalRamp": ["oklch(0.12 0.01 250)", "oklch(0.22 0.01 250)", "oklch(0.34 0.01 250)", "oklch(0.46 0.01 250)", "oklch(0.60 0.01 250)", "oklch(0.74 0.01 250)", "oklch(0.86 0.01 250)", "oklch(0.94 0.005 250)"]
+      },
+      "muted-blue-gray": {
+        "role": "neutral",
+        "displayName": "Muted Blue Gray",
+        "canonical": "#6F7F8A",
+        "tonalRamp": ["oklch(0.18 0.02 235)", "oklch(0.30 0.025 235)", "oklch(0.42 0.03 235)", "oklch(0.54 0.035 235)", "oklch(0.66 0.03 235)", "oklch(0.78 0.025 235)", "oklch(0.88 0.018 235)", "oklch(0.96 0.01 235)"]
+      },
+      "signal-blue": {
+        "role": "primary",
+        "displayName": "Signal Blue",
+        "canonical": "#2936CF",
+        "tonalRamp": ["oklch(0.18 0.10 275)", "oklch(0.28 0.15 275)", "oklch(0.38 0.20 275)", "oklch(0.48 0.24 275)", "oklch(0.58 0.22 275)", "oklch(0.70 0.16 275)", "oklch(0.84 0.09 275)", "oklch(0.94 0.04 275)"]
+      },
+      "drafting-blue": {
+        "role": "neutral",
+        "displayName": "Drafting Blue",
+        "canonical": "#738B9E",
+        "tonalRamp": ["oklch(0.18 0.02 240)", "oklch(0.30 0.03 240)", "oklch(0.42 0.04 240)", "oklch(0.54 0.05 240)", "oklch(0.66 0.04 240)", "oklch(0.78 0.03 240)", "oklch(0.88 0.02 240)", "oklch(0.96 0.01 240)"]
+      },
+      "dark-leather": {
+        "role": "neutral",
+        "displayName": "Dark Leather",
+        "canonical": "#110F0B",
+        "tonalRamp": ["oklch(0.12 0.018 70)", "oklch(0.20 0.018 70)", "oklch(0.30 0.018 70)", "oklch(0.42 0.016 70)", "oklch(0.56 0.014 70)", "oklch(0.70 0.012 70)", "oklch(0.84 0.010 70)", "oklch(0.94 0.006 70)"]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display Serif",
+        "purpose": "Warm expressive moments, dashboard titles, hero narrative, next-project labels."
+      },
+      "headline": {
+        "displayName": "Structural Headline",
+        "purpose": "High-confidence Satoshi headings for project and section structure."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Dense, readable product narrative and about copy."
+      },
+      "label": {
+        "displayName": "Annotation Label",
+        "purpose": "Small technical metadata, tags, hints, and interface annotations."
+      }
+    },
+    "shadows": [
+      {
+        "name": "dashboard-lift",
+        "value": "-8px 8px 0 #000",
+        "purpose": "Hard offset hover response behind lifted dashboard cards."
+      },
+      {
+        "name": "touch-lift",
+        "value": "-4px 4px 0 #000",
+        "purpose": "Reduced hard offset response for touch-active states."
+      }
+    ],
+    "motion": [
+      {
+        "name": "dashboard-lift-ease",
+        "value": "0.3s cubic-bezier(0.25, 0, 0.3, 1)",
+        "purpose": "Default card lift and shadow opacity transition."
+      },
+      {
+        "name": "line-reveal-ease",
+        "value": "0.6s cubic-bezier(0.22, 1, 0.36, 1)",
+        "purpose": "Line reveal entrance for large headings."
+      },
+      {
+        "name": "drawer-clip-ease",
+        "value": "0.35s cubic-bezier(0.4, 0, 0.2, 1)",
+        "purpose": "Fullscreen navigation drawer reveal."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "mobile",
+        "value": "768px"
+      },
+      {
+        "name": "layout-collapse",
+        "value": "900px"
+      },
+      {
+        "name": "tool-grid-collapse",
+        "value": "1000px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Dashboard Card",
+      "kind": "card",
+      "refersTo": "dashboard-card",
+      "description": "Square ruled card used in the homepage scroll dashboard.",
+      "html": "<article class=\"ds-dashboard-card\"><div class=\"ds-dashboard-meta\"><span>2024</span><span>AWS</span></div><h3>S3 Tables</h3><p>A seamless console experience that turns big data into insights in seconds.</p><span class=\"ds-dashboard-tag\">AI</span></article>",
+      "css": ".ds-dashboard-card { position: relative; width: 320px; aspect-ratio: 1; padding: 20px; border: 1px solid #0A0D10; background: #ffffff; color: #0A0D10; display: flex; flex-direction: column; transition: transform 0.3s cubic-bezier(0.25, 0, 0.3, 1); } .ds-dashboard-card:hover { transform: translate(8px, -8px); box-shadow: -8px 8px 0 #000; } .ds-dashboard-meta { display: flex; justify-content: space-between; color: #6F7F8A; font: 400 12px Satoshi, Helvetica, Arial, sans-serif; } .ds-dashboard-card h3 { margin: 30px 0 10px; font: 400 clamp(1.125rem, 4vw, 3rem)/1 'EB Garamond', Georgia, serif; } .ds-dashboard-card p { margin: 12px 0 0; font: 400 13px/1.4 Satoshi, Helvetica, Arial, sans-serif; } .ds-dashboard-tag { margin-top: auto; font: 400 11px/1.4 'IBM Plex Mono', monospace; color: #6F7F8A; }"
+    },
+    {
+      "name": "Metric Card",
+      "kind": "card",
+      "refersTo": "metric-card",
+      "description": "Square impact metric used in project outcome sections.",
+      "html": "<div class=\"ds-metric-card\"><span class=\"ds-metric-value\">97<span>%</span></span><span class=\"ds-metric-label\">Integration opt-in rate</span></div>",
+      "css": ".ds-metric-card { width: 220px; aspect-ratio: 1; padding: 24px; border: 1px solid #0A0D10; background: #ffffff; color: #0A0D10; display: flex; flex-direction: column; justify-content: flex-end; gap: 4px; } .ds-metric-value { font: 400 clamp(1.25rem, 3vw, 3rem)/1 'EB Garamond', Georgia, serif; letter-spacing: -0.02em; } .ds-metric-value span { font-size: 0.7em; } .ds-metric-label { font: 400 clamp(0.5rem, 3vw, 1rem)/1.4 Satoshi, Helvetica, Arial, sans-serif; color: #6F7F8A; margin-top: 0.5rem; }"
+    },
+    {
+      "name": "Navigation Control",
+      "kind": "button",
+      "refersTo": "nav-control",
+      "description": "Square fixed menu or mode control.",
+      "html": "<button class=\"ds-nav-control\" aria-label=\"Open menu\"><span></span><span></span><span></span></button>",
+      "css": ".ds-nav-control { width: 3.75rem; height: 3.75rem; background: #101316; border: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; cursor: pointer; transition: background 0.18s; } .ds-nav-control:hover, .ds-nav-control:focus-visible { background: #2936CF; outline: none; } .ds-nav-control span { display: block; width: 20px; height: 1.5px; background: #F4F3EF; transition: transform 0.22s ease, opacity 0.18s ease; }"
+    },
+    {
+      "name": "Section Navigation Link",
+      "kind": "nav",
+      "refersTo": "section-nav-link",
+      "description": "Sticky case-study phase navigation item.",
+      "html": "<nav class=\"ds-section-nav\"><a class=\"ds-section-link ds-section-link-active\" href=\"#problem\">01 Problem</a><a class=\"ds-section-link\" href=\"#outcome\">04 Outcome</a></nav>",
+      "css": ".ds-section-nav { height: 3.75rem; background: #0A0D10; display: flex; align-items: center; justify-content: center; } .ds-section-link { height: 100%; display: flex; align-items: center; padding: 0 24px; color: #6F7F8A; text-decoration: none; font: 400 clamp(0.5rem, 2vw, 1.3rem)/1.5 Satoshi, Helvetica, Arial, sans-serif; transition: color 0.15s; } .ds-section-link:hover, .ds-section-link-active { color: #ffffff; font-weight: 700; }"
+    },
+    {
+      "name": "Inline Image Loop",
+      "kind": "custom",
+      "refersTo": "inline-image-loop",
+      "description": "Small rounded image chip embedded inside large narrative text.",
+      "html": "<span class=\"ds-inline-loop\"><img src=\"/img/s3tables/customers-inline-img/hero-text/000.jpg\" alt=\"\" /></span>",
+      "css": ".ds-inline-loop { display: inline-block; width: 2.5em; height: 1.2em; vertical-align: middle; position: relative; overflow: hidden; margin: 0 0.15em; border-radius: 0.6em; background: #6F7F8A; } .ds-inline-loop img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }"
+    },
+    {
+      "name": "External Text Link",
+      "kind": "custom",
+      "refersTo": "external-link",
+      "description": "Inline evidence link that keeps current text color and uses underline as the affordance.",
+      "html": "<a class=\"ds-external-link\" href=\"#\">AWS re:Invent 2025<span>↗</span></a>",
+      "css": ".ds-external-link { color: currentColor; -webkit-text-fill-color: currentColor; text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; transition: color 0.15s; white-space: nowrap; } .ds-external-link:hover, .ds-external-link:focus-visible { color: #2936CF; outline: none; } .ds-external-link span { display: inline-block; width: 0.7em; height: 0.7em; margin-left: 0.15em; vertical-align: -0.1em; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Cartographer's Workbench",
+    "overview": "The portfolio should feel like a precise modern interface drafted on archival paper. The current system combines hard-edged digital geometry, bento-grid utility, scroll-scrubbed motion, and a low-opacity paper substrate with grain, ruled construction lines, compass marks, and faint annotations. The result should read as technical and handmade at the same time.\n\nThe product voice is precise, confident, and fun. Hiring managers should understand Alice's seniority, technical fluency, and shipped impact in a few scrolls. Every viewport needs a strong scan path: project title, impact, metric, visual evidence, or interaction craft. Decoration is allowed only when it reinforces the idea that the site itself is a portfolio artifact.",
+    "keyCharacteristics": [
+      "Parchment substrate with modern interface precision.",
+      "Thin ruled borders, square corners, and hard grid geometry.",
+      "Restrained surfaces with rare signal-blue accents.",
+      "Display serif moments used for warmth and character, not generic editorial styling.",
+      "Motion as evidence of craft, disabled cleanly under reduced motion.",
+      "Dense, scannable information hierarchy built for a 30-second hiring-manager pass."
+    ],
+    "rules": [
+      {
+        "name": "The Rare Signal Rule",
+        "body": "Signal Blue should stay under roughly 10% of any viewport. It is for active decisions and emphasis, not general decoration.",
+        "section": "colors"
+      },
+      {
+        "name": "The Material First Rule",
+        "body": "Texture and ruled marks create atmosphere; do not replace them with gradient blobs, glass panels, or generic abstract fills.",
+        "section": "colors"
+      },
+      {
+        "name": "The Warm Dark Rule",
+        "body": "Dark mode is aged leather and vellum, not cool slate or neon-on-black.",
+        "section": "colors"
+      },
+      {
+        "name": "The Scan First Rule",
+        "body": "Use type size, weight, and grid position so a viewer can understand the page before reading body text.",
+        "section": "typography"
+      },
+      {
+        "name": "The Warmth In Small Doses Rule",
+        "body": "EB Garamond should create moments of voice. Do not let it turn the portfolio into a generic editorial magazine layout.",
+        "section": "typography"
+      },
+      {
+        "name": "The Mono Annotation Rule",
+        "body": "Monospace belongs in short labels, tags, and technical annotations. Do not use it for long body copy.",
+        "section": "typography"
+      },
+      {
+        "name": "The Flat At Rest Rule",
+        "body": "Cards, nav, and content panels are flat until interaction or scroll state creates hierarchy.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Hard Shadow Rule",
+        "body": "If depth is needed, use the existing hard offset language. Avoid soft neumorphic, glassy, or diffuse SaaS shadows.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do preserve the \"ancient cartography meets modern technology\" contrast: precise modern grids over warm, archival material.",
+      "Do keep every viewport scannable for hiring managers making a fast decision.",
+      "Do use Signal Blue sparingly for true emphasis, active states, or high-value interaction details.",
+      "Do use square cards, thin borders, and hard offset hover shadows for dashboard-like surfaces.",
+      "Do disable animation under `prefers-reduced-motion: reduce`; static layouts must remain complete.",
+      "Do make hover interactions available through a touch or static equivalent.",
+      "Do use transform and opacity for motion where possible.",
+      "Do keep paper texture, construction lines, and compass marks between 3% and 6% perceived opacity.",
+      "Do document and calibrate signature motion values when adding new interaction work."
+    ],
+    "donts": [
+      "Don't use generic template aesthetics: effects or layouts that look dropped in without thought.",
+      "Don't add SaaS landing page energy: gradient blobs, Lottie animations, hero-metric templates, or decorative glassmorphism.",
+      "Don't create beauty-first portfolio sections that reveal no strategic thinking.",
+      "Don't show process theater, especially generic double-diamond diagrams disconnected from actual decisions.",
+      "Don't create walls of text without visual hierarchy.",
+      "Don't introduce AI slop: anything that looks like an unedited generated landing page.",
+      "Don't use large rounded icon cards, nested cards, or repeated same-size feature-card grids.",
+      "Don't use colored side-stripe borders as accents. Use full borders, small labels, icons, or restrained background shifts.",
+      "Don't make dark mode cool blue/slate or neon. Keep it warm, leathery, and quiet.",
+      "Don't add animation libraries unless a specific effect cannot be built with the existing CSS and browser APIs."
+    ]
+  }
+}

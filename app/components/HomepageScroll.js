@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { projects } from "../data/projects";
 import WaveBackground from "./WaveBackground";
 import s from "./HomepageScroll.module.css";
@@ -114,6 +115,14 @@ const CARD_DEFS = [
 });
 
 const SCROLL_KEY = "homepage-visited";
+const DASHBOARD_READY_PROGRESS = 0.995;
+const EYE_EASE = 0.18;
+const EYE_IDLE_RESET_MS = 5200;
+const EYE_SETTLE_EPSILON = 0.05;
+const EYE_ANCHOR_FALLBACKS = {
+  left: { x: 0.33733, y: 0.598 },
+  right: { x: 0.546, y: 0.63933 },
+};
 
 function useScrollProgress(containerRef) {
   const [progress, setProgress] = useState(0);
@@ -213,6 +222,264 @@ function getIntroText(progress) {
     if (progress <= bp.maxProgress) return bp.text;
   }
   return null;
+}
+
+function parsePercent(value, fallback) {
+  const parsed = parseFloat(value);
+  return Number.isFinite(parsed) ? parsed / 100 : fallback;
+}
+
+function parseNumber(value, fallback) {
+  const parsed = parseFloat(value);
+  return Number.isFinite(parsed) ? parsed : fallback;
+}
+
+function useAvatarEyeTracking(avatarRef, enabled) {
+  useEffect(() => {
+    const avatar = avatarRef.current;
+    if (!avatar) return;
+
+    function writeEyeOffset(side, x, y) {
+      avatar.style.setProperty(`--${side}-eye-dx`, `${x.toFixed(3)}px`);
+      avatar.style.setProperty(`--${side}-eye-dy`, `${y.toFixed(3)}px`);
+    }
+
+    function resetEyeOffsets() {
+      writeEyeOffset("left", 0, 0);
+      writeEyeOffset("right", 0, 0);
+    }
+
+    function setAvatarMotionActive(active) {
+      if (active) {
+        avatar.dataset.motionActive = "true";
+      } else {
+        delete avatar.dataset.motionActive;
+      }
+    }
+
+    if (!enabled) {
+      resetEyeOffsets();
+      setAvatarMotionActive(false);
+      return;
+    }
+
+    const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const finePointerQuery = window.matchMedia("(pointer: fine)");
+    const cursor = { x: 0, y: 0, active: false, lastMove: 0 };
+    const current = {
+      left: { x: 0, y: 0 },
+      right: { x: 0, y: 0 },
+    };
+    let frameId = null;
+    let anchors = readAnchors();
+
+    function canTrack() {
+      return finePointerQuery.matches && !reducedMotionQuery.matches;
+    }
+
+    function readAnchors() {
+      const style = getComputedStyle(avatar);
+      return {
+        left: {
+          x: parsePercent(style.getPropertyValue("--left-eye-x"), EYE_ANCHOR_FALLBACKS.left.x),
+          y: parsePercent(style.getPropertyValue("--left-eye-y"), EYE_ANCHOR_FALLBACKS.left.y),
+          xLeftLimit: parseNumber(style.getPropertyValue("--left-eye-left-limit"), 0.65),
+          xRightLimit: parseNumber(style.getPropertyValue("--left-eye-right-limit"), 1),
+        },
+        right: {
+          x: parsePercent(style.getPropertyValue("--right-eye-x"), EYE_ANCHOR_FALLBACKS.right.x),
+          y: parsePercent(style.getPropertyValue("--right-eye-y"), EYE_ANCHOR_FALLBACKS.right.y),
+          xLeftLimit: parseNumber(style.getPropertyValue("--right-eye-left-limit"), 1),
+          xRightLimit: parseNumber(style.getPropertyValue("--right-eye-right-limit"), 1),
+        },
+      };
+    }
+
+    function clampEyeX(x, anchor, maxTravel) {
+      const min = -maxTravel * anchor.xLeftLimit;
+      const max = maxTravel * anchor.xRightLimit;
+      return Math.min(max, Math.max(min, x));
+    }
+
+    function targetForEye(rect, anchor, now) {
+      if (!canTrack() || !cursor.active || now - cursor.lastMove >= EYE_IDLE_RESET_MS) {
+        return { x: 0, y: 0 };
+      }
+
+      const eyeX = rect.left + rect.width * anchor.x;
+      const eyeY = rect.top + rect.height * anchor.y;
+      const dx = cursor.x - eyeX;
+      const dy = cursor.y - eyeY;
+      const distance = Math.hypot(dx, dy);
+
+      if (distance < 0.01) return { x: 0, y: 0 };
+
+      const maxTravel = Math.min(4, Math.max(1, rect.width * 0.025));
+      const pull = Math.min(1, distance / Math.max(rect.width * 0.75, 1));
+      const x = (dx / distance) * maxTravel * pull;
+
+      return {
+        x: clampEyeX(x, anchor, maxTravel),
+        y: (dy / distance) * maxTravel * pull,
+      };
+    }
+
+    function animate(now) {
+      const rect = avatar.getBoundingClientRect();
+      const leftTarget = targetForEye(rect, anchors.left, now);
+      const rightTarget = targetForEye(rect, anchors.right, now);
+      const returning =
+        !canTrack() ||
+        !cursor.active ||
+        now - cursor.lastMove >= EYE_IDLE_RESET_MS;
+
+      if (returning) {
+        setAvatarMotionActive(false);
+      }
+
+      current.left.x += (leftTarget.x - current.left.x) * EYE_EASE;
+      current.left.y += (leftTarget.y - current.left.y) * EYE_EASE;
+      current.right.x += (rightTarget.x - current.right.x) * EYE_EASE;
+      current.right.y += (rightTarget.y - current.right.y) * EYE_EASE;
+
+      writeEyeOffset("left", current.left.x, current.left.y);
+      writeEyeOffset("right", current.right.x, current.right.y);
+
+      const centered =
+        Math.abs(current.left.x) < EYE_SETTLE_EPSILON &&
+        Math.abs(current.left.y) < EYE_SETTLE_EPSILON &&
+        Math.abs(current.right.x) < EYE_SETTLE_EPSILON &&
+        Math.abs(current.right.y) < EYE_SETTLE_EPSILON;
+
+      if (returning && centered) {
+        current.left.x = 0;
+        current.left.y = 0;
+        current.right.x = 0;
+        current.right.y = 0;
+        resetEyeOffsets();
+        setAvatarMotionActive(false);
+        frameId = null;
+        return;
+      }
+
+      frameId = requestAnimationFrame(animate);
+    }
+
+    function startLoop() {
+      if (frameId === null) {
+        frameId = requestAnimationFrame(animate);
+      }
+    }
+
+    function returnToCenter() {
+      cursor.active = false;
+      setAvatarMotionActive(false);
+      startLoop();
+    }
+
+    function onPointerMove(event) {
+      if (!canTrack()) return;
+      cursor.x = event.clientX;
+      cursor.y = event.clientY;
+      cursor.active = true;
+      cursor.lastMove = performance.now();
+      setAvatarMotionActive(true);
+      startLoop();
+    }
+
+    function onPointerOut(event) {
+      if (!event.relatedTarget) returnToCenter();
+    }
+
+    function onPreferenceChange() {
+      if (!canTrack()) returnToCenter();
+    }
+
+    function onResize() {
+      anchors = readAnchors();
+    }
+
+    window.addEventListener("pointermove", onPointerMove, { passive: true });
+    window.addEventListener("mousemove", onPointerMove, { passive: true });
+    window.addEventListener("pointerout", onPointerOut);
+    window.addEventListener("blur", returnToCenter);
+    window.addEventListener("resize", onResize);
+    document.addEventListener("visibilitychange", returnToCenter);
+    reducedMotionQuery.addEventListener("change", onPreferenceChange);
+    finePointerQuery.addEventListener("change", onPreferenceChange);
+
+    resetEyeOffsets();
+    setAvatarMotionActive(false);
+
+    return () => {
+      window.removeEventListener("pointermove", onPointerMove);
+      window.removeEventListener("mousemove", onPointerMove);
+      window.removeEventListener("pointerout", onPointerOut);
+      window.removeEventListener("blur", returnToCenter);
+      window.removeEventListener("resize", onResize);
+      document.removeEventListener("visibilitychange", returnToCenter);
+      reducedMotionQuery.removeEventListener("change", onPreferenceChange);
+      finePointerQuery.removeEventListener("change", onPreferenceChange);
+      if (frameId !== null) cancelAnimationFrame(frameId);
+      resetEyeOffsets();
+      setAvatarMotionActive(false);
+    };
+  }, [avatarRef, enabled]);
+}
+
+function LayeredAvatar({ active }) {
+  const avatarRef = useRef(null);
+  useAvatarEyeTracking(avatarRef, active);
+
+  return (
+    <div className={s.avatarComposite} ref={avatarRef}>
+      <Image
+        className={s.avatarBase}
+        src="/img/aboutMe/alice_transparent.png"
+        alt="Alice Zhao"
+        width={750}
+        height={750}
+        sizes="180px"
+        loading="eager"
+      />
+      <Image
+        className={`${s.avatarArtLayer} ${s.avatarCamera}`}
+        src="/img/aboutMe/alice_camera.png"
+        alt=""
+        aria-hidden="true"
+        width={619}
+        height={351}
+        sizes="160px"
+      />
+      <Image
+        className={`${s.avatarArtLayer} ${s.avatarSnail}`}
+        src="/img/aboutMe/alice_snail.png"
+        alt=""
+        aria-hidden="true"
+        width={81}
+        height={52}
+        sizes="24px"
+      />
+      <Image
+        className={`${s.avatarEye} ${s.leftEye}`}
+        src="/img/aboutMe/alice_left_eye.png"
+        alt=""
+        aria-hidden="true"
+        width={24}
+        height={23}
+        sizes="8px"
+      />
+      <Image
+        className={`${s.avatarEye} ${s.rightEye}`}
+        src="/img/aboutMe/alice_right_eye.png"
+        alt=""
+        aria-hidden="true"
+        width={25}
+        height={27}
+        sizes="8px"
+      />
+    </div>
+  );
 }
 
 function useSlideshow(images, interval = 250) {
@@ -471,6 +738,7 @@ export default function HomepageScroll() {
 
   const introText = getIntroText(progress);
   const hasText = introText !== null;
+  const dashboardReady = progress >= DASHBOARD_READY_PROGRESS;
 
   const textOpacity = progress > 0.65
     ? lerp(1, 0, (progress - 0.65) / 0.1)
@@ -618,7 +886,7 @@ export default function HomepageScroll() {
                   minHeight: avatarSize,
                 }}
               >
-                <img src="/img/aboutMe/AliceZhao-Avatar.PNG" alt="Alice Zhao" />
+                <LayeredAvatar active={dashboardReady} />
               </div>
               {hasText && (
                 <div className={s.heroText} style={{ opacity: textOpacity }}>
