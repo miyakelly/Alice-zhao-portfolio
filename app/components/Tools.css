@@ -19,7 +19,7 @@
 
 .tool-card-desc {
   font-family: var(--f);
-  font-size: var(--t-caption);
+  font-size: 0.875rem;
   color: var(--muted);
   line-height: 1.4;
   margin-top: 4px;

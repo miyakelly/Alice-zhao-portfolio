@@ -3,7 +3,6 @@
 import { useEffect, useLayoutEffect, useRef } from "react";
 import { projects } from "../data/projects";
 import Navigation from "./Navigation";
-// import SectionNav from "./SectionNav";
 import DeviceFrame from "./DeviceFrame";
 import MetricsCounter from "./MetricsCounter";
 import ExternalLink from "./ExternalLink";
@@ -247,12 +246,6 @@ function OutcomeSection({ section, metrics }) {
           )}
           <MetricsCounter metrics={metrics} />
           {content.summary && <p className="outcome-summary">{content.summary}</p>}
-          {content.reflection && (
-            <div className="outcome-reflection">
-              <p>Reflection</p>
-              <p>{content.reflection}</p>
-            </div>
-          )}
         </>
       )}
     </section>
@@ -540,7 +533,6 @@ export default function ProjectDetailClient({ project }) {
           <div className="hero-scroll-spacer" />
         </header>
 
-        {/* <SectionNav sections={project.sections} /> */}
 
         <div className="project-content">
           <ProjectSectionTransitionTrack

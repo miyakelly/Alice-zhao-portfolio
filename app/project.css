@@ -304,18 +304,6 @@
   max-width: 700px;
   margin-bottom: 24px;
 }
-.outcome-reflection {
-  padding: 24px;
-  border: 1px solid var(--border);
-  margin-top: 24px;
-  transition: border-color 0.2s;
-}
-.outcome-reflection p {
-  font-size: var(--t-caption);
-  line-height: 1.6;
-  font-style: italic;
-  opacity: 0.8;
-}
 
 /* ── OUTCOME ZIGZAG ── */
 

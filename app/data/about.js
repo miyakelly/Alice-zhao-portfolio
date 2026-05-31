@@ -62,33 +62,58 @@ export const designPhilosophy = {
 export const processSteps = [
   {
     id: "01",
-    label: "Discover",
-    signal: "INPUT",
-    description: "Synthesize research data, surface market insights, and map pain points using AI-augmented analysis.",
+    title: "Discover",
+    description: "Gather competitive analysis and user feedback. Synthesize findings into a structured one-pager: problem, opportunity, success metrics.",
+    ai: "Research agents collect and cross-reference data from multiple sources, cutting weeks of manual synthesis to hours.",
+    tools: [
+      { name: "Internal research agent", icon: "Bedrock" },
+      { name: "AWS Quick Suite", icon: "Nova" },
+      { name: "AWS Builder MCP", icon: "MCP" },
+    ],
   },
   {
     id: "02",
-    label: "Define",
-    signal: "PROCESS",
-    description: "Frame the problem space, align stakeholders on scope, and establish success metrics.",
+    title: "Define",
+    description: "Distill the problem, align stakeholders on scope, and lock success metrics. Build a shared understanding before any design work starts.",
+    ai: "Claude surfaces patterns across feedback channels and drafts problem framings, so alignment conversations start from evidence, not assumptions.",
+    tools: [
+      { name: "AWS Quick Suite", icon: "Nova" },
+      { name: "Figjam", icon: "Figma" },
+    ],
   },
   {
     id: "03",
-    label: "Prototype",
-    signal: "BUILD",
-    description: "Rapidly build interactive prototypes with AI tools, test with real interactions, and iterate in hours.",
+    title: "Prototype",
+    description: "Build working, interactive prototypes. Explore multiple directions in parallel, test with real interactions, and converge on the strongest approach.",
+    ai: "Claude Code generates functional prototypes from the one-pager. Impeccable refines spacing, typography, and polish across every variant.",
+    tools: [
+      { name: "Claude Code", icon: "Claude" },
+      { name: "Kiro-cli", icon: "Kiro" },
+      { name: "Impeccable", icon: "MCP" },
+      { name: "Figma MCP", icon: "MCP" },
+      { name: "Lobehub", icon: "LobeHub" },
+    ],
   },
   {
     id: "04",
-    label: "Validate",
-    signal: "TEST",
-    description: "Run usability tests, measure against defined metrics, and feed learnings back into the next cycle.",
+    title: "Test",
+    description: "Run moderated and unmoderated usability sessions. Capture findings, tag severity, and feed insights directly back into the next iteration.",
+    ai: "Agents generate test scripts from key flows and success criteria. Post-session, they synthesize notes across participants and flag patterns.",
+    tools: [
+      { name: "Testing agent", icon: "MCP" },
+      { name: "Claude", icon: "MCP" },
+    ],
   },
   {
     id: "05",
-    label: "Ship",
-    signal: "OUTPUT",
-    description: "Deliver production-ready designs with documented decisions, edge cases, and handoff specs.",
+    title: "Ship",
+    description: "Deliver production-ready code, or hand off with documented specs, edge cases, and decision rationale.",
+    ai: "Code review agents catch bugs and accessibility issues before merge. Documentation is auto-generated from the working prototype.",
+    tools: [
+      { name: "Claude Code", icon: "MCP" },
+      { name: "Kiro-cli", icon: "Kiro" },
+      { name: "GitHub", icon: "Github" },
+    ],
   },
 ];
 

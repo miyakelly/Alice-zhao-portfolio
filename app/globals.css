@@ -50,14 +50,13 @@
 
   --t-h3: clamp(1.125rem, 2vw, 1.5rem);
 
-  --t-p: clamp(0.5rem, 2vw, 1.3rem);
+  --t-p: clamp(0.5rem, 3vw, 1.3rem);
 
   --t-hero-subtitle: clamp(1rem, 3vw, 1.5rem);
 
   --t-hero-text: clamp(1.5rem, 2.5vw, 4rem);
   --t-hero-text-font-weight: 400;
   --t-metric: clamp(1.25rem, 3vw, 3rem);
-  --t-caption: 0.875rem;
   --t-label: clamp(0.5rem, 3vw, 1rem);
   --t-badge: 0.5625rem;
 }

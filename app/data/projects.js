@@ -227,7 +227,7 @@ export const projects = {
         navLabel: "03 Outcome",
         heading: "03 Outcome",
         summary: "",
-        content: { summary: "", reflection: "" },
+        content: { summary: "" },
         productVisuals: [],
       },
     ],

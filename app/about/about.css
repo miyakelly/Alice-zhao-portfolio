@@ -145,76 +145,155 @@
   scroll-margin-top: 5rem;
 }
 
-/* ── Process steps ── */
+/* ── Process section ── */
 
-.process-steps {
-  grid-column: 1 / -1;
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  margin-top: 2rem;
+.process-heading {
+  margin-bottom: 2rem;
 }
 
-.process-step {
+.process-steps {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
-  padding: 1.5rem;
+}
+
+/* ── Process card ── */
+
+.process-card {
+  display: flex;
   border: 1px solid var(--ink);
-  margin-left: -1px;
-  margin-top: -1px;
+  padding: 20px;
   transition: background 0.2s, border-color 0.2s;
 }
 
-.process-step-header {
+.process-card-content {
+  flex: 0 0 65%;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
+  gap: 1rem;
 }
 
-.process-step-id {
-  font-family: var(--f-mono);
-  font-size: var(--t-metric);
-  font-weight: 400;
+.process-card-title {
+  font-size: var(--t-h3);
+  font-weight: 600;
   letter-spacing: -0.02em;
-  line-height: 1;
+  line-height: 1.2;
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
 }
 
-.process-step-signal {
+.process-card-id {
   font-family: var(--f-mono);
   font-size: var(--t-badge);
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: var(--muted);
-  border: 1px solid var(--muted);
-  padding: 0.2em 0.5em;
-  line-height: 1;
-  transition: color 0.2s, border-color 0.2s;
-}
-
-.process-step-label {
-  font-family: var(--f-display);
-  font-size: var(--t-h3);
   font-weight: 400;
-  letter-spacing: -0.015em;
-  line-height: 1.2;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+  flex-shrink: 0;
+  transition: color 0.2s;
 }
 
-.process-step-desc {
-  font-size: var(--t-caption);
+.process-card-desc {
+  font-size: var(--t-p);
   color: var(--muted);
   line-height: 1.5;
   letter-spacing: -0.01em;
   transition: color 0.2s;
 }
 
-@media (max-width: 1000px) {
-  .process-steps {
-    grid-template-columns: repeat(3, 1fr);
+.process-card-divider {
+  height: 1px;
+  background: var(--ink);
+  opacity: 0.2;
+  transition: background 0.2s;
+}
+
+.process-card-ai {
+  font-family: var(--f-mono);
+  font-size: 0.875rem;
+  color: var(--accent);
+  line-height: 1.6;
+  letter-spacing: -0.01em;
+}
+
+.process-card-tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+
+.process-card-visual {
+  flex: 0 0 35%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.process-card-svg {
+  width: 80%;
+  max-width: 200px;
+  opacity: 0.6;
+}
+
+/* ── Flow arrows ── */
+
+.flow-arrows {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  padding: 4px 0;
+}
+
+.flow-arrow {
+  width: 40px;
+  height: 40px;
+}
+
+.flow-arrow line {
+  stroke: var(--ink);
+  stroke-width: 2.5;
+  stroke-dasharray: 5 5;
+}
+
+.flow-arrow polygon {
+  fill: var(--ink);
+}
+
+.flow-arrow--down line {
+  animation: flow-down 1.2s linear infinite;
+}
+
+.flow-arrow--up line {
+  animation: flow-up 1.2s linear infinite;
+}
+
+@keyframes flow-down {
+  from { stroke-dashoffset: 8; }
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes flow-up {
+  from { stroke-dashoffset: 0; }
+  to { stroke-dashoffset: 8; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flow-arrow line {
+    animation: none;
   }
 }
 
+/* ── Process responsive ── */
+
 @media (max-width: 600px) {
-  .process-steps {
-    grid-template-columns: 1fr;
+  .process-card {
+    flex-direction: column;
+  }
+  .process-card-content {
+    flex: 1;
+  }
+  .process-card-visual {
+    flex: 1;
+    padding-top: 1.5rem;
   }
 }
