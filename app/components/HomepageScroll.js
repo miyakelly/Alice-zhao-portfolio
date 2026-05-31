@@ -107,8 +107,8 @@ const EYE_EASE = 0.18;
 const EYE_IDLE_RESET_MS = 5200;
 const EYE_SETTLE_EPSILON = 0.05;
 const EYE_ANCHOR_FALLBACKS = {
-  left: { x: 0.338, y: 0.598 },
-  right: { x: 0.54667, y: 0.64 },
+  left: { x: 0.33733, y: 0.598 },
+  right: { x: 0.546, y: 0.63933 },
 };
 
 function useScrollProgress(containerRef) {
@@ -216,6 +216,11 @@ function parsePercent(value, fallback) {
   return Number.isFinite(parsed) ? parsed / 100 : fallback;
 }
 
+function parseNumber(value, fallback) {
+  const parsed = parseFloat(value);
+  return Number.isFinite(parsed) ? parsed : fallback;
+}
+
 function useAvatarEyeTracking(avatarRef, enabled) {
   useEffect(() => {
     const avatar = avatarRef.current;
@@ -231,8 +236,17 @@ function useAvatarEyeTracking(avatarRef, enabled) {
       writeEyeOffset("right", 0, 0);
     }
 
+    function setAvatarMotionActive(active) {
+      if (active) {
+        avatar.dataset.motionActive = "true";
+      } else {
+        delete avatar.dataset.motionActive;
+      }
+    }
+
     if (!enabled) {
       resetEyeOffsets();
+      setAvatarMotionActive(false);
       return;
     }
 
@@ -256,12 +270,22 @@ function useAvatarEyeTracking(avatarRef, enabled) {
         left: {
           x: parsePercent(style.getPropertyValue("--left-eye-x"), EYE_ANCHOR_FALLBACKS.left.x),
           y: parsePercent(style.getPropertyValue("--left-eye-y"), EYE_ANCHOR_FALLBACKS.left.y),
+          xLeftLimit: parseNumber(style.getPropertyValue("--left-eye-left-limit"), 0.65),
+          xRightLimit: parseNumber(style.getPropertyValue("--left-eye-right-limit"), 1),
         },
         right: {
           x: parsePercent(style.getPropertyValue("--right-eye-x"), EYE_ANCHOR_FALLBACKS.right.x),
           y: parsePercent(style.getPropertyValue("--right-eye-y"), EYE_ANCHOR_FALLBACKS.right.y),
+          xLeftLimit: parseNumber(style.getPropertyValue("--right-eye-left-limit"), 1),
+          xRightLimit: parseNumber(style.getPropertyValue("--right-eye-right-limit"), 1),
         },
       };
+    }
+
+    function clampEyeX(x, anchor, maxTravel) {
+      const min = -maxTravel * anchor.xLeftLimit;
+      const max = maxTravel * anchor.xRightLimit;
+      return Math.min(max, Math.max(min, x));
     }
 
     function targetForEye(rect, anchor, now) {
@@ -279,9 +303,10 @@ function useAvatarEyeTracking(avatarRef, enabled) {
 
       const maxTravel = Math.min(4, Math.max(1, rect.width * 0.025));
       const pull = Math.min(1, distance / Math.max(rect.width * 0.75, 1));
+      const x = (dx / distance) * maxTravel * pull;
 
       return {
-        x: (dx / distance) * maxTravel * pull,
+        x: clampEyeX(x, anchor, maxTravel),
         y: (dy / distance) * maxTravel * pull,
       };
     }
@@ -290,6 +315,14 @@ function useAvatarEyeTracking(avatarRef, enabled) {
       const rect = avatar.getBoundingClientRect();
       const leftTarget = targetForEye(rect, anchors.left, now);
       const rightTarget = targetForEye(rect, anchors.right, now);
+      const returning =
+        !canTrack() ||
+        !cursor.active ||
+        now - cursor.lastMove >= EYE_IDLE_RESET_MS;
+
+      if (returning) {
+        setAvatarMotionActive(false);
+      }
 
       current.left.x += (leftTarget.x - current.left.x) * EYE_EASE;
       current.left.y += (leftTarget.y - current.left.y) * EYE_EASE;
@@ -304,10 +337,6 @@ function useAvatarEyeTracking(avatarRef, enabled) {
         Math.abs(current.left.y) < EYE_SETTLE_EPSILON &&
         Math.abs(current.right.x) < EYE_SETTLE_EPSILON &&
         Math.abs(current.right.y) < EYE_SETTLE_EPSILON;
-      const returning =
-        !canTrack() ||
-        !cursor.active ||
-        now - cursor.lastMove >= EYE_IDLE_RESET_MS;
 
       if (returning && centered) {
         current.left.x = 0;
@@ -315,6 +344,7 @@ function useAvatarEyeTracking(avatarRef, enabled) {
         current.right.x = 0;
         current.right.y = 0;
         resetEyeOffsets();
+        setAvatarMotionActive(false);
         frameId = null;
         return;
       }
@@ -330,6 +360,7 @@ function useAvatarEyeTracking(avatarRef, enabled) {
 
     function returnToCenter() {
       cursor.active = false;
+      setAvatarMotionActive(false);
       startLoop();
     }
 
@@ -339,6 +370,7 @@ function useAvatarEyeTracking(avatarRef, enabled) {
       cursor.y = event.clientY;
       cursor.active = true;
       cursor.lastMove = performance.now();
+      setAvatarMotionActive(true);
       startLoop();
     }
 
@@ -364,6 +396,7 @@ function useAvatarEyeTracking(avatarRef, enabled) {
     finePointerQuery.addEventListener("change", onPreferenceChange);
 
     resetEyeOffsets();
+    setAvatarMotionActive(false);
 
     return () => {
       window.removeEventListener("pointermove", onPointerMove);
@@ -376,6 +409,7 @@ function useAvatarEyeTracking(avatarRef, enabled) {
       finePointerQuery.removeEventListener("change", onPreferenceChange);
       if (frameId !== null) cancelAnimationFrame(frameId);
       resetEyeOffsets();
+      setAvatarMotionActive(false);
     };
   }, [avatarRef, enabled]);
 }
@@ -393,14 +427,33 @@ function LayeredAvatar({ active }) {
         width={750}
         height={750}
         sizes="180px"
+        loading="eager"
+      />
+      <Image
+        className={`${s.avatarArtLayer} ${s.avatarCamera}`}
+        src="/img/aboutMe/alice_camera.png"
+        alt=""
+        aria-hidden="true"
+        width={619}
+        height={351}
+        sizes="160px"
+      />
+      <Image
+        className={`${s.avatarArtLayer} ${s.avatarSnail}`}
+        src="/img/aboutMe/alice_snail.png"
+        alt=""
+        aria-hidden="true"
+        width={81}
+        height={52}
+        sizes="24px"
       />
       <Image
         className={`${s.avatarEye} ${s.leftEye}`}
         src="/img/aboutMe/alice_left_eye.png"
         alt=""
         aria-hidden="true"
-        width={27}
-        height={25}
+        width={24}
+        height={23}
         sizes="8px"
       />
       <Image
@@ -408,8 +461,8 @@ function LayeredAvatar({ active }) {
         src="/img/aboutMe/alice_right_eye.png"
         alt=""
         aria-hidden="true"
-        width={28}
-        height={30}
+        width={25}
+        height={27}
         sizes="8px"
       />
     </div>
