@@ -114,7 +114,7 @@
   left: 20px;
   right: 20px;
   margin-top: 0;
-  justify-content: center;
+  justify-content: flex-start;
 }
 .year {
   font-family: var(--f);

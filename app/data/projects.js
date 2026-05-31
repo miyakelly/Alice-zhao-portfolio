@@ -101,6 +101,7 @@ export const projects = {
     tags: ["0 → 1", "AI", "keynote launch"],
     externalLink: {
       url: "https://www.youtube.com/watch?v=eztA5VYH2nM",
+      cursor: "BIGGGGG launch of the year",
     },
     metrics: [
       { value: 500, suffix: "+ TB", label: "Data stored in 6 months" },

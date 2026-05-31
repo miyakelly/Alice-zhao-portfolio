@@ -51,13 +51,13 @@ function HeroSolutionText({ text, externalLink }) {
     if (imgMatch) {
       const loop = <InlineImageLoop key={i} srcs={imgMatch[1].split(",")} />;
       if (externalLink) {
-        return <ExternalLink key={i} href={externalLink.url} hideIcon>{loop}</ExternalLink>;
+        return <ExternalLink key={i} href={externalLink.url} hideIcon dataCursor={externalLink.cursor}>{loop}</ExternalLink>;
       }
       return loop;
     }
     const linkMatch = part.match(/^\{link:([^}]+)\}$/);
     if (linkMatch && externalLink) {
-      return <ExternalLink key={i} href={externalLink.url}>{linkMatch[1]}</ExternalLink>;
+      return <ExternalLink key={i} href={externalLink.url} dataCursor={externalLink.cursor}>{linkMatch[1]}</ExternalLink>;
     }
     return part;
   });

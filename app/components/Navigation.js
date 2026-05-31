@@ -58,9 +58,9 @@ export default function Navigation({ title, isHome }) {
       <nav ref={navRef} className={styles.nav}>
         {title && <span className={styles.title}>{title}</span>}
         {isHome ? (
-          <a href="#" className={styles.name}>Alice Zhao</a>
+          <a href="#" className={styles.name} data-cursor="Go back to the awesome homepage">Alice Zhao</a>
         ) : (
-          <Link href="/" className={styles.name}>Alice Zhao</Link>
+          <Link href="/" className={styles.name} data-cursor="Go back to the awesome homepage">Alice Zhao</Link>
         )}
       </nav>
 

@@ -31,43 +31,54 @@ const HERO_SLIDES = [
 ];
 
 const CARD_DEFS = [
-  { id: "my-ai-practices",
-    title: "My AI toolkit",
-    tags: "Writing",
+  { id: "my-ai-toolkit",
+    title: "My design toolkit",
+    year: "2024 - present",
+    type: "Github",
+    tags: "AI",
     pos: "side-tl",
     from: "left",
     layout: "center",
-    href: "/about#ai-toolkit" },
+    href: "/about#ai-toolkit",
+    cursor: "Always evolving :D" },
   { id: "my-lab",
     title: "My lab",
     year: "2015 - present",
     type: "Seattle",
+    tags: "Just for fun",
     pos: "side-bl",
     from: "left",
     layout: "center",
-    href: "/lab" },
+    href: "/lab",
+    cursor: "Something silly~" },
   { id: "s3-tables",
     slug: "s3-tables",
     pos: "center-tl",
     from: "top-left",
-    vector: "/img/hero-card/vector-cube.svg" },
+    vector: "/img/hero-card/vector-cube.svg",
+    cursor: "My favourite project" },
   { id: "agent-opp",
     slug: "agent-opportunities",
     pos: "center-bl",
     from: "bottom-left",
-    vector: "/img/hero-card/Vector3.svg" },
+    vector: "/img/hero-card/Vector3.svg",
+    cursor: "Launching soon" },
   { id: "sda",
     slug: "simplifying-data-access",
     pos: "center-tr",
     from: "top-right",
-    vector: "/img/hero-card/vector-tube.svg" },
-  { id: "hidn",
+    vector: "/img/hero-card/vector-tube.svg",
+    cursor: "My favourite project, too" },
+  { id: "design-process",
     title: "My AI-empowered\ndesign process",
     year: "2014 - present",
+    type: "My brain",
+    tags: "Human + LLMs",
     pos: "center-br",
     from: "bottom-right",
     layout: "center",
-    href: "/about#design-process" },
+    href: "/about#design-process",
+    cursor: "Always evolving :D" },
   { id: "about",
     title: "About me",
     year: "1760CE - 2026",
@@ -76,12 +87,13 @@ const CARD_DEFS = [
     pos: "side-tr",
     from: "right",
     layout: "center",
-    href: "/about" },
+    href: "/about",
+    cursor: "Ni Hao!" },
   { id: "links",
     links: [
       { label: "LinkedIn", href: "https://www.linkedin.com/in/liangzhaoux/" },
       { label: "Resume", href: "https://drive.google.com/file/d/1mJRSpRVt-9k0j9rOz154nCsfPWPXsa4D/view" },
-      { label: "Email", href: "mailto:liangzhao0801@gmail.com" },
+      { label: "Email", href: "mailto:liangzhao0801@gmail.com", cursor: "Let's chat :)" },
     ],
     pos: "side-br",
     from: "right" },
@@ -266,6 +278,7 @@ function SecondaryCard({ def, style, hoverable }) {
 
   const Wrapper = def.href ? Link : "div";
   const wrapperProps = def.href ? { href: def.href } : {};
+  if (def.cursor) wrapperProps["data-cursor"] = def.cursor;
 
   return (
     <Wrapper
@@ -294,7 +307,7 @@ function SecondaryCard({ def, style, hoverable }) {
         {def.links ? (
           <div className={s.linksContent}>
             {def.links.map((link, i) => (
-              <a key={i} className={s.linksItem} href={link.href} target="_blank" rel="noopener noreferrer">
+              <a key={i} className={s.linksItem} href={link.href} target="_blank" rel="noopener noreferrer" {...(link.cursor ? { "data-cursor": link.cursor } : {})}>
                 {link.label}
               </a>
             ))}

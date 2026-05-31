@@ -3,13 +3,14 @@
 import { ExternalLinkIcon } from "@radix-ui/react-icons";
 import s from "./ExternalLink.module.css";
 
-export default function ExternalLink({ href, children, className, hideIcon }) {
+export default function ExternalLink({ href, children, className, hideIcon, dataCursor }) {
   return (
     <a
       href={href}
       target="_blank"
       rel="noopener noreferrer"
       className={`${s.link}${className ? ` ${className}` : ""}`}
+      {...(dataCursor ? { "data-cursor": dataCursor } : {})}
     >
       {children}
       {!hideIcon && <ExternalLinkIcon className={s.icon} />}
