@@ -427,7 +427,7 @@ export default function HomepageScroll() {
   const padding = lerp(20, avatarPad, textBlend);
 
   const titleRatioRef = useFitTitle(titleRef);
-  const maxTitleSize = Math.min(36, vw * 0.025);
+  const maxTitleSize = Math.min(48, vw * 0.035);
   const availableWidth = heroSize - padding * 2;
   const titleFontSize = !isMobile && titleRatioRef.current
     ? Math.min(maxTitleSize, availableWidth * titleRatioRef.current)
@@ -568,7 +568,7 @@ export default function HomepageScroll() {
                     className={s.heroTitle}
                     style={titleFontSize ? { fontSize: titleFontSize } : undefined}
                   >
-                    Alice Zhao, a UX Designer
+                    Alice Zhao, UX Designer
                   </h1>
                   <p className={s.heroIntro}>
                     {introText}

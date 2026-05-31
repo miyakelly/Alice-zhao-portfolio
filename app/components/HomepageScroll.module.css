@@ -265,7 +265,7 @@
 }
 .heroTitle {
   font-family: var(--f-display);
-  font-size: clamp(1.25rem, 2.5vw, 2.25rem);
+  font-size: clamp(1.25rem, 2.5vw, 2.5rem);
   font-weight: 400;
   line-height: 1.2;
   color: var(--ink);
@@ -273,7 +273,7 @@
 }
 .heroIntro {
   font-family: var(--f);
-  font-size: 0.875rem;
+  font-size: 1rem;
   line-height: 1.5;
   color: var(--muted);
   text-align: left;
