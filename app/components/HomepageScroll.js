@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { projects } from "../data/projects";
+import WaveBackground from "./WaveBackground";
 import s from "./HomepageScroll.module.css";
 
 const HERO_SLIDES = [
@@ -477,6 +478,7 @@ export default function HomepageScroll() {
   return (
     <div className={s.runway} ref={containerRef}>
       <div className={s.sticky}>
+        <WaveBackground />
         {CARD_DEFS.map((def) => {
           const bounds = getCardBounds(def.pos);
           if (bounds.width <= 0 || bounds.height <= 0) return null;
