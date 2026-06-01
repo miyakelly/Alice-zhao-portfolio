@@ -1,7 +1,7 @@
-import { MCP, Bedrock, Nova, Claude, ClaudeCode, Figma, Github, Codex, Adobe, OpenAI } from "@lobehub/icons";
+import { MCP, Bedrock, Nova, Claude, ClaudeCode, Figma, Github, Codex, Adobe, OpenAI, LobeHub, Kiro } from "@lobehub/icons";
 import "./ToolPill.css";
 
-const iconMap = { MCP, Bedrock, Nova, Claude, ClaudeCode, Figma, Github, Codex, Adobe, OpenAI };
+const iconMap = { MCP, Bedrock, Nova, Claude, ClaudeCode, Figma, Github, Codex, Adobe, OpenAI, LobeHub, Kiro };
 
 export default function ToolPill({ name, icon }) {
   const Icon = iconMap[icon] || MCP;

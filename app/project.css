@@ -69,6 +69,7 @@
   line-height: 1.1;
   letter-spacing: var(--t-h1-letter-spacing);
   color: var(--ink);
+  white-space: pre-line;
 }
 
 .project-detail h2,

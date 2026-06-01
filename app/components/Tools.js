@@ -1,4 +1,4 @@
-import { ClaudeCode, Codex, Github, Adobe, Figma, ZenMux, Bedrock, OpenRouter } from "@lobehub/icons";
+import { ClaudeCode, Codex, Github, Adobe, Figma, ZenMux, Bedrock, OpenRouter, MCP, LobeHub, Aws, NanoBanana } from "@lobehub/icons";
 import s from "./MetricCard.module.css";
 import "./Tools.css";
 
@@ -9,8 +9,13 @@ const iconMap = {
   "Adobe": Adobe,
   "OpenRouter": OpenRouter,
   "Figma": Figma,
+  "Figma/Figjam": Figma,
   "ZenMux": ZenMux,
-  "Bedrock": Bedrock
+  "Bedrock": Bedrock,
+  "Impeccable skill": MCP,
+  "LobeHub": LobeHub,
+  "AWS Service Suite": Aws,
+  "And so much more..": NanoBanana,
 };
 
 export default function Tools({ heading, items }) {

@@ -140,9 +140,12 @@
   color: var(--accent);
 }
 
-#design-process,
+#design-process {
+  scroll-margin-top: 5rem;
+}
 #ai-toolkit {
   scroll-margin-top: 5rem;
+  padding-top: 2rem;
 }
 
 /* ── Process section ── */

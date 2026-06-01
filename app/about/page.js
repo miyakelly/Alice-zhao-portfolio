@@ -82,7 +82,13 @@ export default function About() {
 
     function onImageReady() {
       loaded++;
-      if (loaded >= total) alignColumns();
+      if (loaded >= total) {
+        alignColumns();
+        if (window.location.hash) {
+          const target = document.querySelector(window.location.hash);
+          if (target) target.scrollIntoView({ behavior: "instant" });
+        }
+      }
     }
 
     if (total === 0) {

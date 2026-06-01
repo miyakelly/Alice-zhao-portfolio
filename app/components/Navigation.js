@@ -5,15 +5,43 @@ import Link from "next/link";
 import WaveBackground from "./WaveBackground";
 import styles from "./Navigation.module.css";
 
+const BG_COLORS = [
+  { value: "#DAF0F7", label: "Ice blue" },
+  { value: "#F5D9E0", label: "Blush" },
+  { value: "#F5EDCC", label: "Cream" },
+  { value: "#D4F0D4", label: "Mint" },
+  { value: "#ffffff", label: "White" },
+  { value: "#110F0B", label: "Dark", dark: true },
+];
+
 export default function Navigation({ title, isHome, sections }) {
-  const [dark, setDark] = useState(false);
+  const [bgColor, setBgColor] = useState("#ffffff");
+  const bgInitialized = useRef(false);
+  const [pickerOpen, setPickerOpen] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [activeSection, setActiveSection] = useState(null);
   const navRef = useRef(null);
+  const pickerRef = useRef(null);
 
   useEffect(() => {
-    document.body.toggleAttribute("data-dark", dark);
-  }, [dark]);
+    if (!bgInitialized.current) {
+      const saved = localStorage.getItem("bg-color");
+      if (saved && saved !== "#ffffff") {
+        setBgColor(saved);
+        return;
+      }
+      bgInitialized.current = true;
+    }
+    const selected = BG_COLORS.find((c) => c.value === bgColor);
+    const isDark = selected?.dark ?? false;
+    document.body.toggleAttribute("data-dark", isDark);
+    document.documentElement.style.setProperty("--bg", bgColor);
+    if (!isDark) {
+      document.documentElement.style.setProperty("--bg2", bgColor);
+    }
+    localStorage.setItem("bg-color", bgColor);
+    bgInitialized.current = true;
+  }, [bgColor]);
 
   useEffect(() => {
     const onNavVisibility = (e) => {
@@ -22,14 +50,26 @@ export default function Navigation({ title, isHome, sections }) {
       navRef.current.style.transform = `translateY(${-p * 60}px)`;
     };
     const onToggleDrawer = () => setDrawerOpen((o) => !o);
-    const onToggleMode = () => setDark((d) => !d);
+    const onToggleMode = () => {
+      setBgColor((prev) => {
+        const current = BG_COLORS.find((c) => c.value === prev);
+        return current?.dark ? "#ffffff" : "#110F0B";
+      });
+    };
+    const onClickOutside = (e) => {
+      if (pickerRef.current && !pickerRef.current.contains(e.target)) {
+        setPickerOpen(false);
+      }
+    };
     window.addEventListener("nav-visibility", onNavVisibility);
     window.addEventListener("toggle-drawer", onToggleDrawer);
     window.addEventListener("toggle-mode", onToggleMode);
+    document.addEventListener("mousedown", onClickOutside);
     return () => {
       window.removeEventListener("nav-visibility", onNavVisibility);
       window.removeEventListener("toggle-drawer", onToggleDrawer);
       window.removeEventListener("toggle-mode", onToggleMode);
+      document.removeEventListener("mousedown", onClickOutside);
     };
   }, []);
 
@@ -86,14 +126,31 @@ export default function Navigation({ title, isHome, sections }) {
         >
           <span></span><span></span><span></span>
         </button>
-        <button
-          className={styles.modeBtn}
-          onClick={() => setDark((d) => !d)}
-          aria-label="Toggle dark mode"
-        >
-          <span className={`${styles.icon} ${styles.iconMoon}`}>☽</span>
-          <span className={`${styles.icon} ${styles.iconSun}`}>☀</span>
-        </button>
+        <div className={styles.colorPicker} ref={pickerRef}>
+          <button
+            className={styles.colorPickerBtn}
+            onClick={() => setPickerOpen((o) => !o)}
+            aria-label="Change background color"
+            data-cursor=""
+          >
+            <span className={styles.colorSwatch} style={{ backgroundColor: bgColor }} />
+          </button>
+          {pickerOpen && (
+            <div className={styles.colorDropdown}>
+              {BG_COLORS.map((c) => (
+                <button
+                  key={c.value}
+                  className={`${styles.colorOption}${bgColor === c.value ? ` ${styles.colorOptionActive}` : ""}`}
+                  onClick={() => { setBgColor(c.value); setPickerOpen(false); }}
+                  aria-label={c.label}
+                  data-cursor=""
+                >
+                  <span className={styles.colorSwatch} style={{ backgroundColor: c.value }} />
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
 
       <nav ref={navRef} className={styles.nav}>

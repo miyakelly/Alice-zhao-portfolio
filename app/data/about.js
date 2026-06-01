@@ -68,6 +68,7 @@ export const processSteps = [
       { name: "Internal research agent", icon: "Bedrock" },
       { name: "AWS Quick Suite", icon: "Nova" },
       { name: "AWS Builder MCP", icon: "MCP" },
+      { name: "Claude", icon: "Claude" },
     ],
   },
   {
@@ -77,6 +78,7 @@ export const processSteps = [
     tools: [
       { name: "AWS Quick Suite", icon: "Nova" },
       { name: "Figjam", icon: "Figma" },
+      { name: "Internal meeting agent", icon: "Bedrock" },
     ],
   },
   {
@@ -84,9 +86,9 @@ export const processSteps = [
     title: "Prototype",
     description: "Use AI tools like Claude Code to build working prototypes with real data. Agents pull from existing Figma designs via Figma MCP and ensure consistency with the AWS design system via its MCP. Use skills like Impeccable to refine visual.",
     tools: [
-      { name: "Claude Code", icon: "Claude" },
+      { name: "Claude Code", icon: "ClaudeCode" },
       { name: "Kiro-cli", icon: "Kiro" },
-      { name: "Impeccable", icon: "MCP" },
+      { name: "Impeccable skill", icon: "MCP" },
       { name: "Figma MCP", icon: "MCP" },
       { name: "Lobehub", icon: "LobeHub" },
     ],
@@ -96,8 +98,8 @@ export const processSteps = [
     title: "Test",
     description: "Work with researchers and research agents to generate test plans and run moderated and unmoderated usability sessions. Capture findings, tag severity, and feed insights directly back into Claude Code for iteration.",
     tools: [
-      { name: "Testing agent", icon: "MCP" },
-      { name: "Claude", icon: "MCP" },
+      { name: "Internal testing agent", icon: "MCP" },
+      { name: "Claude Code", icon: "ClaudeCode" },
     ],
   },
   {
@@ -115,12 +117,16 @@ export const processSteps = [
 export const toolsHeading = "My design toolkit";
 
 export const tools = [
-  { name: "Claude Code", description: "I use Claude Code to build and iterate on production code, turning design decisions into working UI in real time." },
-  { name: "Codex", description: "I use Codex to make targeted comments on the working prototype then fine tune the design details." },
-  { name: "Github", description: "All my work lives in version-controlled repos. I use GitHub to manage branches, review code, and ship through CI/CD." },
-  { name: "Adobe", description: "I use Illustrator and After Effect for visual asset creation, motion editing, and detailed illustration work." },
-  { name: "Figma", description: "My primary design tool for user flows, wireframes, and design systems. Figjam is where most of my thinking starts." },
+  { name: "Claude Code", description: "I use Claude Code to build and iterate on working prototypes, turning design decisions and feedback into real product efficiently." },
+  { name: "Codex", description: "I use Codex to make targeted comments on the working prototype then fine tune the design details in real time." },
+  { name: "Github", description: "I use GitHub to manage branches, review code, and ship through CI/CD." },
+  { name: "Impeccable skill", description: "I use Impeccable to catch design anti-patterns and refine spacing, typography, and visual polish across prototypes, so AI-generated UI reaches production quality faster." },
+  { name: "LobeHub", description: "I use LobeHub to organize and coordinate multiple AI agents into a unified workflow, so I can manage research, prototyping, and testing agents from a single platform."},
+  { name: "Figma/Figjam", description: "My primary design tool for user flows, wireframes, and design systems. Figjam is where most of my thinking starts." },
   { name: "OpenRouter", description: "A unified API I use to access multiple LLMs through one interface, making it easy to compare model outputs." },
   { name: "Bedrock", description: "I design for Bedrock-powered experiences at AWS, shaping how customers build and deploy generative AI applications." },
   { name: "ZenMux", description: "I don't use it, I just think the logo is cute, so why not put it here ;)" },
+  { name: "AWS Service Suite", description: "I use AWS S3, Lambda, DynamoDB, IAM, and other services to build a complete product system." },
+  { name: "Adobe", description: "I sometimes use Illustrator and After Effect for visual asset creation, motion editing, and detailed illustration work." },
+  { name: "And so much more..", description: "Never stop learning." },
 ];
