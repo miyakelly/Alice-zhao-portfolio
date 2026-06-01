@@ -63,8 +63,7 @@ export const processSteps = [
   {
     id: "01",
     title: "Discover",
-    description: "Gather competitive analysis and user feedback. Synthesize findings into a structured one-pager: problem, opportunity, success metrics.",
-    ai: "Research agents collect and cross-reference data from multiple sources, cutting weeks of manual synthesis to hours.",
+    description: "Research agents collect and cross-reference competitive analysis, user feedback, and internal data from multiple sources, cutting weeks of manual synthesis to hours. Findings are distilled into a structured one-pager covering problem, opportunity, and success metrics.",
     tools: [
       { name: "Internal research agent", icon: "Bedrock" },
       { name: "AWS Quick Suite", icon: "Nova" },
@@ -74,8 +73,7 @@ export const processSteps = [
   {
     id: "02",
     title: "Define",
-    description: "Distill the problem, align stakeholders on scope, and lock success metrics. Build a shared understanding before any design work starts.",
-    ai: "Claude surfaces patterns across feedback channels and drafts problem framings, so alignment conversations start from evidence, not assumptions.",
+    description: "Working with stakeholders to distill the problem, align on scope, and lock success metrics. Meeting agents surface key decision points across feedback channels and draft problem framings, so alignment conversations start from evidence, not assumptions.",
     tools: [
       { name: "AWS Quick Suite", icon: "Nova" },
       { name: "Figjam", icon: "Figma" },
@@ -84,8 +82,7 @@ export const processSteps = [
   {
     id: "03",
     title: "Prototype",
-    description: "Build working, interactive prototypes. Explore multiple directions in parallel, test with real interactions, and converge on the strongest approach.",
-    ai: "Claude Code generates functional prototypes from the one-pager. Impeccable refines spacing, typography, and polish across every variant.",
+    description: "Use AI tools like Claude Code to build working prototypes with real data. Agents pull from existing Figma designs via Figma MCP and ensure consistency with the AWS design system via its MCP. Use skills like Impeccable to refine visual.",
     tools: [
       { name: "Claude Code", icon: "Claude" },
       { name: "Kiro-cli", icon: "Kiro" },
@@ -97,8 +94,7 @@ export const processSteps = [
   {
     id: "04",
     title: "Test",
-    description: "Run moderated and unmoderated usability sessions. Capture findings, tag severity, and feed insights directly back into the next iteration.",
-    ai: "Agents generate test scripts from key flows and success criteria. Post-session, they synthesize notes across participants and flag patterns.",
+    description: "Work with researchers and research agents to generate test plans and run moderated and unmoderated usability sessions. Capture findings, tag severity, and feed insights directly back into Claude Code for iteration.",
     tools: [
       { name: "Testing agent", icon: "MCP" },
       { name: "Claude", icon: "MCP" },
@@ -107,8 +103,7 @@ export const processSteps = [
   {
     id: "05",
     title: "Ship",
-    description: "Deliver production-ready code, or hand off with documented specs, edge cases, and decision rationale.",
-    ai: "Code review agents catch bugs and accessibility issues before merge. Documentation is auto-generated from the working prototype.",
+    description: "Hand off to engineers with documented specs, or push production-ready code directly. Code review agents catch bugs and accessibility issues before merge, and documentation is auto-generated from the working prototype.",
     tools: [
       { name: "Claude Code", icon: "MCP" },
       { name: "Kiro-cli", icon: "Kiro" },
@@ -117,7 +112,7 @@ export const processSteps = [
   },
 ];
 
-export const toolsHeading = "My AI toolkit";
+export const toolsHeading = "My design toolkit";
 
 export const tools = [
   { name: "Claude Code", description: "I use Claude Code to build and iterate on production code, turning design decisions into working UI in real time." },
