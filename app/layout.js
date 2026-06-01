@@ -1,6 +1,5 @@
 import "./globals.css";
 import "./project.css";
-import PaperTexture from "./components/PaperTexture";
 import CursorTrail from "./components/CursorTrail";
 
 export const metadata = {
@@ -12,7 +11,6 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <PaperTexture />
         <CursorTrail />
         {children}
       </body>

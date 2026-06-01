@@ -195,11 +195,11 @@ export const projects = {
   "agent-opportunities": {
     slug: "agent-opportunities",
     heroImage: "/img/s3tables/heroimg-1.JPEG",
-    projectTitle: { main: "AWS agentic experience", sub: "Chat to build" },
+    projectTitle: { main: "AWS agentic experience", sub: "Let agents do the heavy lifting" },
     navTitle: "AWS agentic experience",
     heroProblem: "",
     heroSolution: "",
-    impact: "Impact statement placeholder",
+    impact: "Transforming AWS console interactions from manual workflows to agent-driven experiences",
     type: "AWS",
     year: "2025 - present",
     role: "Lead UX Designer",

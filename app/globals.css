@@ -29,7 +29,7 @@
   --border: #D0DBDF;
   --card: #101316;
   --card2: #181C1F;
-  --paper-line: #738B9E;
+
   --card-border: 1px solid #000;
   --card-shadow: #000;
   --f: 'Satoshi', 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -68,7 +68,7 @@
   --border: #2A2620;
   --card: #1A1712;
   --card2: #211E18;
-  --paper-line: #5a5040;
+
   --card-border: 1px solid var(--ink);
   --card-shadow: var(--ink);
 }

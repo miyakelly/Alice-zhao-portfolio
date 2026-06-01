@@ -3,7 +3,6 @@
 import { useEffect, useLayoutEffect, useRef } from "react";
 import { projects } from "../data/projects";
 import Navigation from "./Navigation";
-import DeviceFrame from "./DeviceFrame";
 import MetricsCounter from "./MetricsCounter";
 import ExternalLink from "./ExternalLink";
 import HeroVisual from "./HeroVisual";
@@ -199,7 +198,7 @@ function OutcomeZigzag({ content }) {
 }
 
 function OutcomeSection({ section, metrics }) {
-  const { content, productVisuals } = section;
+  const { content } = section;
   const isArray = Array.isArray(content);
   const headingRef = useRef(null);
 
@@ -237,13 +236,6 @@ function OutcomeSection({ section, metrics }) {
         </>
       ) : (
         <>
-          {productVisuals && productVisuals.length > 0 && (
-            <div className="outcome-visuals">
-              {productVisuals.map((v, i) => (
-                <DeviceFrame key={i} alt={v.alt} placeholder={v.placeholder} />
-              ))}
-            </div>
-          )}
           <MetricsCounter metrics={metrics} />
           {content.summary && <p className="outcome-summary">{content.summary}</p>}
         </>
@@ -514,7 +506,7 @@ export default function ProjectDetailClient({ project }) {
 
   return (
     <>
-      <Navigation title={project.navTitle || "Project"} />
+      <Navigation title={project.navTitle || "Project"} sections={project.sections} />
 
       <article className="project-detail">
         <header

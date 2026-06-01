@@ -160,7 +160,7 @@
   height: 60cqw;
   object-fit: contain;
   object-position: right bottom;
-  opacity: 0.7;
+  opacity: 0.5;
   transition: transform 0.4s cubic-bezier(0.25, 0, 0.3, 1);
   pointer-events: none;
   z-index: 0;

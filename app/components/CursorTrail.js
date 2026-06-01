@@ -9,7 +9,7 @@ const DAMPING = 0.5;
 
 function findCursorTarget(el) {
   while (el) {
-    if (el.dataset && el.dataset.cursor) return el.dataset.cursor;
+    if (el.dataset && "cursor" in el.dataset) return el.dataset.cursor || null;
     if (el.tagName === "A" || el.tagName === "BUTTON") return "View";
     el = el.parentElement;
   }
@@ -24,7 +24,10 @@ export default function CursorTrail() {
   const animationFrameId = useRef(null);
   const prefersReducedMotion = useRef(false);
 
-  useEffect(() => { setMounted(true); }, []);
+  useEffect(() => {
+    const hasFinePointer = window.matchMedia("(pointer: fine)").matches;
+    if (hasFinePointer) setMounted(true);
+  }, []);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
