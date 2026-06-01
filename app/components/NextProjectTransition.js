@@ -186,7 +186,7 @@ export default function NextProjectTransition({ project }) {
   return (
     <div className={styles.section} ref={sectionRef}>
       <div className={styles.stickyWrap} ref={stickyRef} onClick={handleAreaClick}>
-        <Link href={`/projects/${project.slug}/`} className={styles.sectionLink}>
+        <Link href={`/projects/${project.slug}/`} className={styles.sectionLink} data-cursor="Try keep scrolling">
           <div className={styles.lineWrap} ref={lineRef}>
             <div className={styles.lineBg} />
             <div className={styles.lineBar} ref={barRef} />

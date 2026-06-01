@@ -99,7 +99,7 @@
 .drawer.open { clip-path: inset(0 0 0 0); }
 .links { display: flex; flex-direction: column; gap: 12px; }
 .links a {
-  font-size: clamp(36px, 5vw, 64px); font-weight: 800; letter-spacing: -0.03em;
+  font-size: clamp(36px, 5vw, 64px); font-weight: 600; letter-spacing: -0.03em;
   color: rgba(255,255,255,0.85); text-decoration: none;
   padding: 8px 0;
   transition: color 0.15s;
@@ -114,11 +114,19 @@
 .bottom a {
   font-size: 12px; font-weight: 600;
   letter-spacing: 0.06em; text-transform: uppercase;
-  color: rgba(255,255,255,0.35); text-decoration: none;
+  color: rgba(255,255,255,0.6); text-decoration: none;
   padding: 8px 0;
   transition: color 0.15s;
 }
 .bottom a:hover { color: #fff; }
+
+.drawerWaves {
+  opacity: 0.5;
+}
+
+.drawerWaves path {
+  stroke-width: 1;
+}
 
 @media (max-width: 900px) {
   .title { display: none; }

@@ -343,8 +343,8 @@ function ProjectSectionTransitionTrack({ sections, metrics, onHeroDimChange }) {
 
       for (let i = 0; i < panels.length; i += 1) {
         const rect = panels[i].getBoundingClientRect();
-        if (rect.top < vh * 1.25 && rect.top > -vh * 0.2) {
-          const progress = Math.max(0, Math.min(1, 1 - rect.top / (vh * 1.25)));
+        if (rect.top < vh * 1 && rect.top > -vh * 0.2) {                                                                                                  
+          const progress = Math.max(0, Math.min(1, 1 - rect.top / (vh * 1)));  
           nextHandoff = { incomingIndex: i, progress };
         }
       }

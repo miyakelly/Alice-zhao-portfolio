@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import WaveBackground from "./WaveBackground";
 import styles from "./Navigation.module.css";
 
 export default function Navigation({ title, isHome }) {
@@ -65,6 +66,7 @@ export default function Navigation({ title, isHome }) {
       </nav>
 
       <div className={`${styles.drawer}${drawerOpen ? ` ${styles.open}` : ""}`}>
+        {drawerOpen && <WaveBackground className={styles.drawerWaves} />}
         <nav className={styles.links}>
           <Link href="/" onClick={closeDrawer}>Home</Link>
           <Link href="/projects/s3-tables" onClick={closeDrawer}>AWS S3 Tables</Link>
