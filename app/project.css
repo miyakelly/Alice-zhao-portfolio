@@ -194,6 +194,32 @@
   height: 60vh;
 }
 
+/* Coming soon variant */
+.project-hero-coming-soon {
+  height: calc(100vh - var(--nav-height));
+}
+.project-hero-coming-soon .hero-content {
+  mix-blend-mode: normal;
+  margin-top: 0;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+.project-hero-coming-soon .hero-content h1,
+.project-hero-coming-soon .hero-content p,
+.project-hero-coming-soon .hero-content a,
+.project-hero-coming-soon .hero-content .project-hero-subtitle {
+  color: var(--ink);
+}
+.project-hero-coming-soon .hero-content a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.project-hero-coming-soon .hero-content a:hover {
+  color: var(--accent);
+}
+
 /* ══════════════════════════════════════
    h2 + SUBSECTIONS
    ══════════════════════════════════════ */

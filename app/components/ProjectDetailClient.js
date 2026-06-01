@@ -9,6 +9,7 @@ import HeroVisual from "./HeroVisual";
 import InlineImageLoop from "./InlineImageLoop";
 import LineReveal from "./LineReveal";
 import NextProjectTransition from "./NextProjectTransition";
+import WaveBackground from "./WaveBackground";
 import Footer from "./Footer";
 
 function HeroBottomRow({ project, className }) {
@@ -21,21 +22,33 @@ function HeroBottomRow({ project, className }) {
         )}
       </div>
       <div className="project-hero-text">
-        {project.heroProblem && (
+        {project.comingSoonMessage ? (
           <p>
-            <HeroSolutionText
-              text={project.heroProblem}
-              externalLink={project.externalLink}
-            />
+            Launching in Oct 2026, don't hesitate to reach out on{" "}
+            <a href="https://www.linkedin.com/in/liangzhaoux/" target="_blank" rel="noreferrer">LinkedIn</a>
+            {" "}or via{" "}
+            <a href="mailto:liangzhao0801@gmail.com">email</a>
+            {" "}if you can't wait to learn more.
           </p>
-        )}
-        {project.heroSolution && (
-          <p>
-            <HeroSolutionText
-              text={project.heroSolution}
-              externalLink={project.externalLink}
-            />
-          </p>
+        ) : (
+          <>
+            {project.heroProblem && (
+              <p>
+                <HeroSolutionText
+                  text={project.heroProblem}
+                  externalLink={project.externalLink}
+                />
+              </p>
+            )}
+            {project.heroSolution && (
+              <p>
+                <HeroSolutionText
+                  text={project.heroSolution}
+                  externalLink={project.externalLink}
+                />
+              </p>
+            )}
+          </>
         )}
       </div>
     </div>
@@ -506,44 +519,49 @@ export default function ProjectDetailClient({ project }) {
 
   return (
     <>
-      <Navigation title={project.navTitle || "Project"} sections={project.sections} />
+      <Navigation title={project.navTitle || "Project"} sections={project.comingSoon ? [] : project.sections} />
 
       <article className="project-detail">
         <header
           ref={heroRef}
-          className="project-hero"
+          className={`project-hero${project.comingSoon ? " project-hero-coming-soon" : ""}`}
         >
-          <div className="hero-image-expand" ref={imageRef}>
-            <HeroVisual
-              src={project.heroImage}
-              alt={project.projectTitle.main}
-            />
-          </div>
+          {project.comingSoon ? (
+            <WaveBackground />
+          ) : (
+            <div className="hero-image-expand" ref={imageRef}>
+              <HeroVisual
+                src={project.heroImage}
+                alt={project.projectTitle.main}
+              />
+            </div>
+          )}
           <div className="hero-content">
             <HeroBottomRow project={project} className="hero-bottom-row col-grid" />
           </div>
-          <div className="hero-scroll-spacer" />
+          {!project.comingSoon && <div className="hero-scroll-spacer" />}
         </header>
 
-
-        <div className="project-content">
-          <ProjectSectionTransitionTrack
-            sections={transitionSections}
-            metrics={project.metrics}
-            onHeroDimChange={updateHeroDim}
-          />
-          {normalSections.map((section) => {
-            const Renderer = SECTION_RENDERERS[section.id];
-            if (!Renderer) return null;
-            return (
-              <Renderer
-                key={section.id}
-                section={section}
-                metrics={section.id === "outcome" ? project.metrics : undefined}
-              />
-            );
-          })}
-        </div>
+        {!project.comingSoon && (
+          <div className="project-content">
+            <ProjectSectionTransitionTrack
+              sections={transitionSections}
+              metrics={project.metrics}
+              onHeroDimChange={updateHeroDim}
+            />
+            {normalSections.map((section) => {
+              const Renderer = SECTION_RENDERERS[section.id];
+              if (!Renderer) return null;
+              return (
+                <Renderer
+                  key={section.id}
+                  section={section}
+                  metrics={section.id === "outcome" ? project.metrics : undefined}
+                />
+              );
+            })}
+          </div>
+        )}
 
         {nextProject && (
           <NextProjectTransition project={nextProject} />

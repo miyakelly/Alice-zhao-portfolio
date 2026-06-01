@@ -85,7 +85,7 @@ export const projects = {
         ],
       },
     ],
-    nextProject: "s3-tables",
+    nextProject: "agent-opportunities",
   },
 
   "s3-tables": {
@@ -194,10 +194,12 @@ export const projects = {
 
   "agent-opportunities": {
     slug: "agent-opportunities",
+    comingSoon: true,
     heroImage: "/img/s3tables/heroimg-1.JPEG",
-    projectTitle: { main: "AWS agentic experience", sub: "Let agents do the heavy lifting" },
+    projectTitle: { main: "AWS agentic\nexperience", sub: "Let agents do the heavy lifting" },
     navTitle: "AWS agentic experience",
     heroProblem: "",
+    comingSoonMessage: true,
     heroSolution: "",
     impact: "Transforming AWS console interactions from manual workflows to agent-driven experiences",
     type: "AWS",
@@ -232,12 +234,13 @@ export const projects = {
         productVisuals: [],
       },
     ],
-    nextProject: "simplifying-data-access",
+    nextProject: "s3-tables",
   },
 };
 
 export const projectOrder = [
   "s3-tables",
+  "simplifying-data-access",
   "agent-opportunities",
 ];
 
